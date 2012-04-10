@@ -28,6 +28,7 @@
 [submodule "vim/vim.symlink/bundle/vim-command-t"]
 	path = vim/vim.symlink/bundle/vim-command-t
 	url = https://github.com/wincent/Command-T.git
+	ignore = dirty
 [submodule "vim/vim.symlink/bundle/vim-coffee-script"]
 	path = vim/vim.symlink/bundle/vim-coffee-script
 	url = https://github.com/kchmck/vim-coffee-script.git
