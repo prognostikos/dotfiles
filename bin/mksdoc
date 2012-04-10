@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Generate searchable RDoc for all locally installed gems
+# rubies, and projects
+
+for dir in ~/.rbenv/versions/1.9.2-p290/include ~/.rbenv/versions/1.9.2-p290/lib ~/c
+do
+  # for some reason cmath.rb chokes
+  cd $dir && sdoc --no-se-indexs --exclude=ruby/1.9.1/cmath.rb --exclude=~/c/sdoc -o ~/c/sdoc 
+  sleep 5
+done

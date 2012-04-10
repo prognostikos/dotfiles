@@ -1,0 +1,9 @@
+windows:
+  - name: editor
+    splits:
+      - cmd: $EDITOR
+      - cmd: guard
+        width: 20
+      - cmd: irb
+        height: 20
+        target: bottom-right

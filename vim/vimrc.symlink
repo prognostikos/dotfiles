@@ -1,0 +1,327 @@
+"""
+""" CREDITS: @mislav @amix @garybernhardt
+"""
+
+""" General Settings
+set nomodeline
+set nocompatible
+set fileencoding=utf-8
+set spelllang=en_us
+
+" autoloading
+if !exists("g:loaded_pathogen")
+  call pathogen#infect()
+endif
+
+" Enable filetype detection
+filetype plugin indent on
+
+" coding defaults (may be overridden by plugins/filetypes below)
+syntax on
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+set autoindent
+set smartindent
+set backspace=start,indent,eol
+set nowrap
+
+" turn off matching paren highlighting
+let loaded_matchparen = 1
+
+" colors
+colorscheme solarized
+
+" more info
+set number
+set showmode
+set showcmd
+set ruler
+set laststatus=2
+set cursorline
+
+" always keep the cursor line in the middle of the screen if possible
+set scrolloff=999
+
+" smart(ish) searching
+set incsearch
+set nohlsearch
+set smartcase
+set wrapscan
+
+" file & dir matching mode
+set wildmode=list:longest
+
+" Make tab completion for files/buffers act like bash/readline
+set wildmenu
+
+" remove binary files from completion menus
+set wildignore+=*.o,*.obj,.git,*.class,*.png,*.jpg,*.jpeg,*.gif,*.ico,*.pdf,*.doc,*.docx,*.ppt,*.pptx,*.xls,*.xlsx
+" ignore results of bundle --path vendor
+set wildignore+=vendor/ruby/**
+set wildignorecase
+
+" inserts the longest common text of all matches and display menu even if
+" there's only one match
+set completeopt=longest,menuone,preview
+
+" remember
+set history=256
+
+" shut up
+set noerrorbells
+set novisualbell
+set t_vb=
+
+" files - use version control instead
+set nobackup
+set nowritebackup
+
+"When on a buffer becomes hidden when it is abandoned.
+set hidden
+
+" don't litter my working directory
+set directory=~/.tmp,/var/tmp,/tmp
+
+" auto-fetch changes from other sources
+set autoread
+
+" auto-write when suspending (^Z) etc
+set autowrite
+
+" folding > sliced bread
+set foldmethod=syntax
+set foldlevel=2
+set foldnestmax=2
+
+" Make sure the current window is always wide & tall enough
+set winwidth=84
+
+" We have to have a winheight bigger than we want to set winminheight. But if
+" we set winheight to be huge before winminheight, the winminheight set will
+" fail.
+set winheight=5
+set winminheight=5
+set winheight=999
+
+" use ack instead of grep
+set grepprg=ack\ --column\ --ignore-case
+set grepformat=%f:%l:%c:%m
+
+" eliminate clearing of terminal when suspending/quiting
+" http://www.shallowsky.com/linux/noaltscreen.html
+set t_ti= t_te=
+
+" avoid problems with $PATH
+set shell=/bin/bash
+
+" show indentation level on new lines
+set list listchars=tab:»-,trail:·,extends:»,precedes:«
+
+""" Custom mappings
+
+" prefer , rather than default \
+let mapleader = ","
+
+" Suspend in every mode
+inoremap <C-z> <ESC>:suspend<CR>
+cnoremap <C-z> <ESC>:suspend<CR>
+
+" make split-window editing easier
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-h> <C-w>h
+noremap <C-l> <C-w>l
+
+" keep selection after visual in/out-dent
+vnoremap > >gv
+vnoremap < <gv
+
+" if I'm going to spend this much time tweaking I might as well make it as
+" easy as possible
+noremap <leader>ev :split $MYVIMRC<CR>
+noremap <leader>sv :source $MYVIMRC<CR>
+
+" Bash/readline-like keys for the command line
+cnoremap <C-A> <Home>
+cnoremap <C-E> <End>
+cnoremap <C-K> <C-U>
+cnoremap <C-P> <Up>
+cnoremap <C-N> <Down>
+
+" Toggle spell checking for the current file
+noremap <leader>sc :setlocal spell!<cr>
+" move to next misspelled word
+noremap <leader>sn ]s
+" move to previous misspelled word
+noremap <leader>sp [s
+" add word to dictionary
+noremap <leader>sa zg
+" show a list of alternate spellings
+noremap <leader>s? z=
+
+" Toggle paste mode for current file
+noremap <leader>p :setlocal paste!<cr>
+
+" make make easier
+noremap <leader>m :make<cr>
+
+" Switch between the last two files
+nnoremap <leader><leader> <c-^>
+
+" visually select the last pasted hunk
+nnoremap <leader>vp `[v`]
+
+" use ctrl-n/p in normal mode to cycle through the quickfix list
+nnoremap <C-n> :cn<CR>
+nnoremap <C-p> :cp<CR>
+
+" forget about reaching for ESC
+inoremap <esc> <nop>
+inoremap jk <esc>
+
+""" Autocomd/Filetype-specific settings
+
+augroup textmarkdown
+    autocmd!
+    autocmd BufRead,BufNewFile *.md,*.mkd,*.md.txt setfiletype markdown
+    autocmd BufRead,BufNewFile *.txt setfiletype text
+    autocmd FileType text,markdown setlocal textwidth=78 spell wrap wrapmargin=2 linebreak
+augroup END
+
+augroup help
+    autocmd!
+    autocmd FileType help setlocal nospell
+augroup END
+
+augroup makefile
+    autocmd!
+    autocmd FileType make setlocal noexpandtab tabstop=8 shiftwidth=8 softtabstop=8
+augroup END
+
+augroup rb
+    autocmd!
+    autocmd BufRead,BufNewFile Vagrantfile,Rakefile,Guardfile setfiletype ruby
+    autocmd FileType ruby setlocal tabstop=2 shiftwidth=2 softtabstop=2
+    autocmd FileType ruby setlocal makeprg=rspec\ spec
+augroup END
+
+augroup java
+    autocmd!
+    " use ~/bin/jtest for small java programs
+    autocmd BufRead,BufNewFile *.java set makeprg=jtest\ %
+augroup END
+
+augroup cccc
+    autocmd!
+    " a very simplified make for small c programs
+    autocmd BufRead,BufNewFile *.h,*.c set makeprg=make\ %:r
+augroup END
+
+augroup js
+    autocmd!
+    autocmd BufRead,BufNewFile *.json setfiletype javascript
+augroup END
+
+augroup yaml
+    autocmd FileType yaml setlocal tabstop=2 shiftwidth=2 softtabstop=2
+augroup END
+
+" Restore cursor position
+autocmd BufReadPost *
+  \ if line("'\"") > 1 && line("'\"") <= line("$") |
+  \   exe "normal! g`\"" |
+  \ endif
+
+" use ft-syntax-omni if no omnifunc is defined
+if exists("+omnifunc")
+  autocmd Filetype *
+        \	if &omnifunc == "" |
+        \		setlocal omnifunc=syntaxcomplete#Complete |
+        \	endif
+endif
+
+""" Plugin settings
+
+" setup omnicomplete for ruby/rails
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_classes_in_global = 1
+let g:rubycomplete_rails = 1
+
+" rails.vim settings
+"
+" open the 'alternate' (test) file in a split window
+noremap <leader>as :AS<CR>
+" open the 'alternate' (test) file in a vertical split window
+noremap <leader>av :AV<CR>
+
+" Edit or view files in same directory as current file
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
+noremap <leader>e :edit %%
+
+" Map keys to go to specific files
+noremap <leader>gr :topleft :split config/routes.rb<cr>
+function! ShowRoutes()
+  " Requires 'scratch' plugin
+  :topleft 100 :split __Routes__
+  " Make sure Vim doesn't write __Routes__ as a file
+  :set buftype=nofile
+  " Delete everything
+  :normal 1GdG
+  " Put routes output in buffer
+  :0r! rake -s routes
+  " Size window to number of lines (1 plus rake output length)
+  :exec ":normal " . line("$") . _ "
+  " Move cursor to bottom
+  :normal 1GG
+  " Delete empty trailing line
+  :normal dd
+endfunction
+noremap <leader>gR :call ShowRoutes()<cr>
+noremap <leader>gv :CommandTFlush<cr>\|:CommandT app/views<cr>
+noremap <leader>gc :CommandTFlush<cr>\|:CommandT app/controllers<cr>
+noremap <leader>gm :CommandTFlush<cr>\|:CommandT app/models<cr>
+noremap <leader>gh :CommandTFlush<cr>\|:CommandT app/helpers<cr>
+noremap <leader>gl :CommandTFlush<cr>\|:CommandT lib<cr>
+noremap <leader>gp :CommandTFlush<cr>\|:CommandT public<cr>
+noremap <leader>gs :CommandTFlush<cr>\|:CommandT public/stylesheets/sass<cr>
+noremap <leader>gf :CommandTFlush<cr>\|:CommandT features<cr>
+noremap <leader>gg :topleft 100 :split Gemfile<cr>
+
+" right now I like <leader>t, though I may change my mind...
+"map <leader>f :CommandTFlush<cr>\|:CommandT<cr>
+noremap <leader>F :CommandTFlush<cr>\|:CommandT %%<cr>
+
+" make command-t in ~/ or / faster
+let g:CommandTMaxFiles = 5000
+
+" Sets whether or not to pre-highlight the first match when completeopt has
+" the popup menu enabled and the 'longest' option as well. When enabled, <tab>
+" will kick off completion and pre-select the first entry in the popup menu,
+" allowing you to simply hit <enter> to use it.
+let g:SuperTabLongestHighlight = 1
+
+" When enabled and 'longest' is in your |completeopt| setting, supertab will
+" provide an enhanced longest match support where typing one or more letters
+" and hitting tab again while in a completion mode will complete the longest
+" common match using the new text in the buffer.
+let g:SuperTabLongestEnhanced = 1
+
+" Split the CoffeeCompile buffer vertically by default.
+let coffee_compile_vert = 1
+
+" This option defines which set of symbols and dividers you want to use. There
+" are currently three available options: "compatible", "unicode" and "fancy".
+"
+"     TYPE           DESCRIPTION
+"     compatible     Doesn't use any special characters.
+"     unicode        Simulates icons and arrows using similar unicode glyphs.
+"     fancy          Custom icons and arrows. Requires a patched font.
+let g:Powerline_symbols = "fancy"
+
+" needed for textobj-user & textobj-rubyblock
+runtime macros/matchit.vim
+
+" use the base cucumber executable for vim-vroom
+let g:vroom_cucumber_path = 'cucumber '

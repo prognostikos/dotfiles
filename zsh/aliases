@@ -1,0 +1,2 @@
+alias ls="ls -F"
+alias vdiff="git diff|vimdiff -R -"

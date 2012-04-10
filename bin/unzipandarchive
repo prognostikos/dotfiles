@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+for file in `ls *.zip`
+do
+  dir_name=`echo $file|sed -E 's/(.+)\.zip$/\1/'`
+  if ! [[ -d $dir_name ]]
+  then
+    unzip $file
+    new_dir=`echo $dir_name|sed -E 's/^peepcode-(.+)/\1/'` 
+    mv $dir_name $new_dir
+  fi
+  mv $file zips/.
+done

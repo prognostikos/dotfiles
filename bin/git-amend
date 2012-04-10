@@ -1,0 +1,7 @@
+#!/bin/sh
+#
+# Use the last commit message and amend your stuffs.
+#
+# Credit: @holman
+
+git commit --amend -C HEAD

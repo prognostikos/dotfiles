@@ -1,0 +1,31 @@
+[user]
+    name = Matt Rohrer
+    email = matt@prognostikos.com
+[core]
+#	autocrlf = true
+[alias]
+    co = checkout
+    ci = commit
+    st = status
+    br = branch
+    hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+    type = cat-file -t
+    dump = cat-file -p
+    unstage = reset HEAD
+    uncommit = reset --soft HEAD^
+# some goodies from http://yanpritzker.com/git-book/
+[color]
+    diff = auto
+    status = auto
+    branch = auto
+    interactive = auto
+    ui = auto
+[merge]
+    tool = vimdiff
+[core]
+    excludesfile = /Users/rohrer/.gitignore
+[gc]
+    auto=1
+[merge]
+    summary=true
+

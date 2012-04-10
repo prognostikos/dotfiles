@@ -1,0 +1,87 @@
+export PATH="$HOME/bin:$PATH"
+export NODE_PATH=/usr/local/lib/node_modules
+
+if [[ -d $HOME/.rbenv ]]; then
+  export PATH="$HOME/.rbenv/bin:$PATH"
+  eval "$(rbenv init -)"
+fi
+
+# If not running interactively, don't do anything below here
+[ -z "$PS1" ] && return
+
+# don't put duplicate lines in the history. See bash(1) for more options
+# ... or force ignoredups and ignorespace
+HISTCONTROL=ignoredups:ignorespace
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+alias ls="ls -F"
+alias vdiff="git diff|vimdiff -R -"
+alias b='bundle exec '
+alias r='rails '
+alias nmp='npm '
+alias gs='git status '
+alias ga='git add '
+alias gap='git add --patch'
+alias gb='git branch '
+alias gc='git commit '
+alias gd='git diff '
+alias gdc='git diff --cached '
+alias go='git checkout '
+alias gl='git log --oneline --decorate '
+alias got='git '
+alias get='git '
+
+fstr() { find "${2:-.}" -type f -exec egrep "$1" {} /dev/null \;|grep -v .git; }
+fistr() { find "${2:-.}" -type f -exec egrep -i "$1" {} /dev/null \;|grep -v .git; }
+
+export EDITOR=vim
+export LANG=en_US.UTF-8
+export CLICOLOR=true
+export MANPAGER="less -X"
+export CLASSPATH="$CLASSPATH:~/javaclasses:."
+export GIT_PS1_SHOWDIRTYSTATE=true
+export GIT_PS1_SHOWUNTRACKEDFILES=true
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if [ -d /etc/bash_completion.d ] && ! shopt -oq posix; then
+  . /etc/bash_completion.d/git
+elif [ -f `brew --prefix`/etc/bash_completion ]; then
+  . `brew --prefix`/etc/bash_completion
+else
+  # Git settings
+  git_completion=/usr/local/etc/bash_completion.d/git-completion.bash
+
+  # If there's no global version look for a local version
+  if [[ ! -e $git_completion ]]; then 
+    git_completion=~/.git-completion.bash
+  fi
+
+  [ -f $git_completion ] && . $git_completion
+fi
+
+# setup completion for tmuxinator
+if [[ -s $HOME/.tmuxinator/scripts/tmuxinator ]]; then
+  source $HOME/.tmuxinator/scripts/tmuxinator
+  # setup tmuxinator_completion
+  tmuxinator_completion=`gem contents tmuxinator|grep completion`
+  [[ -s $tmuxinator_completion ]] && source $tmuxinator_completion
+fi
+
+# Show branch in status line
+if [[ -n $SSH_CLIENT ]]; then
+  export PS1='\e]2;\h\a\h:\w$(__git_ps1 " (%s)")\n\$ '
+else
+  export PS1='\e]2;\w\a\w$(__git_ps1 " (%s)")\n\$ '
+fi

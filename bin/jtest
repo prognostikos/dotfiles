@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+#
+# Very simple compiler & test runner for small java programs.
+#
+# Intended to be used with vim's makeprg and will be called with the full
+# name/path of the current filename - i.e. `:make %`
+#
+# We extract the class name and if it's not a test class we find the
+# corresponding test class (assumming all test classes are named in the form
+# SomeClassTest and are in the same directory).
+#
+# Obviously it would be better to use ant or maven for a real project...but for
+# small school assignments this is just fine.
+#
+
+export CLASSPATH=$CLASSPATH:$HOME/.javaclasses/junit-4.10.jar:.
+
+if [[ ! -z $@ ]]; then
+  # get SomeClass.java
+  file=${@##*/}
+  # get SomeClass
+  classname=${file%%.*}
+  # set SomeClassTest if necessary
+  [[ 'Test' != ${classname:(-4)} ]] && classname=$classname"Test" 
+fi
+
+javac *.java && java org.junit.runner.JUnitCore $classname
+

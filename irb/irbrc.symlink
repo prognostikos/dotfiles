@@ -1,0 +1,5 @@
+require 'rubygems'
+require 'hirb'
+require 'interactive_editor'
+
+Hirb.enable

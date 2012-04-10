@@ -1,0 +1,7 @@
+Write an apple script or automator script or shell script for on train internet:
+
+    Connects to network via bluetooth
+    Turns off image loading in chrome
+    Pauses dropbox syncing
+
+    And reverses/toggles the above changes

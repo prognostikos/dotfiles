@@ -1,0 +1,8 @@
+windows:
+  - name: logs
+    splits:
+      - cmd: tail -f log/test.log
+      - cmd: tail -f log/development.log
+        width: 50
+      - cmd: rails c
+        height: 50

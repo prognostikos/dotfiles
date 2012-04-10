@@ -1,0 +1,3 @@
+#!/bin/sh
+[[ -z $@ ]] && cmd='-c :CommandT'
+exec mvim -v $cmd $@

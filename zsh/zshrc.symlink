@@ -1,0 +1,41 @@
+#
+# Starting points: https://github.com/topfunky/zsh-simple
+#                  https://github.com/holman/dotfiles
+#
+
+# shortcut to this dotfiles path is $ZSH
+export ZSH=$HOME/.dotfiles
+
+# pull in config files
+for config_file ($ZSH/**/*.zsh) source $config_file
+
+# pull in all aliases
+for aliases_file ($ZSH/**/aliases) source $aliases_file
+
+# pull in a local file for secrets not in repo
+[[ -a ~/.local-zshrc ]] && source ~/.local-zshrc
+
+## zsh-specific config ##
+
+# Act like emacs even though Vim is my editor
+bindkey -e
+
+# Always pushd when changing directory
+setopt auto_pushd
+
+# set up bash-style backward kill
+autoload -U select-word-style
+select-word-style bash
+
+# use C-s for opening in vertical splits w/command-t, not capturing output
+stty -ixon
+
+## /zsh-specific config ##
+
+# Turn on completions
+autoload -U compinit
+compinit
+
+# pull in all completion.sh files
+for completion_file ($ZSH/**/completion.sh) source $completion_file
+
