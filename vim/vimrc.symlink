@@ -9,9 +9,8 @@ set fileencoding=utf-8
 set spelllang=en_us
 
 " autoloading
-if !exists("g:loaded_pathogen")
-  call pathogen#infect()
-endif
+runtime bundle/vim-pathogen/autoload/pathogen.vim
+call pathogen#infect()
 
 " Enable filetype detection
 filetype plugin indent on
