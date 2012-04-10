@@ -51,37 +51,3 @@ export MANPAGER="less -X"
 export CLASSPATH="$CLASSPATH:~/javaclasses:."
 export GIT_PS1_SHOWDIRTYSTATE=true
 export GIT_PS1_SHOWUNTRACKEDFILES=true
-
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if [ -d /etc/bash_completion.d ] && ! shopt -oq posix; then
-  . /etc/bash_completion.d/git
-elif [ -f `brew --prefix`/etc/bash_completion ]; then
-  . `brew --prefix`/etc/bash_completion
-else
-  # Git settings
-  git_completion=/usr/local/etc/bash_completion.d/git-completion.bash
-
-  # If there's no global version look for a local version
-  if [[ ! -e $git_completion ]]; then 
-    git_completion=~/.git-completion.bash
-  fi
-
-  [ -f $git_completion ] && . $git_completion
-fi
-
-# setup completion for tmuxinator
-if [[ -s $HOME/.tmuxinator/scripts/tmuxinator ]]; then
-  source $HOME/.tmuxinator/scripts/tmuxinator
-  # setup tmuxinator_completion
-  tmuxinator_completion=`gem contents tmuxinator|grep completion`
-  [[ -s $tmuxinator_completion ]] && source $tmuxinator_completion
-fi
-
-# Show branch in status line
-if [[ -n $SSH_CLIENT ]]; then
-  export PS1='\e]2;\h\a\h:\w$(__git_ps1 " (%s)")\n\$ '
-else
-  export PS1='\e]2;\w\a\w$(__git_ps1 " (%s)")\n\$ '
-fi
