@@ -2,8 +2,8 @@ windows:
   - name: editor
     splits:
       - cmd: $EDITOR
-      - cmd: guard
+      - cmd: simple_prompt; clear; guard
         width: 20
-      - cmd: irb
+      - cmd: simple_prompt; clear; irb
         height: 20
         target: bottom-right
