@@ -71,3 +71,6 @@
 [submodule "vim/vim.symlink/bundle/vim-vroom"]
 	path = vim/vim.symlink/bundle/vim-vroom
 	url = https://github.com/skalnik/vim-vroom.git
+[submodule "vim/vim.symlink/bundle/vim-qargs"]
+	path = vim/vim.symlink/bundle/vim-qargs
+	url = https://github.com/nelstrom/vim-qargs.git
