@@ -118,6 +118,9 @@ set shell=/bin/bash
 " show indentation level on new lines
 set list listchars=tab:»-,trail:·,extends:»,precedes:«
 
+" share the unnamed paste buffer with the system clipboard
+set clipboard=unnamed
+
 """ Custom mappings
 
 " prefer , rather than default \
