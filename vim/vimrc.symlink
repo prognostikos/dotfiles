@@ -105,7 +105,7 @@ set winminheight=5
 set winheight=999
 
 " use ack instead of grep
-set grepprg=ack\ --column\ --ignore-case
+set grepprg=ack\ --column\ --ignore-case\ --ignore-dir=vendor/ruby
 set grepformat=%f:%l:%c:%m
 
 " eliminate clearing of terminal when suspending/quiting
