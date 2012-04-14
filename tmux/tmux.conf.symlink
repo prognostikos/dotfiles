@@ -23,6 +23,9 @@ set -g window-status-bell-fg magenta
 # use wrapper for access to pbcopy & pbpaste
 set-option -g default-command "reattach-to-user-namespace -l $SHELL"
 
+# disable default binding for rotate-window
+unbind-key C-o
+
 # NOTE: the below values are for solarized 16-color not 256...
 #
 # SOLARIZED XTERM  TERMCOL  
