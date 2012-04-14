@@ -3,3 +3,4 @@ tags
 *.class
 .rbenv-version
 vendor/ruby/**
+matts_debug_initializer.rb
