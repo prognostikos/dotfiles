@@ -6,6 +6,7 @@ unbind [
 
 # behave (somewhat) like vi
 bind Escape copy-mode
+bind C-c copy-mode
 setw -g mode-keys vi
 
 # use bin/remaining_charge to display remaining battery & power source
