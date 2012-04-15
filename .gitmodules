@@ -75,3 +75,6 @@
 	path = vim/vim.symlink/bundle/vimux
 	url = https://github.com/benmills/vimux.git
 	ignore = dirty
+[submodule "vim/vim.symlink/bundle/vim-vroom"]
+	path = vim/vim.symlink/bundle/vim-vroom
+	url = git@github.com:prognostikos/vim-vroom.git
