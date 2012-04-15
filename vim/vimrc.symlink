@@ -327,3 +327,8 @@ runtime macros/matchit.vim
 
 " use the base cucumber executable for vim-vroom
 let g:vroom_cucumber_path = 'cucumber '
+let g:vroom_use_vimux = 1
+
+" Vimux should split horizontally, but only if there isn't already a split
+let g:VimuxOrientation = "h"
+let g:VimuxUseNearestPane = 1
