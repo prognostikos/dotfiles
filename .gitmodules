@@ -78,3 +78,6 @@
 [submodule "vim/vim.symlink/bundle/vim-vroom"]
 	path = vim/vim.symlink/bundle/vim-vroom
 	url = git@github.com:prognostikos/vim-vroom.git
+[submodule "vim/vim.symlink/bundle/vim-mustache"]
+	path = vim/vim.symlink/bundle/vim-mustache
+	url = https://github.com/juvenn/mustache.vim.git
