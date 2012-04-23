@@ -2,8 +2,8 @@ windows:
   - name: editor
     splits:
       - cmd: $EDITOR
-      - cmd: simple_prompt; clear; guard
+      - cmd: simple_prompt; clear
         width: 20
-      - cmd: simple_prompt; clear; irb
-        height: 20
+      - cmd: simple_prompt; clear; spork
+        height: 10
         target: bottom-right
