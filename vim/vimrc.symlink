@@ -121,6 +121,9 @@ set list listchars=tab:»-,trail:·,extends:»,precedes:«
 " share the unnamed paste buffer with the system clipboard
 set clipboard=unnamed
 
+" it's the new standard
+set tabstop=2 shiftwidth=2 softtabstop=2
+
 """ Custom mappings
 
 " prefer , rather than default \
