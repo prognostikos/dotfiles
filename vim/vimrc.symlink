@@ -332,5 +332,10 @@ let g:vroom_cucumber_path = 'cucumber '
 let g:vroom_use_vimux = 1
 
 " Vimux should split horizontally, but only if there isn't already a split
-let g:VimuxOrientation = "h"
+" and only if there is room to split to the side and have two windows open.
+if (&columns > (&winwidth * 2) + (&winwidth * 0.2))
+    let g:VimuxOrientation = "h"
+endif
+
+" Vimux should only open a pane when there isn't one already
 let g:VimuxUseNearestPane = 1
