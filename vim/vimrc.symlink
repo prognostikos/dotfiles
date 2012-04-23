@@ -183,7 +183,7 @@ nnoremap <C-n> :cn<CR>
 nnoremap <C-p> :cp<CR>
 
 " forget about reaching for ESC
-inoremap <esc> <nop>
+"inoremap <esc> <nop>
 inoremap jk <esc>
 
 """ Autocomd/Filetype-specific settings
@@ -208,7 +208,6 @@ augroup END
 augroup rb
     autocmd!
     autocmd BufRead,BufNewFile Vagrantfile,Rakefile,Guardfile setfiletype ruby
-    autocmd FileType ruby setlocal tabstop=2 shiftwidth=2 softtabstop=2
     autocmd FileType ruby setlocal makeprg=rspec\ spec
 augroup END
 
