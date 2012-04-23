@@ -228,6 +228,10 @@ augroup js
     autocmd BufRead,BufNewFile *.json setfiletype javascript
 augroup END
 
+augroup mustache
+    autocmd!
+    autocmd BufRead,BufNewFile *.html setfiletype mustache
+augroup END
 
 " Restore cursor position
 autocmd BufReadPost *
