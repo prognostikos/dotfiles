@@ -228,9 +228,6 @@ augroup js
     autocmd BufRead,BufNewFile *.json setfiletype javascript
 augroup END
 
-augroup yaml
-    autocmd FileType yaml setlocal tabstop=2 shiftwidth=2 softtabstop=2
-augroup END
 
 " Restore cursor position
 autocmd BufReadPost *
