@@ -17,9 +17,6 @@ filetype plugin indent on
 
 " coding defaults (may be overridden by plugins/filetypes below)
 syntax on
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
 set expandtab
 set autoindent
 set smartindent
@@ -287,14 +284,6 @@ function! ShowRoutes()
   :normal dd
 endfunction
 noremap <leader>gR :call ShowRoutes()<cr>
-noremap <leader>gv :CommandTFlush<cr>\|:CommandT app/views<cr>
-noremap <leader>gc :CommandTFlush<cr>\|:CommandT app/controllers<cr>
-noremap <leader>gm :CommandTFlush<cr>\|:CommandT app/models<cr>
-noremap <leader>gh :CommandTFlush<cr>\|:CommandT app/helpers<cr>
-noremap <leader>gl :CommandTFlush<cr>\|:CommandT lib<cr>
-noremap <leader>gp :CommandTFlush<cr>\|:CommandT public<cr>
-noremap <leader>gs :CommandTFlush<cr>\|:CommandT public/stylesheets/sass<cr>
-noremap <leader>gf :CommandTFlush<cr>\|:CommandT features<cr>
 noremap <leader>gg :topleft 100 :split Gemfile<cr>
 
 " right now I like <leader>t, though I may change my mind...
