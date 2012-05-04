@@ -283,7 +283,7 @@ function! ShowRoutes()
   " Delete empty trailing line
   :normal dd
 endfunction
-noremap <leader>gR :call ShowRoutes()<cr>
+noremap <leader>gR :silent call ShowRoutes()<cr>
 noremap <leader>gg :topleft 100 :split Gemfile<cr>
 
 " right now I like <leader>t, though I may change my mind...
