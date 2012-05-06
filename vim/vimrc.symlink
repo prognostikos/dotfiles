@@ -240,9 +240,9 @@ autocmd BufReadPost *
 " use ft-syntax-omni if no omnifunc is defined
 if exists("+omnifunc")
   autocmd Filetype *
-        \	if &omnifunc == "" |
-        \		setlocal omnifunc=syntaxcomplete#Complete |
-        \	endif
+        \ if &omnifunc == "" |
+        \   setlocal omnifunc=syntaxcomplete#Complete |
+        \ endif
 endif
 
 """ Plugin settings
@@ -283,10 +283,6 @@ function! ShowRoutes()
 endfunction
 noremap <leader>gR :silent call ShowRoutes()<cr>
 noremap <leader>gg :topleft 100 :split Gemfile<cr>
-
-" right now I like <leader>t, though I may change my mind...
-"map <leader>f :CommandTFlush<cr>\|:CommandT<cr>
-noremap <leader>F :CommandTFlush<cr>\|:CommandT %%<cr>
 
 " Sets whether or not to pre-highlight the first match when completeopt has
 " the popup menu enabled and the 'longest' option as well. When enabled, <tab>
