@@ -2,7 +2,8 @@
     name = Matt Rohrer
     email = matt@prognostikos.com
 [core]
-#	autocrlf = true
+#    autocrlf = true
+    excludesfile = /Users/rohrer/.gitignore
 [alias]
     co = checkout
     ci = commit
@@ -22,10 +23,8 @@
     ui = auto
 [merge]
     tool = vimdiff
-[core]
-    excludesfile = /Users/rohrer/.gitignore
+    summary = true
 [gc]
-    auto=1
-[merge]
-    summary=true
-
+    auto = 1
+[branch]
+    autosetuprebase = always
