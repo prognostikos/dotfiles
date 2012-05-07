@@ -9,3 +9,4 @@ export MANPAGER="less -X"
 export CLASSPATH=$CLASSPATH:~/javaclasses:.
 export GIT_PS1_SHOWDIRTYSTATE=true
 export GIT_PS1_SHOWUNTRACKEDFILES=true
+export JRUBY_OPTS=--1.9
