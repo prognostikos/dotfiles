@@ -15,8 +15,6 @@ for aliases_file ($ZSH/**/aliases) source $aliases_file
 # pull in a local file for secrets not in repo
 [[ -a ~/.local-zshrc ]] && source ~/.local-zshrc
 
-## zsh-specific config ##
-
 # Act like emacs even though Vim is my editor
 bindkey -e
 
@@ -29,8 +27,6 @@ select-word-style bash
 
 # use C-s for opening in vertical splits w/command-t, not capturing output
 stty -ixon
-
-## /zsh-specific config ##
 
 # Turn on completions
 autoload -U compinit
