@@ -176,10 +176,6 @@ nnoremap <leader>vp `[v`]
 nnoremap <C-n> :cn<CR>
 nnoremap <C-p> :cp<CR>
 
-" forget about reaching for ESC
-"inoremap <esc> <nop>
-inoremap jk <esc>
-
 " ctrlp won
 nnoremap <silent> <Leader>t :CtrlP<CR>
 nnoremap <silent> <Leader>b :CtrlPBuffer<CR>
