@@ -38,3 +38,8 @@ pretty_git_log() {
         less -FXRS
 }
 
+# don't use git ls-files when tab-completing in a git repo
+__git_files() {
+    _wanted files expl 'local files' _files
+}
+

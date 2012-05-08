@@ -38,6 +38,7 @@ compinit
 
 # Speed up path completion
 zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' use-cache on
 
 # pull in all completion.sh files
 for completion_file ($ZSH/**/completion.sh) source $completion_file
