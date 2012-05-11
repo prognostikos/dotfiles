@@ -24,5 +24,5 @@ if [[ ! -z $@ ]]; then
   [[ 'Test' != ${classname:(-4)} ]] && classname=$classname"Test" 
 fi
 
-javac *.java && java org.junit.runner.JUnitCore $classname
+javac *.java && time java org.junit.runner.JUnitCore $classname
 
