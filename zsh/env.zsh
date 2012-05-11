@@ -2,7 +2,7 @@ export PATH=$HOME/.rbenv/bin:$HOME/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/s
 eval "$(rbenv init -)"
 export PATH=./bin:$HOME/.dotfiles/bin:$PATH
 
-export EDITOR=$HOME/bin/vim
+export EDITOR=vim
 export LANG=en_US.UTF-8
 export CLICOLOR=true
 export MANPAGER="less -X"
