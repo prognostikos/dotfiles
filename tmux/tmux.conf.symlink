@@ -37,6 +37,10 @@ bind j select-pane -D
 bind k select-pane -U
 bind l select-pane -R
 
+# titlebar 'hostname [session-name window-index:window-name]'
+set-option -g set-titles on
+set-option -g set-titles-string '#h [#S #I:#W]'
+
 # NOTE: the below values are for solarized 16-color not 256...
 #
 # SOLARIZED XTERM  TERMCOL  
