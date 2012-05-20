@@ -180,6 +180,9 @@ nnoremap <C-p> :cp<CR>
 nnoremap <silent> <Leader>t :CtrlP<CR>
 nnoremap <silent> <Leader>b :CtrlPBuffer<CR>
 
+" dts inserts the current timestamp in insert mode
+iab <expr> dts strftime("%d-%b %Y %H:%M")
+
 """ Autocomd/Filetype-specific settings
 
 augroup textmarkdown
