@@ -32,3 +32,5 @@
 	autocorrect = 1
 [mergetool]
 	keepBackup = true
+[github]
+	user = prognostikos
