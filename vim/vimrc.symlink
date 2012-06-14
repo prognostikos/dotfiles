@@ -230,6 +230,11 @@ augroup mustache
     autocmd BufRead,BufNewFile *.html setfiletype mustache
 augroup END
 
+augroup gitconfig
+    autocmd!
+    autocmd BufRead,BufNewFile .gitconfig,gitconfig.symlink setlocal noexpandtab tabstop=8 shiftwidth=8 softtabstop=8
+augroup END
+
 " Restore cursor position
 autocmd BufReadPost *
   \ if line("'\"") > 1 && line("'\"") <= line("$") |
