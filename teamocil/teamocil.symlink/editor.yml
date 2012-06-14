@@ -3,7 +3,7 @@ windows:
     splits:
       - cmd: $EDITOR
       - cmd: simple_prompt; clear
-        width: 20
+        height: 30
       - cmd: simple_prompt; clear; spork
-        height: 10
+        width: 40
         target: bottom-right
