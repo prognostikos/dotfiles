@@ -340,6 +340,12 @@ let g:VimuxHeight = "30"
 " Vimux should only open a pane when there isn't one already
 let g:VimuxUseNearestPane = 1
 
+" Prompt for a command to run
+map <Leader>rp :VimuxPromptCommand<CR>
+
+" Run last command executed by VimuxRunCommand
+map <Leader>rl :VimuxRunLastCommand<CR>
+
 " Ctrl-P
 let g:ctrlp_map = '<c-t>'
 " I know where I want to search!
