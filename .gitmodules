@@ -77,9 +77,9 @@
 [submodule "vim/vim.symlink/bundle/vim-ctrlp"]
 	path = vim/vim.symlink/bundle/vim-ctrlp
 	url = https://github.com/kien/ctrlp.vim.git
-[submodule "vim/vim.symlink/bundle/vim-vroom"]
-	path = vim/vim.symlink/bundle/vim-vroom
-	url = https://github.com/skalnik/vim-vroom.git
 [submodule "vim/vim.symlink/bundle/vim-bundler"]
 	path = vim/vim.symlink/bundle/vim-bundler
 	url = git://github.com/tpope/vim-bundler.git
+[submodule "vim/vim.symlink/bundle/vim-turbux"]
+	path = vim/vim.symlink/bundle/vim-turbux
+	url = git://github.com/jgdavey/vim-turbux.git

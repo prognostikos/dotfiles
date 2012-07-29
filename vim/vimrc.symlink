@@ -315,12 +315,6 @@ let g:Powerline_symbols = "fancy"
 " needed for textobj-user & textobj-rubyblock
 runtime macros/matchit.vim
 
-" use the base cucumber executable for vim-vroom
-let g:vroom_cucumber_path = 'cucumber '
-let g:vroom_use_vimux = 1
-let g:vroom_use_bundle_exec = 0
-let g:vroom_write_all = 1
-
 " Vimux should split horizontally, but only if there isn't already a split
 " and only if there is room to split to the side and have two windows open.
 " if (&columns > (&winwidth * 2) + (&winwidth * 0.2))
@@ -337,3 +331,8 @@ let g:ctrlp_map = '<c-t>'
 " I know where I want to search!
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_max_files = 5000
+
+" Turbux
+let g:no_turbux_mappings = 1
+map <leader>rt <Plug>SendTestToTmux
+map <leader>rT <Plug>SendFocusedTestToTmux
