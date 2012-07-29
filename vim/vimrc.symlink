@@ -334,6 +334,9 @@ runtime macros/matchit.vim
 let g:VimuxOrientation = "v"
 " endif
 
+" The percent of the screen the split pane Vimux will spawn should take up.
+let g:VimuxHeight = "30"
+
 " Vimux should only open a pane when there isn't one already
 let g:VimuxUseNearestPane = 1
 
