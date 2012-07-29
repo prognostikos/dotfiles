@@ -187,10 +187,13 @@ nnoremap <silent> <Leader>b :CtrlPBuffer<CR>
 iab <expr> dts strftime("%d-%b %Y %H:%M")
 
 function! Cleanup()
-  normal gg<C-v>G=
-  retab <CR>
-  %s/\s\+$//g <CR>
-  %!sed '/./,/^$/!d' <CR>
+  :retab
+  " use my indentation setup on the whole file
+  :normal gg=G
+  " strip trailing whitespace
+  :%s/\s\+$//e
+  " remove any repeated blank lines
+  :%s/\n\{3,}/\r\r/e
 endfunction
 noremap <leader>c :silent call Cleanup()<CR>
 
