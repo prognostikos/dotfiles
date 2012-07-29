@@ -118,6 +118,9 @@ set clipboard=unnamed
 " it's the new standard
 set tabstop=2 shiftwidth=2 softtabstop=2
 
+" this makes more sense
+set splitright
+
 """ Custom mappings
 
 " prefer , rather than default \
