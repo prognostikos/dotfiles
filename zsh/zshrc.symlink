@@ -28,7 +28,8 @@ select-word-style bash
 # use C-s for opening in vertical splits w/command-t, not capturing output
 stty -ixon
 
-# Turn on completions
+# Turn on completions (`brew install zsh-completions` for even more)
+fpath=(/usr/local/share/zsh-completions /usr/share/zsh/site-functions /usr/share/zsh/4.3.11/functions)
 autoload -U compinit
 compinit
 
