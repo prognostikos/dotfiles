@@ -197,60 +197,60 @@ noremap <leader>c :silent call Cleanup()<CR>
 """ Autocomd/Filetype-specific settings
 
 augroup textmarkdown
-    autocmd!
-    autocmd BufRead,BufNewFile *.md,*.mkd,*.md.txt setfiletype markdown
-    autocmd BufRead,BufNewFile *.txt setfiletype text
-    autocmd FileType text,markdown setlocal textwidth=78 spell wrap wrapmargin=2 linebreak autoindent
+  autocmd!
+  autocmd BufRead,BufNewFile *.md,*.mkd,*.md.txt setfiletype markdown
+  autocmd BufRead,BufNewFile *.txt setfiletype text
+  autocmd FileType text,markdown setlocal textwidth=78 spell wrap wrapmargin=2 linebreak autoindent
 augroup END
 
 augroup help
-    autocmd!
-    autocmd FileType help setlocal nospell
+  autocmd!
+  autocmd FileType help setlocal nospell
 augroup END
 
 augroup makefile
-    autocmd!
-    autocmd FileType make setlocal noexpandtab tabstop=8 shiftwidth=8 softtabstop=8
+  autocmd!
+  autocmd FileType make setlocal noexpandtab tabstop=8 shiftwidth=8 softtabstop=8
 augroup END
 
 augroup rb
-    autocmd!
-    autocmd BufRead,BufNewFile Vagrantfile,Rakefile,Guardfile,Cheffile setfiletype ruby
-    autocmd FileType ruby setlocal makeprg=rspec\ spec
+  autocmd!
+  autocmd BufRead,BufNewFile Vagrantfile,Rakefile,Guardfile,Cheffile setfiletype ruby
+  autocmd FileType ruby setlocal makeprg=rspec\ spec
 augroup END
 
 augroup java
-    autocmd!
-    " use ~/bin/jtest for small java programs
-    autocmd BufRead,BufNewFile *.java set makeprg=jtest\ %
+  autocmd!
+  " use ~/bin/jtest for small java programs
+  autocmd BufRead,BufNewFile *.java set makeprg=jtest\ %
 augroup END
 
 augroup cccc
-    autocmd!
-    " a very simplified make for small c programs
-    autocmd BufRead,BufNewFile *.h,*.c set makeprg=make\ %:r
+  autocmd!
+  " a very simplified make for small c programs
+  autocmd BufRead,BufNewFile *.h,*.c set makeprg=make\ %:r
 augroup END
 
 augroup js
-    autocmd!
-    autocmd BufRead,BufNewFile *.json setfiletype javascript
+  autocmd!
+  autocmd BufRead,BufNewFile *.json setfiletype javascript
 augroup END
 
 augroup mustache
-    autocmd!
-    autocmd BufRead,BufNewFile *.html setfiletype mustache
+  autocmd!
+  autocmd BufRead,BufNewFile *.html setfiletype mustache
 augroup END
 
 augroup gitconfig
-    autocmd!
-    autocmd BufRead,BufNewFile .gitconfig,gitconfig.symlink setlocal noexpandtab tabstop=8 shiftwidth=8 softtabstop=8
+  autocmd!
+  autocmd BufRead,BufNewFile .gitconfig,gitconfig.symlink setlocal noexpandtab tabstop=8 shiftwidth=8 softtabstop=8
 augroup END
 
 " Restore cursor position
 autocmd BufReadPost *
-  \ if line("'\"") > 1 && line("'\"") <= line("$") |
-  \   exe "normal! g`\"" |
-  \ endif
+      \ if line("'\"") > 1 && line("'\"") <= line("$") |
+      \   exe "normal! g`\"" |
+      \ endif
 
 " use ft-syntax-omni if no omnifunc is defined
 if exists("+omnifunc")
@@ -331,7 +331,7 @@ runtime macros/matchit.vim
 " if (&columns > (&winwidth * 2) + (&winwidth * 0.2))
 "   let g:VimuxOrientation = "h"
 " else
-  let g:VimuxOrientation = "v"
+let g:VimuxOrientation = "v"
 " endif
 
 " Vimux should only open a pane when there isn't one already
