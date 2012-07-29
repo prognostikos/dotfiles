@@ -186,6 +186,14 @@ nnoremap <silent> <Leader>b :CtrlPBuffer<CR>
 " dts inserts the current timestamp in insert mode
 iab <expr> dts strftime("%d-%b %Y %H:%M")
 
+function! Cleanup()
+  normal gg<C-v>G=
+  retab <CR>
+  %s/\s\+$//g <CR>
+  %!sed '/./,/^$/!d' <CR>
+endfunction
+noremap <leader>c :silent call Cleanup()<CR>
+
 """ Autocomd/Filetype-specific settings
 
 augroup textmarkdown
