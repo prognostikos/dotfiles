@@ -1,21 +1,14 @@
-local smiley="%(?,%{$fg[cyan]%}☺%{$reset_color%},%{$fg[magenta]%}☹%{$reset_color%})"
+#local smiley=" %(?,%{$fg[cyan]%}☺%{$reset_color%},%{$fg[magenta]%}☹%{$reset_color%})"
 local hostname="%m:"
 local username=''
 
-if [ -z $SSH_TTY ]; then
-  hostname=''
-fi
+[ -z $SSH_TTY ]       && hostname=''
+[ 'rohrer' != $USER ] && username="%n@"
 
-if [ 'rohrer' != $USER ]; then
-  username="%n@"
-fi
+PROMPT='%{$fg[magenta]%}${username}${hostname}%{$fg[blue]%}%.%{$fg[cyan]%}$(git-cwd-info)%{$reset_color%}%# '
 
-fancy_left='%{$fg[cyan]%}${username}${hostname}%~ %{$reset_color%}
-${smiley} %{$reset_color%}'
-fancy_left=$PROMPT
-
-RPROMPT=' %{$fg[magenta]%}$(rbenv version-name)%{$reset_color%} %{$fg[blue]%}$(git-cwd-info)%{$reset_color%}'
-fancy_right=$RPROMPT
+local fancy_left=$PROMPT
+local fancy_right=''
 
 fancy_prompt(){ export PROMPT=$fancy_left; export RPROMPT=$fancy_right}
 simple_prompt(){ export PROMPT='$ '; export RPROMPT='' }
