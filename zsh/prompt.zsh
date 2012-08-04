@@ -1,6 +1,16 @@
 local smiley="%(?,%{$fg[cyan]%}☺%{$reset_color%},%{$fg[magenta]%}☹%{$reset_color%})"
+local hostname="%m:"
+local username=''
 
-PROMPT='%{$fg[cyan]%}%~ %{$reset_color%}
+if [ -z $SSH_TTY ]; then
+  hostname=''
+fi
+
+if [ 'rohrer' != $USER ]; then
+  username="%n@"
+fi
+
+fancy_left='%{$fg[cyan]%}${username}${hostname}%~ %{$reset_color%}
 ${smiley} %{$reset_color%}'
 fancy_left=$PROMPT
 
