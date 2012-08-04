@@ -19,7 +19,8 @@ for aliases_file ($ZSH/**/aliases) source $aliases_file
 bindkey -e
 
 # Always pushd when changing directory
-setopt auto_pushd
+setopt AUTO_PUSHD
+setopt PUSHD_IGNORE_DUPS
 
 # set up bash-style backward kill
 autoload -U select-word-style
