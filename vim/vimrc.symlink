@@ -53,7 +53,9 @@ set wildmenu
 " remove binary files from completion menus
 set wildignore+=*.o,*.obj,.git,*.class,*.png,*.jpg,*.jpeg,*.gif,*.ico,*.pdf,*.doc,*.docx,*.ppt,*.pptx,*.xls,*.xlsx
 set wildignore+=vendor,tmp,log
-set wildignorecase
+if has('wildignorecase')
+  set wildignorecase
+endif
 
 " inserts the longest common text of all matches and display menu even if
 " there's only one match

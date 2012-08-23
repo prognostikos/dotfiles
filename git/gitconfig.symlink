@@ -22,7 +22,7 @@
 	interactive = auto
 	ui = auto
 [merge]
-	tool = /usr/local/bin/vimdiff
+	tool = vimdiff
 	summary = true
 [gc]
 	auto = 1
