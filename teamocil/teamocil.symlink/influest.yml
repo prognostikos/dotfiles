@@ -1,0 +1,30 @@
+session:
+  name: "influest"
+  windows:
+    - name: "dotcom"
+      root: "~/c/influestor/influestor"
+      splits:
+        - cmd: "$EDITOR"
+          focus: true
+        - cmd: "simple_prompt; clear"
+          height: 25
+        - cmd: "simple_prompt; clear; rails c"
+          width: 35
+    - name: "config"
+      root: "~/c/influestor/server-config"
+      splits:
+        - cmd: "$EDITOR"
+          focus: true
+        - cmd: "clear"
+          width: 50
+        - cmd: "clear"
+          height: 50
+        - cmd: "clear"
+          height: 50
+    - name: "xignite"
+      root: "~/c/lib/xignite"
+      splits:
+        - cmd: "$EDITOR"
+          focus: true
+        - cmd: "clear"
+          width: 25
