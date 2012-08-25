@@ -347,7 +347,7 @@ runtime macros/matchit.vim
 
 " Vimux should split horizontally, but only if there isn't already a split
 " and only if there is room to split to the side and have two windows open.
-if (&columns > (&winwidth * 2) + (&winwidth * 0.3))
+if (&columns > (&winwidth * 2) + (&winwidth * 0.25))
   let g:VimuxOrientation = "h"
 else
   let g:VimuxOrientation = "v"
