@@ -123,6 +123,11 @@ set tabstop=2 shiftwidth=2 softtabstop=2
 " this makes more sense
 set splitright
 
+" don't need that ugly toolbar
+if has("gui_running")
+  set guioptions-=T
+endif
+
 """ Custom mappings
 
 " prefer , rather than default \
