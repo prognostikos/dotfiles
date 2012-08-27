@@ -123,9 +123,11 @@ set tabstop=2 shiftwidth=2 softtabstop=2
 " this makes more sense
 set splitright
 
-" don't need that ugly toolbar
 if has("gui_running")
+  " don't need that ugly toolbar
   set guioptions-=T
+  " always show tabs
+  set showtabline=2
 endif
 
 " switch cursor from block in insert mode
