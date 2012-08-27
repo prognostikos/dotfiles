@@ -32,5 +32,10 @@
 	autocorrect = 1
 [mergetool]
 	keepBackup = true
+	prompt = false
 [github]
 	user = prognostikos
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
