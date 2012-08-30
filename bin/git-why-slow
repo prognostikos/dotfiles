@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+function revisions {
+  git rev-list --reverse HEAD
+}
+
+function commit_description {
+  git log --oneline -1 $rev
+}
+
+function run_tests {
+  rspec --no-drb -o /dev/null --fail-fast 2>&1
+  return $?
+}
+
+function test_time {
+  (time -p run_tests) 2>&1 | head -1 | cut -d " " -f 2
+}
+
+for rev in `revisions`
+do
+  echo "`test_time` `commit_description`"
+done
