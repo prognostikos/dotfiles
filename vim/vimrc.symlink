@@ -217,6 +217,10 @@ nnoremap <silent> <Leader>b :CtrlPBuffer<CR>
 iab <expr> dts strftime("%d-%b %Y %H:%M")
 
 function! Cleanup()
+  " save my current context
+  let save_cursor = getpos(".")
+  let old_query   = getreg('/')
+  " use my tab/space setup on the whole file
   :retab
   " use my indentation setup on the whole file
   :normal gg=G
@@ -224,6 +228,9 @@ function! Cleanup()
   :%s/\s\+$//e
   " remove any repeated blank lines
   :%s/\n\{3,}/\r\r/e
+  " restore my original context
+  call setpos('.', save_cursor)
+  call setreg('/', old_query)
 endfunction
 noremap <leader>c :silent call Cleanup()<CR>
 
