@@ -148,6 +148,9 @@ if exists('$ITERM_PROFILE')
   endif
 end
 
+" assume a fast terminal connection
+set ttyfast
+
 """ Custom mappings
 
 " prefer , rather than default \
