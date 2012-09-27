@@ -234,6 +234,8 @@ function! Cleanup()
 endfunction
 noremap <leader>c :silent call Cleanup()<CR>
 
+noremap <leader>cs :SyntasticCheck<CR>
+
 """ Autocomd/Filetype-specific settings
 
 augroup textmarkdown
