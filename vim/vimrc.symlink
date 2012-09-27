@@ -288,6 +288,11 @@ augroup gitconfig
   autocmd BufRead,BufNewFile .gitconfig,gitconfig.symlink setlocal noexpandtab tabstop=8 shiftwidth=8 softtabstop=8
 augroup END
 
+augroup psql
+  autocmd!
+  autocmd BufRead,BufNewFile psql.edit.* setfiletype sql
+augroup END
+
 " Restore cursor position
 autocmd BufReadPost *
       \ if line("'\"") > 1 && line("'\"") <= line("$") |
@@ -407,5 +412,12 @@ map <leader>rT <Plug>SendFocusedTestToTmux
 let g:syntastic_enable_highlighting = 0
 let g:syntastic_auto_loc_list=1
 let g:syntastic_mode_map = { 'mode': 'passive',
-                            \ 'active_filetypes': ['javascript'],
-                            \ 'passive_filetypes': [] }
+      \ 'active_filetypes': ['javascript'],
+      \ 'passive_filetypes': [] }
+
+" SQLComplete
+let g:ftplugin_sql_omni_key = '<Tab>'
+let g:sql_type_default = 'postgresql'
+
+" DBExt
+let g:dbext_default_usermaps = 0
