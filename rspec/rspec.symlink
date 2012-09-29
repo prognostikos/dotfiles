@@ -1,4 +1,3 @@
 --color
 --drb
---format nested
---fail-fast
+--format documentation
