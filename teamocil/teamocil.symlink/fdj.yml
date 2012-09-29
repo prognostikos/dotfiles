@@ -1,0 +1,15 @@
+session:
+  name: "fdj"
+  windows:
+    - name: editor
+      root: "~/c/fdj"
+      splits:
+        - cmd: $EDITOR
+        - cmd: simple_prompt; clear
+          height: 25
+        - cmd: simple_prompt; clear; testacular start
+          width: 50
+          target: bottom-right
+        - cmd: simple_prompt; clear; yeoman server
+          height: 50
+          target: bottom-right
