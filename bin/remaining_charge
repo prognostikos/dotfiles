@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # print the remaining charge on a macbook
 
-pmset -g batt | 
-  tr "\n" ";" | 
-  sed -e "s/^Currently drawing from 'AC Power'/⚡/" \
-      -e "s/Currently drawing from 'Battery Power'/⚛/" | 
+pmset -g batt |
+  tr "\n" ";" |
+  sed -e "s/^Currently drawing from 'AC Power'//" \
+      -e "s/Currently drawing from 'Battery Power'/⚛/" |
   awk '{print $1 " " $3}'|tr -d ";"
