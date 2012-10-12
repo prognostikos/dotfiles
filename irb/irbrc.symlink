@@ -6,9 +6,21 @@ unless defined? ETC_IRBRC_LOADED
   # Activate auto-completion.
   require 'irb/completion'
 
-  require 'hirb'
-  require 'interactive_editor'
+  # Activate history
   require 'irb/ext/save-history'
+
+  # Try to activate the interactive editor
+  begin
+    require 'interactive_editor'
+  rescue LoadError
+  end
+
+  # Try to activate HIRB
+  begin
+    require 'hirb'
+    Hirb.enable
+  rescue LoadError
+  end
 
   # Use the simple prompt if possible.
   IRB.conf[:PROMPT_MODE] = :SIMPLE if IRB.conf[:PROMPT_MODE] == :DEFAULT
