@@ -35,7 +35,7 @@ pretty_git_log() {
         # Line columns up based on } delimiter
         column -s '}' -t |
         # Page only if we need to
-        less -FXRS
+        less -FRS
 }
 
 # don't use git ls-files when tab-completing in a git repo
