@@ -31,7 +31,7 @@
 [help]
 	autocorrect = 1
 [mergetool]
-	keepBackup = true
+	keepBackup = false
 	prompt = false
 [github]
 	user = prognostikos
