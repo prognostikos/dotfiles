@@ -235,7 +235,7 @@ function! Cleanup()
   call setpos('.', save_cursor)
   call setreg('/', old_query)
 endfunction
-noremap <leader>c :silent call Cleanup()<CR>
+noremap <leader>cu :silent call Cleanup()<CR>
 
 noremap <leader>cs :SyntasticCheck<CR>
 
