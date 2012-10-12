@@ -1,0 +1,3 @@
+#!/bin/sh
+[[ -z $@ ]] && cmd='-c :CtrlP'
+exec mvim -v $cmd $@
