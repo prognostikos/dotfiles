@@ -25,7 +25,9 @@ set nowrap
 let loaded_matchparen = 1
 
 " colors
-colorscheme solarized
+" prefer lighter bg
+let g:molokai_original = 1
+colorscheme $VIMCOLORS
 
 " more info
 set number
