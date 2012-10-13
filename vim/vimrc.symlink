@@ -281,6 +281,7 @@ augroup END
 augroup js
   autocmd!
   autocmd BufRead,BufNewFile *.json setfiletype javascript
+  autocmd FileType javascript setlocal omnifunc=jscomplete#CompleteJS
 augroup END
 
 augroup mustache
@@ -426,3 +427,6 @@ let g:sql_type_default = 'postgresql'
 
 " DBExt
 let g:dbext_default_usermaps = 0
+
+" jscomplete
+let g:jscomplete_use = ['dom', 'moz']
