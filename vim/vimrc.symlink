@@ -126,7 +126,7 @@ set tabstop=2 shiftwidth=2 softtabstop=2
 set splitright
 
 " syntax hl can be slowwwww
-set synmaxcol=128
+set synmaxcol=256
 
 if has("gui_running")
   " don't need that ugly toolbar
