@@ -4,6 +4,6 @@ windows:
       - cmd: $EDITOR
       - cmd: simple_prompt; clear
         height: 25
-      - cmd: simple_prompt; clear; spork
-        width: 40
+      - cmd: simple_prompt; clear
+        width: 35
         target: bottom-right
