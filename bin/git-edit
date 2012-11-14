@@ -1,0 +1,4 @@
+#!/bin/bash
+# open all modified files in a series of splits
+
+vim -o $(git status -s|cut -d ' ' -f 3|tr '\n' ' ')
