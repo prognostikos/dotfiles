@@ -20,7 +20,6 @@ set-option -g status-fg colour230
 set -g window-status-current-fg colour136
 set -g window-status-current-bg colour239
 set -g window-status-bell-fg magenta
-set-option -g pane-active-border-bg colour240
 
 # use wrapper for access to pbcopy & pbpaste
 set-option -g default-command "reattach-to-user-namespace -l $SHELL"
