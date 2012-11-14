@@ -41,5 +41,8 @@ zstyle ':completion:*' use-cache on
 # Ignore some files when completing
 fignore=(.o .class .ctxt .obj)
 
+# zle
+autoload -U zsh/zle
+
 # pull in all custom completion.sh files
 for completion_file ($ZSH/**/completion.sh) source $completion_file
