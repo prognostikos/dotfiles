@@ -92,6 +92,7 @@
 [submodule "vim/vim.symlink/bundle/vim-molokai"]
 	path = vim/vim.symlink/bundle/vim-molokai
 	url = git://github.com/tomasr/molokai.git
-[submodule "vim/vim.symlink/bundle/vim-neocomplcache"]
-	path = vim/vim.symlink/bundle/vim-neocomplcache
-	url = git://github.com/Shougo/neocomplcache.git
+[submodule "vim/vim.symlink/bundle/vim-monokai"]
+	path = vim/vim.symlink/bundle/vim-monokai
+	url = git://github.com/rickharris/vim-monokai.git
+	ignore = dirty
