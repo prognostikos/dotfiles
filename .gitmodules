@@ -96,3 +96,6 @@
 	path = vim/vim.symlink/bundle/vim-monokai
 	url = git://github.com/rickharris/vim-monokai.git
 	ignore = dirty
+[submodule "vim/vim.symlink/bundle/vim-markdown-preview"]
+	path = vim/vim.symlink/bundle/vim-markdown-preview
+	url = git://github.com/nelstrom/vim-markdown-preview.git
