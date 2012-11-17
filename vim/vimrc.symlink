@@ -87,10 +87,8 @@ set autoread
 " auto-write when suspending (^Z) etc
 set autowrite
 
-" folding > sliced bread
-set foldmethod=syntax
-set foldlevel=2
-set foldnestmax=2
+" i used to think folding > sliced bread
+set nofoldenable
 
 " Make sure the current window is always wide & tall enough
 set winwidth=84
