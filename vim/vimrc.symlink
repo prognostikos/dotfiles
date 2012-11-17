@@ -308,17 +308,12 @@ autocmd BufReadPost *
       \   exe "normal! g`\"" |
       \ endif
 
+" use ft-syntax-omni if no omnifunc is defined
 if exists("+omnifunc")
-  autocmd FileType *
-    \ if &omnifunc != '' |
-    \   call SuperTabChain(&omnifunc, "<c-p>") |
-    \   call SuperTabSetDefaultCompletionType("<c-x><c-u>") |
-    \ endif
-  " use ft-syntax-omni if no omnifunc is defined
-  " autocmd Filetype *
-  "       \ if &omnifunc == "" |
-  "       \   setlocal omnifunc=syntaxcomplete#Complete |
-  "       \ endif
+  autocmd Filetype *
+      \ if &omnifunc == "" |
+      \   setlocal omnifunc=syntaxcomplete#Complete |
+      \ endif
 endif
 
 """ Plugin settings
@@ -441,3 +436,18 @@ let g:dbext_default_usermaps = 0
 
 " jscomplete
 let g:jscomplete_use = ['dom', 'moz']
+
+" neocomplcache
+let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_enable_auto_select = 0
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"

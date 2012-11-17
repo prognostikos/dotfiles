@@ -19,9 +19,6 @@
 [submodule "vim/vim.symlink/bundle/vim-endwise"]
 	path = vim/vim.symlink/bundle/vim-endwise
 	url = https://github.com/tpope/vim-endwise.git
-[submodule "vim/vim.symlink/bundle/vim-supertab"]
-	path = vim/vim.symlink/bundle/vim-supertab
-	url = https://github.com/ervandew/supertab.git
 [submodule "vim/vim.symlink/bundle/vim-commentary"]
 	path = vim/vim.symlink/bundle/vim-commentary
 	url = https://github.com/tpope/vim-commentary.git
@@ -99,3 +96,6 @@
 [submodule "vim/vim.symlink/bundle/vim-markdown-preview"]
 	path = vim/vim.symlink/bundle/vim-markdown-preview
 	url = git://github.com/nelstrom/vim-markdown-preview.git
+[submodule "vim/vim.symlink/bundle/vim-neocomplcache"]
+	path = vim/vim.symlink/bundle/vim-neocomplcache
+	url = git://github.com/Shougo/neocomplcache.git
