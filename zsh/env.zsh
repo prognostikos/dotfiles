@@ -9,3 +9,8 @@ export CLASSPATH=$CLASSPATH:~/javaclasses:.
 export GIT_PS1_SHOWDIRTYSTATE=true
 export GIT_PS1_SHOWUNTRACKEDFILES=true
 export JRUBY_OPTS=--1.9
+
+# https://gist.github.com/1688857
+export RUBY_GC_MALLOC_LIMIT=1000000000
+export RUBY_FREE_MIN=500000
+export RUBY_HEAP_MIN_SLOTS=40000
