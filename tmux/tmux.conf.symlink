@@ -50,6 +50,13 @@ set-option -g set-titles-string '#h [#S #I:#W]'
 # stuff for vim and cursor
 set-option -g terminal-overrides '*88col*:colors=88,*256col*:colors=256,xterm*:XT:Ms=\E]52;%p1%s;%p2%s\007:Cc=\E]12;%p1%s\007:Cr=\E]112\007:Cs=\E]50;CursorShape=%?%p1%{3}%<%t%{0}%e%p1%{2}%-%;%d\007'
 
+# vi-copy keys
+bind -t vi-copy v begin-selection
+bind -t vi-copy y copy-selection
+
+# need more history
+set -g history-limit 10000
+
 # NOTE: the below values are for solarized 16-color not 256...
 #
 # SOLARIZED XTERM  TERMCOL  
