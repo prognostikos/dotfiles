@@ -1,2 +1,4 @@
 alias ls="ls -F"
 alias vdiff="git diff|vimdiff -R -"
+alias spr="tmux splitw -h -p 25"
+alias spd="tmux splitw -p 25"
