@@ -5,7 +5,6 @@ export PATH=./bin:$HOME/.dotfiles/bin:$PATH
 export EDITOR=vim
 export LANG=en_US.UTF-8
 export CLICOLOR=true
-export MANPAGER="less -X"
 export CLASSPATH=$CLASSPATH:~/javaclasses:.
 export GIT_PS1_SHOWDIRTYSTATE=true
 export GIT_PS1_SHOWUNTRACKEDFILES=true
