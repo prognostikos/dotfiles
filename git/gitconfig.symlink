@@ -39,3 +39,5 @@
 	tool = vimdiff
 [difftool]
 	prompt = false
+[heroku]
+	account = influestor
