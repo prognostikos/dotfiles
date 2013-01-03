@@ -157,6 +157,11 @@ set ttyfast
 " don't redraw each line when executing macros
 set lazyredraw
 
+" show me column 80
+if exists('+colorcolumn')
+  set colorcolumn=80
+endif
+
 """ Custom mappings
 
 " prefer , rather than default \
