@@ -320,6 +320,11 @@ augroup psql
   autocmd BufRead,BufNewFile psql.edit.* setfiletype sql
 augroup END
 
+augroup rust
+  autocmd!
+  autocmd BufRead,BufNewFile *.rs setfiletype rust
+augroup END
+
 " Restore cursor position
 autocmd BufReadPost *
       \ if line("'\"") > 1 && line("'\"") <= line("$") |
