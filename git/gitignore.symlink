@@ -4,3 +4,5 @@ tags
 .rbenv-version
 vendor/ruby/**
 matts_debug_initializer.rb
+custom_plan.rb
+zeus.json

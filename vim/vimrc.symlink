@@ -440,6 +440,9 @@ let g:ctrlp_max_files = 5000
 
 " Turbux
 let g:no_turbux_mappings = 1
+if filereadable("./zeus.json")
+  let g:turbux_command_rspec = 'zeus rspec'
+endif
 map <leader>rt <Plug>SendTestToTmux
 map <leader>rT <Plug>SendFocusedTestToTmux
 
