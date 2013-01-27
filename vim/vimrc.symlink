@@ -24,10 +24,13 @@ set nowrap
 " turn off matching paren highlighting
 let loaded_matchparen = 1
 
-" colors
+" $VIMCOLORS is set in iTerm profile
+if !empty($VIMCOLORS)
+  colorscheme $VIMCOLORS
+endif
+
 " prefer lighter bg
 let g:molokai_original = 1
-colorscheme $VIMCOLORS
 
 " more info
 set number
