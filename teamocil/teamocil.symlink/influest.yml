@@ -8,25 +8,29 @@ session:
           focus: true
         - cmd: "simple_prompt; clear"
           width: 25
+        - cmd: "simple_prompt; zeus start"
+          height: 20
+        - cmd: "simple_prompt; guard"
+          height: 40
     - name: "config"
       root: "~/c/influestor/server-config"
       splits:
-        - cmd: "$EDITOR"
+        - cmd:
     - name: "xignite"
       root: "~/c/lib/xignite"
       splits:
-        - cmd: "$EDITOR"
+        - cmd:
         - cmd: "simple_prompt; clear"
           width: 25
     - name: "classifier"
       root: "~/c/influestor/classifier"
       splits:
-        - cmd: "$EDITOR"
+        - cmd:
         - cmd: "simple_prompt; clear"
           width: 25
     - name: "checkpoint"
       root: "~/c/influestor/checkpoint"
       splits:
-        - cmd: "$EDITOR"
+        - cmd:
         - cmd: "simple_prompt; clear"
           width: 25
