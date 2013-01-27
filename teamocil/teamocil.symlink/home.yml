@@ -1,0 +1,15 @@
+session:
+  name: home
+  windows:
+    - name: dotfiles
+      root: ~/.dotfiles
+      splits:
+        - cmd:
+    - name: learning
+      root: ~/l
+      splits:
+        - cmd:
+    - name: dropbox
+      root: ~/d
+      splits:
+        - cmd:
