@@ -1,0 +1,11 @@
+account mattrohrer
+host smtp.gmail.com
+port 587
+protocol smtp
+auth on
+from matt@prognostikos.com
+user finitesoup@gmail.com
+tls on
+tls_trust_file ~/.mutt/gmail.cert
+
+account default: mattrohrer

@@ -1,6 +1,11 @@
 session:
   name: home
   windows:
+    - name: mail
+      root: ~/Desktop
+      splits:
+        - cmd: mutt
+          focus: true
     - name: dotfiles
       root: ~/.dotfiles
       splits:
