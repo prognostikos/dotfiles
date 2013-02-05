@@ -6,28 +6,14 @@ session:
       splits:
         - cmd: "$EDITOR"
           focus: true
-        - cmd: "simple_prompt; clear"
-          width: 25
+    - name: "services"
+      root: "~/c/influestor/influestor"
+      splits:
+        - cmd: "tail -f log/development.log"
         - cmd: "simple_prompt; zeus start"
-          height: 20
+          width: 25
         - cmd: "simple_prompt; guard"
-          height: 40
-    - name: "config"
-      root: "~/c/influestor/server-config"
-      splits:
-        - cmd:
-    - name: "xignite"
-      root: "~/c/lib/xignite"
-      splits:
-        - cmd:
-        - cmd: "simple_prompt; clear"
-          width: 25
-    - name: "classifier"
-      root: "~/c/influestor/classifier"
-      splits:
-        - cmd:
-        - cmd: "simple_prompt; clear"
-          width: 25
+          height: 25
     - name: "checkpoint"
       root: "~/c/influestor/checkpoint"
       splits:
