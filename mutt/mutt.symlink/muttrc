@@ -150,7 +150,7 @@ set reply_to                         # reply to Reply to: field
 set reverse_name                     # reply as whomever it was to
 set include                          # include message in replies
 set forward_quote                    # include message in forwards
-set editor = "mvim -v"
+set editor = "mvim -v '+/^$'"
 
 # Compose Keybindings ----------------------------------------------
 bind compose p postpone-message
