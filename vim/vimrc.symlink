@@ -271,7 +271,7 @@ augroup textmarkdown
   autocmd!
   autocmd BufRead,BufNewFile *.md,*.mkd,*.md.txt setfiletype markdown
   autocmd BufRead,BufNewFile *.txt setfiletype text
-  autocmd FileType text,markdown setlocal wrap linebreak autoindent nolist
+  autocmd FileType text,markdown setlocal wrap linebreak autoindent nolist spell
 augroup END
 
 augroup help
@@ -326,6 +326,11 @@ augroup END
 augroup rust
   autocmd!
   autocmd BufRead,BufNewFile *.rs setfiletype rust
+augroup END
+
+augroup mail
+  autocmd!
+  autocmd FileType mail setlocal spell
 augroup END
 
 " Restore cursor position
