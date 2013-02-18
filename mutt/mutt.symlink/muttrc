@@ -132,8 +132,7 @@ macro pager \Cu "|urlview<enter>" "call urlview to open links"
 macro pager O "<shell-escape>offlineimap<enter>"           "run offlineimap to sync all mail"
 macro pager o "<shell-escape>offlineimap -qf INBOX<enter>" "run offlineimap to sync inbox"
 
-macro index gi "<change-folder>~/.mail/finitesoup-gmail.com/INBOX<enter>" "Go to INBOX"
-macro pager gi "<change-folder>~/.mail/finitesoup-gmail.com/INBOX<enter>" "Go to INBOX"
+macro index,pager gi "<change-folder>~/.mail/finitesoup-gmail.com/INBOX<enter>" "Go to INBOX"
 
 # Compose View Options -------------------------------
 set realname = "Matt Rohrer"         # who am i?
