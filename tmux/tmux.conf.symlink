@@ -57,23 +57,5 @@ bind -t vi-copy y copy-selection
 # need more history
 set -g history-limit 10000
 
-# NOTE: the below values are for solarized 16-color not 256...
-#
-# SOLARIZED XTERM  TERMCOL  
-# --------- ----   -------  
-# base03    234    brblack  
-# base02    235    black    
-# base01    240    brgreen  
-# base00    241    bryellow 
-# base0     244    brblue   
-# base1     245    brcyan   
-# base2     254    white    
-# base3     230    brwhite  
-# yellow    136    yellow   
-# orange    166    brred    
-# red       160    red      
-# magenta   125    magenta  
-# violet     61    brmagenta
-# blue       33    blue     
-# cyan       37    cyan     
-# green      64    green    
+# less and others really fuck up the status bar when this is on
+set -g automatic-rename off
