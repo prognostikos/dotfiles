@@ -1,0 +1,8 @@
+session:
+  name: "bn"
+  windows:
+    - name: "dotorg"
+      root: "~/c/bn/bn"
+      splits:
+        - cmd: "$EDITOR"
+          focus: true
