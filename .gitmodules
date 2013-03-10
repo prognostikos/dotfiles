@@ -102,6 +102,3 @@
 [submodule "mutt/mutt.symlink/colors-solarized"]
 	path = mutt/mutt.symlink/colors-solarized
 	url = git://github.com/altercation/mutt-colors-solarized.git
-[submodule "vim/vim.symlink/bundle/vim-youcompleteme"]
-	path = vim/vim.symlink/bundle/vim-youcompleteme
-	url = git://github.com/Valloric/YouCompleteMe.git
