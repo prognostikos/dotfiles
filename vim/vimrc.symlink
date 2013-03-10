@@ -103,6 +103,8 @@ set winwidth=84
 set winheight=5
 set winminheight=5
 set winheight=999
+set equalalways
+set eadirection=hor
 
 " use ack instead of grep
 set grepprg=ag\ --column\ --ignore-case\ --ignore=vendor/ruby
@@ -335,7 +337,8 @@ augroup mail
 augroup END
 
 augroup git
-  autocmd FileType gitcommit setlocal spell
+  autocmd!
+  autocmd FileType gitcommit wincmd _ setlocal spell
 augroup END
 
 " Restore cursor position
