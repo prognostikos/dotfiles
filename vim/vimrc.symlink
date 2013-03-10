@@ -3,6 +3,7 @@
 """
 
 """ General Settings
+set modelines=0
 set nomodeline
 set nocompatible
 set fileencoding=utf-8
