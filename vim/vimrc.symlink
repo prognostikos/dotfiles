@@ -334,6 +334,10 @@ augroup mail
   autocmd FileType mail setlocal spell
 augroup END
 
+augroup git
+  autocmd FileType gitcommit setlocal spell
+augroup END
+
 " Restore cursor position
 autocmd BufReadPost *
   \ if line("'\"") > 1 && line("'\"") <= line("$") |
