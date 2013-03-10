@@ -387,6 +387,12 @@ endfunction
 noremap <leader>gR :silent call ShowRoutes()<cr>
 noremap <leader>gg :topleft 100 :split Gemfile<cr>
 
+" /usr/l<tab>     # will use filename completion
+" myvar.t<tab>    # will use user completion if completefunc set,
+"                 # or omni completion if omnifunc set.
+" myvar-><tab>    # same as above
+let g:SuperTabDefaultCompletionType = "context"
+
 " Sets whether or not to pre-highlight the first match when completeopt has
 " the popup menu enabled and the 'longest' option as well. When enabled, <tab>
 " will kick off completion and pre-select the first entry in the popup menu,
