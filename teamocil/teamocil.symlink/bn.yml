@@ -1,8 +1,23 @@
 session:
   name: "bn"
   windows:
+    - name: "notes"
+      root: "~/d/better-now"
+      splits:
+        - cmd: "$EDITOR"
     - name: "dotorg"
       root: "~/c/bn/bn"
       splits:
         - cmd: "$EDITOR"
-          focus: true
+    - name: "moneynow"
+      root: "~/c/bn/money-now"
+      splits:
+        - cmd: "$EDITOR"
+    - name: "chef"
+      root: "~/c/bn/chef"
+      splits:
+        - cmd: "$EDITOR"
+    - name: "sub"
+      root: "~/c/bn/sub"
+      splits:
+        - cmd: "$EDITOR"
