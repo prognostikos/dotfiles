@@ -476,3 +476,11 @@ let g:jscomplete_use = ['dom', 'moz']
 
 " make Netrw prettier/more useful
 let NERDTreeHijackNetrw=1
+
+" no need to autocomplete in mail messages
+let g:ycm_filetypes_to_completely_ignore = {
+      \ 'notes' : 1,
+      \ 'markdown' : 1,
+      \ 'text' : 1,
+      \ 'mail' : 1,
+      \}
