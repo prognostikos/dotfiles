@@ -96,9 +96,6 @@
 [submodule "vim/vim.symlink/bundle/vim-markdown-preview"]
 	path = vim/vim.symlink/bundle/vim-markdown-preview
 	url = git://github.com/nelstrom/vim-markdown-preview.git
-[submodule "vim/vim.symlink/bundle/vim-neocomplcache"]
-	path = vim/vim.symlink/bundle/vim-neocomplcache
-	url = git://github.com/Shougo/neocomplcache.git
 [submodule "vim/vim.symlink/bundle/vim-nerdtree"]
 	path = vim/vim.symlink/bundle/vim-nerdtree
 	url = git://github.com/scrooloose/nerdtree.git
