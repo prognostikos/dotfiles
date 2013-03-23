@@ -338,7 +338,12 @@ augroup END
 
 augroup git
   autocmd!
-  autocmd FileType gitcommit wincmd _ setlocal spell
+  autocmd FileType gitcommit setlocal spell
+augroup END
+
+augroup cukes
+  autocmd!
+  autocmd FileType cucumber setlocal wrap linebreak nolist textwidth=80 spell
 augroup END
 
 " Restore cursor position
