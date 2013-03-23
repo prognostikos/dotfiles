@@ -460,7 +460,7 @@ let g:ctrlp_map = '<c-t>'
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_max_files = 5000
 let g:ctrlp_cmd = 'CtrlPMixed'
-let g:ctrlp_user_command = 'find %s -type f ! -path "*vendor/ruby*" ! -path "*.git*" ! -path "*.chef/cache*" ! -iname "*.png" ! -iname "*.jpg" ! -iname "*.gif" ! -iname "*.jpeg" ! -name "*~"'
+let g:ctrlp_user_command = 'find %s -type f ! -path "*vendor/ruby*" ! -path "*.git*" ! -path "*.chef/cache*" ! -iname "*.png" ! -iname "*.jpg" ! -iname "*.gif" ! -iname "*.jpeg" ! -name "*~" ! -path "tmp/*"'
 
 " Turbux
 let g:no_turbux_mappings = 1
