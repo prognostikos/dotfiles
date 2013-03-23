@@ -41,7 +41,7 @@
 [difftool]
 	prompt = false
 [heroku]
-	account = influestor
+	account = betternow
 [init]
 	templatedir = /Users/rohrer/.git-template
 [push]
