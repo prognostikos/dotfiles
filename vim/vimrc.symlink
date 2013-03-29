@@ -116,7 +116,7 @@ set grepformat=%f:%l:%c:%m
 set t_ti= t_te=
 
 " avoid problems with $PATH
-set shell=/bin/bash
+set shell=/bin/bash\ --login
 
 " show indentation level on new lines
 set list listchars=tab:»-,trail:·,extends:»,precedes:«
