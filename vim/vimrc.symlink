@@ -349,6 +349,16 @@ augroup cukes
   autocmd FileType cucumber setlocal wrap linebreak nolist textwidth=80 spell
 augroup END
 
+" Save when losing focus
+au FocusLost * :silent! wall
+
+" Only show cursorline & colorcolumn in the current window
+augroup cline
+    au!
+    au WinLeave * set nocursorline colorcolumn=0
+    au WinEnter * set cursorline colorcolumn=80
+augroup END
+
 " Restore cursor position
 autocmd BufReadPost *
   \ if line("'\"") > 1 && line("'\"") <= line("$") |
