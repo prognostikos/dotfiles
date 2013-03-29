@@ -107,8 +107,8 @@ set winheight=999
 set equalalways
 set eadirection=hor
 
-" use ack instead of grep
-set grepprg=ag\ --column\ --ignore-case\ --ignore=vendor/ruby
+" use ag instead of grep
+set grepprg=ag\ --column\ --smart-case\ --ignore=vendor/ruby
 set grepformat=%f:%l:%c:%m
 
 " eliminate clearing of terminal when suspending/quiting
