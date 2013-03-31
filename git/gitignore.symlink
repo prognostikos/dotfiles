@@ -1,8 +1,12 @@
 *.swp
+*~
+.DS_Store
 tags
 *.class
 .rbenv-version
-vendor/ruby/**
-matts_debug_initializer.rb
+.ruby-version
+.rvm-version
+/vendor/ruby/
+/node_modules/
 custom_plan.rb
 zeus.json
