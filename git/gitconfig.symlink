@@ -45,4 +45,6 @@
 [init]
 	templatedir = /Users/rohrer/.git-template
 [push]
-	default = current
+	default = upstream
+[rerere]
+	enabled = true
