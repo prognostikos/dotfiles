@@ -472,6 +472,9 @@ map <Leader>rp :VimuxPromptCommand<CR>
 " Run last command executed by VimuxRunCommand
 map <Leader>rl :VimuxRunLastCommand<CR>
 
+" Run makeprog in the same way as vimux
+map <Leader>rm :make<CR>
+
 " Ctrl-P
 let g:ctrlp_map = '<c-t>'
 " I know where I want to search!
