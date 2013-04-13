@@ -3,21 +3,29 @@ session:
   windows:
     - name: "notes"
       root: "~/d/better-now"
-      splits:
+      panes:
         - cmd: "$EDITOR"
     - name: "dotorg"
       root: "~/c/bn/bn"
-      splits:
+      panes:
         - cmd: "$EDITOR"
+    - name: "dotorg srv"
+      root: "~/c/bn/bn"
+      layout: tiled
+      panes:
+        - cmd: mysql -u root -p bnrails
+        - cmd: tail -f log/development.log
+        - cmd: unicorn -c config/unicorn.development.rb
+        - cmd: zeus start
     - name: "moneynow"
       root: "~/c/bn/money-now"
-      splits:
+      panes:
         - cmd: "$EDITOR"
     - name: "chef"
       root: "~/c/bn/chef"
-      splits:
+      panes:
         - cmd: "$EDITOR"
     - name: "sub"
       root: "~/c/bn/sub"
-      splits:
+      panes:
         - cmd: "$EDITOR"
