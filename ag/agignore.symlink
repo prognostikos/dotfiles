@@ -1,0 +1,6 @@
+log
+tmp
+vendor/ruby
+doc
+coverage
+tags
