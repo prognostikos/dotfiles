@@ -108,8 +108,7 @@ set equalalways
 set eadirection=hor
 
 " use ag instead of grep
-set grepprg=ag\ --column\ --smart-case\ --ignore=vendor/ruby
-set grepformat=%f:%l:%c:%m
+set grepprg=ag\ --smart-case
 
 " eliminate clearing of terminal when suspending/quiting
 " http://www.shallowsky.com/linux/noaltscreen.html
