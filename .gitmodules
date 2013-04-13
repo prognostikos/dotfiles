@@ -113,4 +113,4 @@
 	url = git://github.com/tpope/vim-dispatch.git
 [submodule "vim/vim.symlink/bundle/vim-colors-github"]
 	path = vim/vim.symlink/bundle/vim-colors-github
-	url = git://github.com/croaky/vim-colors-github.git
+	url = git://github.com/prognostikos/vim-colors-github.git
