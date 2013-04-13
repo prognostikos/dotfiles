@@ -118,7 +118,7 @@ set t_ti= t_te=
 set shell=/bin/bash\ --login
 
 " more info
-set list listchars=tab:▸\ ,extends:❯,precedes:❮,trail:⌴
+set list listchars=tab:▸\ ,extends:❯,precedes:❮
 set showbreak=↪
 
 " share the unnamed paste buffer with the system clipboard
