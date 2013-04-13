@@ -292,7 +292,8 @@ augroup END
 augroup rb
   autocmd!
   autocmd BufRead,BufNewFile Vagrantfile,Rakefile,Guardfile,Cheffile setfiletype ruby
-  autocmd FileType ruby setlocal makeprg=rspec\ spec
+  autocmd FileType ruby setlocal makeprg=rspec
+  autocmd FileType ruby :compiler rspec
 augroup END
 
 augroup java
