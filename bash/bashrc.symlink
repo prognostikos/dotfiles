@@ -1,10 +1,11 @@
-export PATH="$HOME/bin:$PATH"
 export NODE_PATH=/usr/local/lib/node_modules
 
 if [[ -d $HOME/.rbenv ]]; then
   export PATH="$HOME/.rbenv/bin:$PATH"
   eval "$(rbenv init -)"
 fi
+
+export PATH="./bin:$PATH"
 
 # If not running interactively, don't do anything below here
 [ -z "$PS1" ] && return
