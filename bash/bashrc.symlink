@@ -1,11 +1,4 @@
-export NODE_PATH=/usr/local/lib/node_modules
-
-if [[ -d $HOME/.rbenv ]]; then
-  export PATH="$HOME/.rbenv/bin:$PATH"
-  eval "$(rbenv init -)"
-fi
-
-export PATH="./bin:$PATH"
+source ~/.dotfiles/zsh/env.zsh
 
 # If not running interactively, don't do anything below here
 [ -z "$PS1" ] && return
@@ -25,30 +18,9 @@ HISTFILESIZE=2000
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
-alias ls="ls -F"
-alias vdiff="git diff|vimdiff -R -"
-alias b='bundle exec '
-alias r='rails '
-alias nmp='npm '
-alias gs='git status '
-alias ga='git add '
-alias gap='git add --patch'
-alias gb='git branch '
-alias gc='git commit '
-alias gd='git diff '
-alias gdc='git diff --cached '
-alias go='git checkout '
-alias gl='git log --oneline --decorate '
-alias got='git '
-alias get='git '
+source ~/.dotfiles/zsh/aliases
+source ~/.dotfiles/git/git.zsh
+source ~/.dotfiles/git/aliases
 
 fstr() { find "${2:-.}" -type f -exec egrep "$1" {} /dev/null \;|grep -v .git; }
 fistr() { find "${2:-.}" -type f -exec egrep -i "$1" {} /dev/null \;|grep -v .git; }
-
-export EDITOR=vim
-export LANG=en_US.UTF-8
-export CLICOLOR=true
-export MANPAGER="less -X"
-export CLASSPATH="$CLASSPATH:~/javaclasses:."
-export GIT_PS1_SHOWDIRTYSTATE=true
-export GIT_PS1_SHOWUNTRACKEDFILES=true
