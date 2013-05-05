@@ -102,9 +102,6 @@
 [submodule "mutt/mutt.symlink/colors-solarized"]
 	path = mutt/mutt.symlink/colors-solarized
 	url = git://github.com/altercation/mutt-colors-solarized.git
-[submodule "vim/vim.symlink/bundle/vim-supertab"]
-	path = vim/vim.symlink/bundle/vim-supertab
-	url = git://github.com/ervandew/supertab.git
 [submodule "vim/vim.symlink/bundle/vim-delimitmate"]
 	path = vim/vim.symlink/bundle/vim-delimitmate
 	url = git://github.com/Raimondi/delimitMate.git
