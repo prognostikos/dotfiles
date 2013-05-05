@@ -514,3 +514,12 @@ let g:jscomplete_use = ['dom', 'moz']
 
 " make Netrw prettier/more useful
 let NERDTreeHijackNetrw = 1
+
+let g:ycm_filetype_blacklist = {
+  \ 'notes' : 1,
+  \ 'markdown' : 1,
+  \ 'text' : 1,
+  \ 'gitcommit' : 1,
+  \ 'mail' : 1,
+  \}
+
