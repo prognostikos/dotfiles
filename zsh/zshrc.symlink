@@ -30,7 +30,7 @@ select-word-style bash
 stty -ixon
 
 # Turn on completions (`brew install zsh-completions` for even more)
-fpath=(/usr/local/share/zsh-completions /usr/share/zsh/site-functions /usr/share/zsh/4.3.11/functions)
+fpath=(/usr/local/share/zsh-completions /usr/share/zsh/site-functions /usr/share/zsh/4.3.11/functions ~/.dotfiles/zsh/completions)
 autoload -U compinit
 compinit
 
