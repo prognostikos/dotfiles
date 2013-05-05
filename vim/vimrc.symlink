@@ -522,4 +522,4 @@ let g:ycm_filetype_blacklist = {
   \ 'gitcommit' : 1,
   \ 'mail' : 1,
   \}
-
+let g:EclimCompletionMethod = 'omnifunc'
