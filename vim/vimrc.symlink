@@ -349,6 +349,11 @@ augroup cukes
   autocmd FileType cucumber setlocal wrap linebreak nolist textwidth=80 spell
 augroup END
 
+augroup curly
+  autocmd!
+  autocmd BufRead,BufNewFile *.html.curly setfiletype handlebars
+augroup END
+
 " Save when losing focus
 au FocusLost * :silent! wall
 
