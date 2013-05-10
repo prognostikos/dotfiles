@@ -531,3 +531,6 @@ let g:ycm_filetype_blacklist = {
 
 " use Eclim's ruby completion for YCM
 let g:EclimCompletionMethod = 'omnifunc'
+
+" only show errors in signs column
+let g:EclimSignLevel = 2
