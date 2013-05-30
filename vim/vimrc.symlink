@@ -509,6 +509,7 @@ let g:syntastic_auto_loc_list=1
 let g:syntastic_quiet_warnings=1
 
 " SQLComplete
+let g:omni_sql_no_default_maps = 1
 let g:ftplugin_sql_omni_key = '<Tab>'
 let g:sql_type_default = 'postgresql'
 
