@@ -36,7 +36,7 @@
 	url = https://github.com/sukima/xmledit.git
 [submodule "vim/vim.symlink/bundle/vim-ruby-refactoring"]
 	path = vim/vim.symlink/bundle/vim-ruby-refactoring
-	url = https://github.com/ecomba/vim-ruby-refactoring.git
+	url = https://github.com/rking/vim-ruby-refactoring.git
 [submodule "vim/vim.symlink/bundle/vim-powerline"]
 	path = vim/vim.symlink/bundle/vim-powerline
 	url = https://github.com/Lokaltog/vim-powerline.git
