@@ -14,8 +14,7 @@
 # Turn day-month-year into year-month-day
 def translate_date(dk_date_string)
   return dk_date_string unless dk_date_string.include?('-')
-  parts = dk_date_string.split('-')
-  parts.reverse.join('-')
+  dk_date_string.split('-').reverse.join('-')
 end
 
 # Turn 1,00 into 1.00 (thousand separators are not included in the source)
