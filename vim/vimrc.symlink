@@ -496,6 +496,7 @@ let g:ctrlp_clear_cache_on_exit = 0
 
 " Turbux
 let g:no_turbux_mappings = 1
+let g:turbux_runner  = 'vimux'
 if filereadable("./zeus.json")
   let g:turbux_command_rspec = 'zeus rspec'
 endif
