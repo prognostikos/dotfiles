@@ -123,3 +123,9 @@
 [submodule "vim/vim.symlink/bundle/vim-handlebars"]
 	path = vim/vim.symlink/bundle/vim-handlebars
 	url = git://github.com/nono/vim-handlebars.git
+[submodule "vim/vim.symlink/bundle/vim-command-t"]
+	path = vim/vim.symlink/bundle/vim-command-t
+	url = git://git.wincent.com/command-t.git
+[submodule "vim/vim.symlink/bundle/vim-ragtag"]
+	path = vim/vim.symlink/bundle/vim-ragtag
+	url = git://github.com/tpope/vim-ragtag.git
