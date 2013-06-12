@@ -231,10 +231,6 @@ nnoremap <leader>vp `[v`]
 nnoremap <C-n> :cn<CR>
 nnoremap <C-p> :cp<CR>
 
-" ctrlp won
-nnoremap <silent> <Leader>t :CtrlP<CR>
-nnoremap <silent> <Leader>b :CtrlPBuffer<CR>
-
 " dts inserts the current timestamp in insert mode
 iab <expr> dts strftime("%d-%b %Y %H:%M")
 
@@ -484,18 +480,26 @@ map <Leader>rl :VimuxRunLastCommand<CR>
 map <Leader>rm :make<CR>
 
 " Ctrl-P
-let g:ctrlp_map = '<c-t>'
-" I know where I want to search!
-let g:ctrlp_working_path_mode = 0
-let g:ctrlp_max_files = 5000
-let g:ctrlp_cmd = 'CtrlPMixed'
-let g:ctrlp_user_command = 'find %s -type f ! -path "*vendor/ruby*" ! -path "*.git*" ! -path "*.chef/cache*" ! -path "tmp/*" ! -path "*node_modules*" ! -iname "*.png" ! -iname "*.jpg" ! -iname "*.gif" ! -iname "*.jpeg" ! -name "*~" '
-" let's try it on top
-let g:ctrlp_match_window_bottom = 0
-" need more context
-let g:ctrlp_max_height = 20
-" keep the cache - use <F5> to rebuild
-let g:ctrlp_clear_cache_on_exit = 0
+let g:loaded_ctrlp = 1
+if g:loaded_ctrlp == 0
+  let g:ctrlp_map = '<c-t>'
+  " I know where I want to search!
+  let g:ctrlp_working_path_mode = 0
+  let g:ctrlp_max_files = 5000
+  let g:ctrlp_cmd = 'CtrlPMixed'
+  let g:ctrlp_user_command = 'find %s -type f ! -path "*vendor/ruby*" ! -path "*.git*" ! -path "*.chef/cache*" ! -path "tmp/*" ! -path "*node_modules*" ! -iname "*.png" ! -iname "*.jpg" ! -iname "*.gif" ! -iname "*.jpeg" ! -name "*~" '
+  " let's try it on top
+  let g:ctrlp_match_window_bottom = 0
+  " need more context
+  let g:ctrlp_max_height = 20
+  " keep the cache - use <F5> to rebuild
+  let g:ctrlp_clear_cache_on_exit = 0
+endif
+
+" CommandT
+nnoremap <silent> <Leader>t :CommandT<CR>
+nnoremap <silent> <Leader>b :CommandTBuffer<CR>
+let g:CommandTMatchWindowAtTop = 1
 
 " Turbux
 let g:no_turbux_mappings = 1
