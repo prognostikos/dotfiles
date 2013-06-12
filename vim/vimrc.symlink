@@ -323,9 +323,10 @@ augroup gitconfig
   autocmd BufRead,BufNewFile .gitconfig,gitconfig.symlink setlocal noexpandtab tabstop=8 shiftwidth=8 softtabstop=8
 augroup END
 
-augroup psql
+augroup sql
   autocmd!
-  autocmd BufRead,BufNewFile psql.edit.* setfiletype sql
+  autocmd BufRead,BufNewFile */psql.edit.* setfiletype sql
+  autocmd BufRead,BufNewFile */sql* setfiletype sql
 augroup END
 
 augroup rust
