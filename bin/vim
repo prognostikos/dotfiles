@@ -1,3 +1,10 @@
 #!/bin/sh
-[[ -z $@ ]] && cmd='-c :CtrlP'
-exec mvim -v $cmd $@
+
+name="`basename "$0"`"
+
+[[ -z $@ ]] && cmd='-c :CommandT'
+
+[[ $name -eq 'vi' ]] && name=vim
+
+exec m$name -v $cmd $@
+
