@@ -170,6 +170,9 @@ if exists('+colorcolumn')
   set colorcolumn=80
 endif
 
+" don't assume I want a commented line after a commented line
+set formatoptions-=or
+
 """ Custom mappings
 
 " prefer , rather than default \
