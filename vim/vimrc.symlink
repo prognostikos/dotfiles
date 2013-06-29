@@ -26,7 +26,9 @@ set nowrap
 let loaded_matchparen = 1
 
 " $VIMCOLORS is set in iTerm profile
-if !empty($VIMCOLORS)
+if empty($VIMCOLORS)
+  colorscheme github
+else
   colorscheme $VIMCOLORS
 endif
 
