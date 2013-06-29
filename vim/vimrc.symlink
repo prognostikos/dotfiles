@@ -368,7 +368,12 @@ augroup END
 
 augroup curly
   autocmd!
-  autocmd BufRead,BufNewFile *.html.curly setfiletype handlebars
+  autocmd BufRead,BufNewFile *.html.curly setfiletype html
+augroup END
+
+augroup tabby
+  autocmd!
+  autocmd BufRead,BufNewFile *.tsv setlocal noexpandtab
 augroup END
 
 " Save when losing focus
