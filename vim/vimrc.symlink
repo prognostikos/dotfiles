@@ -491,7 +491,7 @@ let g:VimuxUseNearestPane = 1
 
 " The keys sent to the runner pane before running a command. By default it sends
 " `q` to make sure the pane is not in scroll-mode and `C-u` to clear the line.
-let g:VimuxResetSequence = 'q C-l C-u'
+let g:VimuxResetSequence = 'q clear C-u'
 
 " Prompt for a command to run
 map <Leader>rp :VimuxPromptCommand<CR>
