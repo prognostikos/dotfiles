@@ -271,7 +271,22 @@ function! RenameFile()
 endfunction
 map <leader>rn :call RenameFile()<cr>
 
+function! Mkdir()
+  let dir = expand('%:p:h')
+  if !isdirectory(dir)
+    call mkdir(dir, "p")
+    echo "created directory: " . dir
+  endif
+endfunction
+
 """ Autocomd/Filetype-specific settings
+
+augroup dowhatimean
+  autocmd!
+  " if I try to write to a file in a directory that doesn't exist,
+  " create it for me
+  autocmd BufWritePre * call Mkdir()
+augroup END
 
 augroup textmarkdown
   autocmd!
