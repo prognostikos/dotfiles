@@ -9,6 +9,10 @@ session:
       root: "~/c/bn/bn"
       panes:
         - cmd: "$EDITOR"
+    - name: "dotorg DB"
+      root: "~/c/bn/bn"
+      panes:
+        - cmd: mysql -u root bnrails
     - name: "dotorg srv"
       root: "~/c/bn/bn"
       layout: tiled
