@@ -4,7 +4,7 @@ session:
     - name: "notes"
       root: "~/d/better-now"
       panes:
-        - cmd: "$EDITOR"
+        - cmd: "$EDITOR status.md"
     - name: "dotorg"
       root: "~/c/bn/bn"
       panes:
@@ -17,19 +17,20 @@ session:
       root: "~/c/bn/bn"
       layout: tiled
       panes:
-        - cmd: mysql -u root -p bnrails
-        - cmd: tail -f log/development.log
+        - cmd: ''
+        - cmd: ''
         - cmd: unicorn -c config/unicorn.development.rb
         - cmd: zeus start
+        - cmd: guard
     - name: "moneynow"
       root: "~/c/bn/money-now"
       panes:
-        - cmd: "$EDITOR"
+        - cmd: ''
     - name: "chef"
       root: "~/c/bn/chef"
       panes:
-        - cmd: "$EDITOR"
+        - cmd: ''
     - name: "sub"
       root: "~/c/bn/sub"
       panes:
-        - cmd: "$EDITOR"
+        - cmd: ''
