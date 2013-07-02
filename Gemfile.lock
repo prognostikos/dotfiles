@@ -1,0 +1,18 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    gem-ctags (1.0.5)
+    method_source (0.8.1)
+    rbenv-gem-rehash (1.0.0)
+    teamocil (0.4.4)
+    zeus (0.13.3)
+      method_source (>= 0.6.7)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  gem-ctags
+  rbenv-gem-rehash
+  teamocil
+  zeus

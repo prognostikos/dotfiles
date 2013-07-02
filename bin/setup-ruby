@@ -1,0 +1,9 @@
+#!/bin/sh
+
+rbenv version
+
+gem update --system
+gem install bundler
+bundle install --system --gemfile=~/.dotfiles/Gemfile
+
+gem list
