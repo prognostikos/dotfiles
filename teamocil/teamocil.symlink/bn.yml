@@ -15,9 +15,8 @@ session:
         - cmd: mysql -u root bnrails
     - name: "dotorg srv"
       root: "~/c/bn/bn"
-      layout: tiled
+      layout: main-vertical
       panes:
-        - cmd: ''
         - cmd: ''
         - cmd: unicorn -c config/unicorn.development.rb
         - cmd: zeus start
