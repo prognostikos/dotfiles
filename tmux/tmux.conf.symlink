@@ -58,4 +58,4 @@ bind -t vi-copy y copy-selection
 set -g history-limit 10000
 
 # less and others really fuck up the status bar when this is on
-set -g automatic-rename off
+# set -g automatic-rename off
