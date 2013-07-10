@@ -393,19 +393,19 @@ autocmd BufReadPost *
   \ endif
 
 " use ft-syntax-omni if no omnifunc is defined
-if exists("+omnifunc")
-  autocmd Filetype *
-    \ if &omnifunc == "" |
-    \   setlocal omnifunc=syntaxcomplete#Complete |
-    \ endif
-endif
+" if exists("+omnifunc")
+"   autocmd Filetype *
+"     \ if &omnifunc == "" |
+"     \   setlocal omnifunc=syntaxcomplete#Complete |
+"     \ endif
+" endif
 
 """ Plugin settings
 
 " setup omnicomplete for ruby/rails
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
-let g:rubycomplete_rails = 1
+" let g:rubycomplete_buffer_loading = 1
+" let g:rubycomplete_classes_in_global = 1
+" let g:rubycomplete_rails = 1
 
 " rails.vim settings
 "
