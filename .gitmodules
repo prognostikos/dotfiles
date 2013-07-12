@@ -136,3 +136,6 @@
 	path = vim/vim.symlink/bundle/vim-ultisnips
 	url = git@github.com:SirVer/ultisnips.git
 [submodule "vim/vim.symlink/bundle/vim-golden-ratio"]
+[submodule "vim/vim.symlink/bundle/vim-airline"]
+	path = vim/vim.symlink/bundle/vim-airline
+	url = git@github.com:bling/vim-airline.git
