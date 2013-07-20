@@ -25,6 +25,7 @@
 [merge]
 	tool = vimdiff
 	summary = true
+	ff = only
 [gc]
 	auto = 1
 [branch]
