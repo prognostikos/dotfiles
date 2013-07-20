@@ -240,6 +240,9 @@ nnoremap <C-p> :cp<CR>
 " dts inserts the current timestamp in insert mode
 iab <expr> dts strftime("%d-%b %Y %H:%M")
 
+" <c-c> is not exactly equivalent to <esc> - make it so
+noremap <c-c> <esc>
+
 function! Cleanup()
   " save my current context
   let save_cursor = getpos(".")
