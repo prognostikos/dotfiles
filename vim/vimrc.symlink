@@ -141,6 +141,10 @@ if has("gui_running")
   set guioptions-=T
   " always show tabs
   set showtabline=2
+  set guifont=Monaco:h18
+  let g:airline_powerline_fonts=0
+else
+  let g:airline_powerline_fonts=1
 endif
 
 " switch cursor from block in insert mode
@@ -589,4 +593,3 @@ au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:U
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 
 let g:airline_theme='light'
-let g:airline_powerline_fonts=1
