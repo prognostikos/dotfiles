@@ -9,6 +9,14 @@ bind Escape copy-mode
 bind C-c copy-mode
 setw -g mode-keys vi
 
+# Setup 'v' to begin selection as in Vim
+bind-key -t vi-copy v begin-selection
+bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
+
+# Update default binding of `Enter` to also use copy-pipe
+unbind -t vi-copy Enter
+bind-key -t vi-copy Enter copy-pipe "reattach-to-user-namespace pbcopy"
+
 # use bin/remaining_charge to display remaining battery & power source
 set -g status-utf8 on
 set -g status-right ' #(remaining_charge) %H:%M %d-%b'
@@ -49,10 +57,6 @@ set-option -g set-titles-string '#h [#S #I:#W]'
 
 # stuff for vim and cursor
 set-option -g terminal-overrides '*88col*:colors=88,*256col*:colors=256,xterm*:XT:Ms=\E]52;%p1%s;%p2%s\007:Cc=\E]12;%p1%s\007:Cr=\E]112\007:Cs=\E]50;CursorShape=%?%p1%{3}%<%t%{0}%e%p1%{2}%-%;%d\007'
-
-# vi-copy keys
-bind -t vi-copy v begin-selection
-bind -t vi-copy y copy-selection
 
 # need more history
 set -g history-limit 10000
