@@ -139,3 +139,6 @@
 [submodule "vim/vim.symlink/bundle/vim-airline"]
 	path = vim/vim.symlink/bundle/vim-airline
 	url = git@github.com:bling/vim-airline.git
+[submodule "vim/vim.symlink/bundle/vim-numbertoggle"]
+	path = vim/vim.symlink/bundle/vim-numbertoggle
+	url = git@github.com:jeffkreeftmeijer/vim-numbertoggle.git
