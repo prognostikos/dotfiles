@@ -605,3 +605,6 @@ au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:U
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 
 let g:airline_theme='light'
+
+" don't override my <c-n>
+let g:UseNumberToggleTrigger = 0
