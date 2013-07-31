@@ -25,7 +25,7 @@ set thorough_search      # strip headers and eval mimes before searching
 # Sidebar Patch --------------------------------------
 # set sidebar_delim   = '  │'
 # set sidebar_visible = yes
-# set sidebar_width   = 34
+# set sidebar_width   = 64
 #color sidebar_new color221 color233
 
 # Header Options -------------------------------------
@@ -47,6 +47,8 @@ mailboxes +finitesoup-gmail.com/INBOX \
           +finitesoup-gmail.com/sent \
           +finitesoup-gmail.com/drafts \
           +finitesoup-gmail.com/RR\ Parley \
+          +finitesoup-gmail.com/Chef \
+          +finitesoup-gmail.com/CTO-list \
           +finitesoup-gmail.com/Nerdery\
           +finitesoup-gmail.com/Jobs\
           +finitesoup-gmail.com/School\
@@ -162,5 +164,6 @@ set sendmail_wait = 0
 unset record
 
 # Colors ----------------------------------------------
-source ~/.mutt/colors-solarized/mutt-colors-solarized-light-16.muttrc
+# source ~/.mutt/colors-solarized/mutt-colors-solarized-light-16.muttrc
+source ~/.mutt/light-colors.muttrc
 

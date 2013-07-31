@@ -1,0 +1,50 @@
+# assumes light background and 256-color terminal
+#
+color index                     color22         default         ~N      # new
+color index                     blue            default         ~F      # flagged
+color index                     color55         default         ~T      # tagged
+color index                     color52         default         ~D      # deleted
+
+color indicator         black           color249        # current message selected
+color message           green           default         # information messages, last row
+color status            color139    color254    # status bar, last and first row
+color error                 color58     default         # error messages, last row
+color markers           red                 yellow              # the + sign at the start of broken lines
+color tilde                 black               default         # the ~ at the end of messages
+color search            black           green           # search results
+color tree                  black               default         # threads arrow
+
+color hdrdefault        black           default
+color header            green       default             '^From:'
+color header            green       default             '^Subject:'
+color header            cyan            default         '^To:.*corky1951'
+
+color normal            black           default         # normal text
+color quoted            color245        default
+color quoted1           color138        default
+color quoted2           color58         default
+color quoted3           color105        default
+color quoted4           color24         default
+color quoted5           color250        default
+color quoted6           color250        default
+color quoted7           color250        default
+color quoted8           color250        default
+color bold                  black               default         # bold on mail's body
+color attachment        black           default
+color signature         color253        default
+
+# enphasized text
+color body        color34   default   "[*][-[:alnum:]]+[*]"
+color body        color34   default   "[ ]_[-[:alnum:]]+_([ ]|\.)"
+
+# URLs
+color body        color202  default "(https?|ftp|gopher|finger)://([^"'"'"'\t\r\n)>.,!?&]\|[.,!?][^"'"'"' \t\r\n)>.,!?&]|&([^g]|$)|&g([^t]|$)|&gt([^;]|$))+"
+# color body              color22         default "[-a-za-z_0-9....@[-a-za-z_0-9.]+"
+
+# email addresses
+# color body              green           default "[-a-z_0-9.%...@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
+
+# Various smilies and the like
+color body              red                     default "(^|[[:space:]])\\*[^[:space:]]+\\*([[:space:]]|$)" # *Bold* text.
+color body              blue            default "(^|[[:space:]])_[^[:space:]]+_([[:space:]]|$)"     # _Underlined_ text.
+color body              color105        default "(^|[[:space:]])/[^[:space:]]+/([[:space:]]|$)"     # /Italic/ text.
