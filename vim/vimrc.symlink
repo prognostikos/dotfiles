@@ -388,16 +388,25 @@ au FocusLost * :silent! wall
 
 " Only show cursorline & colorcolumn in the current window
 augroup cline
-    au!
-    au WinLeave * set nocursorline colorcolumn=0
-    au WinEnter * set cursorline colorcolumn=80
+  autocmd!
+  autocmd WinLeave * set nocursorline colorcolumn=0
+  autocmd WinEnter * set cursorline colorcolumn=80
 augroup END
 
-" Restore cursor position
-autocmd BufReadPost *
-  \ if line("'\"") > 1 && line("'\"") <= line("$") |
-  \   exe "normal! g`\"" |
-  \ endif
+" Restore last cursor position
+augroup cpos
+  autocmd!
+  autocmd BufReadPost *
+    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
+    \ endif
+augroup END
+
+" put results of :grep in quickfix window
+augroup qfgrep
+  autocmd!
+  autocmd QuickFixCmdPost *grep* cwindow
+augroup END
 
 " use ft-syntax-omni if no omnifunc is defined
 " if exists("+omnifunc")
