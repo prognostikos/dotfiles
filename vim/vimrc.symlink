@@ -182,6 +182,9 @@ set formatoptions-=or
 " better behavior for the quickfix window and :sb
 set switchbuf=useopen,split
 
+" find a tags file somewhere
+set tags+=./tags;/,tags;/
+
 """ Custom mappings
 
 " prefer , rather than default \
