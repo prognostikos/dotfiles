@@ -65,7 +65,7 @@ if has('wildignorecase')
   set wildignorecase
 endif
 
-set complete=.,w,b,u,t,i
+set complete=.,w,b,u,t,i,kspell
 " inserts the longest common text of all matches and display menu even if
 " there's only one match
 set completeopt=longest,menuone,preview
