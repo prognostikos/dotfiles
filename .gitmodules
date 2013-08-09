@@ -142,3 +142,6 @@
 [submodule "vim/vim.symlink/bundle/vim-numbertoggle"]
 	path = vim/vim.symlink/bundle/vim-numbertoggle
 	url = git@github.com:jeffkreeftmeijer/vim-numbertoggle.git
+[submodule "vim/vim.symlink/bundle/vim-indent-object"]
+	path = vim/vim.symlink/bundle/vim-indent-object
+	url = https://github.com/michaeljsmith/vim-indent-object
