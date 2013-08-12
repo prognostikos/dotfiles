@@ -4,9 +4,6 @@
 [submodule "vim/vim.symlink/bundle/vim-javascript"]
 	path = vim/vim.symlink/bundle/vim-javascript
 	url = https://github.com/pangloss/vim-javascript.git
-[submodule "vim/vim.symlink/bundle/vim-jst"]
-	path = vim/vim.symlink/bundle/vim-jst
-	url = https://github.com/briancollins/vim-jst.git
 [submodule "vim/vim.symlink/bundle/vim-rails"]
 	path = vim/vim.symlink/bundle/vim-rails
 	url = https://github.com/tpope/vim-rails.git
@@ -58,9 +55,6 @@
 [submodule "vim/vim.symlink/bundle/vim-tabular"]
 	path = vim/vim.symlink/bundle/vim-tabular
 	url = https://github.com/godlygeek/tabular
-[submodule "vim/vim.symlink/bundle/vim-jade"]
-	path = vim/vim.symlink/bundle/vim-jade
-	url = https://github.com/digitaltoad/vim-jade.git
 [submodule "vim/vim.symlink/bundle/vim-qargs"]
 	path = vim/vim.symlink/bundle/vim-qargs
 	url = https://github.com/nelstrom/vim-qargs.git
@@ -68,12 +62,6 @@
 	path = vim/vim.symlink/bundle/vimux
 	url = https://github.com/benmills/vimux.git
 	ignore = dirty
-[submodule "vim/vim.symlink/bundle/vim-mustache"]
-	path = vim/vim.symlink/bundle/vim-mustache
-	url = https://github.com/juvenn/mustache.vim.git
-[submodule "vim/vim.symlink/bundle/vim-ctrlp"]
-	path = vim/vim.symlink/bundle/vim-ctrlp
-	url = https://github.com/kien/ctrlp.vim.git
 [submodule "vim/vim.symlink/bundle/vim-bundler"]
 	path = vim/vim.symlink/bundle/vim-bundler
 	url = git://github.com/tpope/vim-bundler.git
@@ -120,9 +108,6 @@
 [submodule "vim/vim.symlink/bundle/vim-ycm"]
 	path = vim/vim.symlink/bundle/vim-ycm
 	url = git://github.com/Valloric/YouCompleteMe.git
-[submodule "vim/vim.symlink/bundle/vim-handlebars"]
-	path = vim/vim.symlink/bundle/vim-handlebars
-	url = git://github.com/nono/vim-handlebars.git
 [submodule "vim/vim.symlink/bundle/vim-command-t"]
 	path = vim/vim.symlink/bundle/vim-command-t
 	url = git://git.wincent.com/command-t.git
