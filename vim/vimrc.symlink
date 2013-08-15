@@ -134,7 +134,7 @@ set splitright
 set splitbelow
 
 " syntax hl can be slowwwww
-set synmaxcol=128
+" set synmaxcol=128
 
 if has("gui_running")
   " don't need that ugly toolbar
