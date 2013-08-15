@@ -6,7 +6,7 @@ local username=''
 [ 'rohrer' != $USER ] && username="%n@"
 
 PROMPT='%{$fg[magenta]%}${username}${hostname}%{$fg[blue]%}%.%{$fg[cyan]%}$(git-cwd-info)%{$reset_color%}%# '
-RPROMPT='%{$fg[white]%} $(rbenv version-name)%{$reset_color%}'
+RPROMPT='%{$fg[magenta]%} $(rbenv version-name)%{$reset_color%}'
 
 local fancy_left=$PROMPT
 local fancy_right=$RPROMPT
