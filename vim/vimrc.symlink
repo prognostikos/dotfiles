@@ -180,7 +180,7 @@ endif
 set formatoptions-=or
 
 " better behavior for the quickfix window and :sb
-set switchbuf=useopen,split
+set switchbuf=useopen
 
 " find a tags file somewhere
 set tags+=./tags;/,tags;/
