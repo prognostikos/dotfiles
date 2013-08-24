@@ -183,7 +183,7 @@ set formatoptions-=or
 set switchbuf=useopen
 
 " find a tags file somewhere
-set tags+=./tags;/,tags;/
+set tags+=../tags;/
 
 """ Custom mappings
 
