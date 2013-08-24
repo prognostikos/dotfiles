@@ -15,3 +15,6 @@ export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 export RUBY_GC_MALLOC_LIMIT=1000000000
 export RUBY_FREE_MIN=500000
 export RUBY_HEAP_MIN_SLOTS=40000
+
+export GOPATH=$HOME/c/go
+export PATH=$GOPATH/bin:$PATH

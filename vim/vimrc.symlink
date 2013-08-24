@@ -414,6 +414,11 @@ augroup qfgrep
   autocmd QuickFixCmdPost *grep* cwindow
 augroup END
 
+augroup golang
+  autocmd!
+  autocmd BufRead,BufNewFile *.go setlocal noexpandtab
+augroup END
+
 " use ft-syntax-omni if no omnifunc is defined
 " if exists("+omnifunc")
 "   autocmd Filetype *
