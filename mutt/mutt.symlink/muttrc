@@ -172,6 +172,6 @@ set sendmail_wait = 0
 unset record
 
 # Colors ----------------------------------------------
-# source ~/.mutt/colors-solarized/mutt-colors-solarized-light-16.muttrc
-source ~/.mutt/light-colors.muttrc
+source ~/.mutt/colors-solarized/mutt-colors-solarized-light-16.muttrc
+# source ~/.mutt/light-colors.muttrc
 
