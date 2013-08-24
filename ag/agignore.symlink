@@ -4,3 +4,4 @@ vendor/ruby
 doc
 coverage
 tags
+config/locales
