@@ -273,6 +273,9 @@ noremap <leader>cs :SyntasticCheck<CR>
 nnoremap k gk
 nnoremap j gj
 
+" hardish mode
+inoremap <BS> <nop>
+
 function! RenameFile()
   let old_name = expand('%')
   let new_name = input('New file name: ', expand('%'), 'file')
