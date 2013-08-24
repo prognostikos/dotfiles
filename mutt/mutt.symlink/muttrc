@@ -128,6 +128,9 @@ bind pager R  group-reply
 # View attachments properly.
 bind attach <return> view-mailcap
 
+# Use w3m to dump a readable version of text/html only mails
+auto_view text/html
+
 macro pager \Cu "|urlview<enter>" "call urlview to open links"
 
 # Sync email
