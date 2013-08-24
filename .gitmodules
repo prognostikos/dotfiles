@@ -130,3 +130,12 @@
 [submodule "vim/vim.symlink/bundle/vim-indent-object"]
 	path = vim/vim.symlink/bundle/vim-indent-object
 	url = https://github.com/michaeljsmith/vim-indent-object
+[submodule "vim/vim.symlink/bundle/vim-webapi"]
+	path = vim/vim.symlink/bundle/vim-webapi
+	url = https://github.com/mattn/webapi-vim
+[submodule "vim/vim.symlink/bundle/vim-easymotion"]
+	path = vim/vim.symlink/bundle/vim-easymotion
+	url = git@github.com:Lokaltog/vim-easymotion.git
+[submodule "vim/vim.symlink/bundle/vim-golang"]
+	path = vim/vim.symlink/bundle/vim-golang
+	url = git@github.com:jnwhiteh/vim-golang.git
