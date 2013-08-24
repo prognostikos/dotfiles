@@ -422,6 +422,12 @@ augroup golang
   autocmd BufRead,BufNewFile *.go setlocal noexpandtab
 augroup END
 
+" Resize splits when the window is resized
+augroup resize
+  autocmd!
+  autocmd VimResized * :wincmd =
+augroup END
+
 " use ft-syntax-omni if no omnifunc is defined
 " if exists("+omnifunc")
 "   autocmd Filetype *
