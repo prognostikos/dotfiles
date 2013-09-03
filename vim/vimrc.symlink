@@ -33,9 +33,6 @@ else
   colorscheme $VIMCOLORS
 endif
 
-" prefer lighter bg
-let g:molokai_original = 1
-
 " more info
 set number
 set showmode
@@ -230,12 +227,6 @@ noremap <leader>s? z=
 
 " Toggle paste mode for current file
 noremap <leader>p :setlocal paste!<cr>
-
-" make make easier
-noremap <leader>m :make<cr>
-
-" Switch between the last two files
-nnoremap <leader><leader> <c-^>
 
 " visually select the last pasted hunk
 nnoremap <leader>vp `[v`]
@@ -474,41 +465,8 @@ function! ShowRoutes()
   " Delete empty trailing line
   :normal dd
 endfunction
-noremap <leader>gR :silent call ShowRoutes()<cr>
+noremap <leader>rr :silent call ShowRoutes()<cr>
 noremap <leader>gg :topleft 100 :split Gemfile<cr>
-
-" /usr/l<tab>     # will use filename completion
-" myvar.t<tab>    # will use user completion if completefunc set,
-"                 # or omni completion if omnifunc set.
-" myvar-><tab>    # same as above
-let g:SuperTabDefaultCompletionType = "context"
-
-" Sets whether or not to pre-highlight the first match when completeopt has
-" the popup menu enabled and the 'longest' option as well. When enabled, <tab>
-" will kick off completion and pre-select the first entry in the popup menu,
-" allowing you to simply hit <enter> to use it.
-let g:SuperTabLongestHighlight = 1
-
-" When enabled and 'longest' is in your |completeopt| setting, supertab will
-" provide an enhanced longest match support where typing one or more letters
-" and hitting tab again while in a completion mode will complete the longest
-" common match using the new text in the buffer.
-let g:SuperTabLongestEnhanced = 1
-
-" When enabled, <cr> will cancel completion mode preserving the current text.
-let g:SuperTabCrMapping = 0
-
-" Split the CoffeeCompile buffer vertically by default.
-let coffee_compile_vert = 1
-
-" This option defines which set of symbols and dividers you want to use. There
-" are currently three available options: "compatible", "unicode" and "fancy".
-"
-"     TYPE           DESCRIPTION
-"     compatible     Doesn't use any special characters.
-"     unicode        Simulates icons and arrows using similar unicode glyphs.
-"     fancy          Custom icons and arrows. Requires a patched font.
-let g:Powerline_symbols = "fancy"
 
 " needed for textobj-user & textobj-rubyblock
 runtime macros/matchit.vim
@@ -539,23 +497,6 @@ map <Leader>rl :VimuxRunLastCommand<CR>
 
 " Run makeprog in the same way as vimux
 map <Leader>rm :make<CR>
-
-" Ctrl-P
-let g:loaded_ctrlp = 1
-if g:loaded_ctrlp == 0
-  let g:ctrlp_map = '<c-t>'
-  " I know where I want to search!
-  let g:ctrlp_working_path_mode = 0
-  let g:ctrlp_max_files = 5000
-  let g:ctrlp_cmd = 'CtrlPMixed'
-  let g:ctrlp_user_command = 'find %s -type f ! -path "*vendor/ruby*" ! -path "*.git*" ! -path "*.chef/cache*" ! -path "tmp/*" ! -path "*node_modules*" ! -iname "*.png" ! -iname "*.jpg" ! -iname "*.gif" ! -iname "*.jpeg" ! -name "*~" '
-  " let's try it on top
-  let g:ctrlp_match_window_bottom = 0
-  " need more context
-  let g:ctrlp_max_height = 20
-  " keep the cache - use <F5> to rebuild
-  let g:ctrlp_clear_cache_on_exit = 0
-endif
 
 " CommandT
 nnoremap <silent> <Leader>t :CommandT<CR>
@@ -602,11 +543,6 @@ let g:ycm_filetype_blacklist = {
   \ 'gitcommit' : 1,
   \ 'mail' : 1,
   \}
-
-" use Eclim's ruby completion for YCM
-let g:EclimCompletionMethod = 'omnifunc'
-let g:EclimSignLevel = 0
-let g:EclimRubyValidate = 0
 
 " https://github.com/Valloric/YouCompleteMe/issues/36
 function! g:UltiSnips_Complete()
