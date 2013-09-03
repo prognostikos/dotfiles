@@ -46,3 +46,6 @@ autoload -U zsh/zle
 
 # pull in all custom completion.sh files
 for completion_file ($ZSH/**/completion.sh) source $completion_file
+
+# use direnv https://github.com/zimbatm/direnv/wiki/
+eval "$(direnv hook zsh)"
