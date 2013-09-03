@@ -21,6 +21,7 @@ syntax on
 set expandtab
 set backspace=start,indent,eol
 set nowrap
+set shiftround
 
 " turn off matching paren highlighting
 let loaded_matchparen = 1
