@@ -1,6 +1,7 @@
 log
 tmp
 vendor/ruby
+vendor/assets
 doc
 coverage
 tags
