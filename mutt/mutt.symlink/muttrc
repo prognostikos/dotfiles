@@ -23,10 +23,9 @@ set pipe_decode          # strip headers and eval mimes when piping
 set thorough_search      # strip headers and eval mimes before searching
 
 # Sidebar Patch --------------------------------------
-# set sidebar_delim   = '  │'
-# set sidebar_visible = yes
-# set sidebar_width   = 64
-#color sidebar_new color221 color233
+set sidebar_delim   = '  '
+set sidebar_visible = yes
+set sidebar_width   = 48
 
 # Header Options -------------------------------------
 ignore *                                # ignore all headers
