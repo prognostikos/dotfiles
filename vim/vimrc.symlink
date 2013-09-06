@@ -395,9 +395,9 @@ augroup END
 augroup cpos
   autocmd!
   autocmd BufReadPost *
-    \ if line("'\"") > 1 && line("'\"") <= line("$") |
-    \   exe "normal! g`\"" |
-    \ endif
+        \ if line("'\"") > 1 && line("'\"") <= line("$") |
+        \   exe "normal! g`\"" |
+        \ endif
 augroup END
 
 " put results of :grep in quickfix window
@@ -499,9 +499,9 @@ let g:syntastic_enable_highlighting = 0
 let g:syntastic_auto_loc_list       = 1
 let g:syntastic_quiet_warnings      = 1
 let g:syntastic_mode_map = {
-  \ 'mode' : 'active',
-  \ 'passive_filetypes' : ['sass', 'scss', 'scss.css', 'slim', 'sh']
-  \ }
+      \ 'mode' : 'active',
+      \ 'passive_filetypes' : ['sass', 'scss', 'scss.css', 'slim', 'sh']
+      \ }
 
 " SQLComplete
 let g:omni_sql_no_default_maps = 1
@@ -519,12 +519,12 @@ let NERDTreeHijackNetrw = 1
 
 " disable YCM for most text-type files
 let g:ycm_filetype_blacklist = {
-  \ 'notes' : 1,
-  \ 'markdown' : 1,
-  \ 'text' : 1,
-  \ 'gitcommit' : 1,
-  \ 'mail' : 1,
-  \}
+      \ 'notes' : 1,
+      \ 'markdown' : 1,
+      \ 'text' : 1,
+      \ 'gitcommit' : 1,
+      \ 'mail' : 1,
+      \}
 
 " https://github.com/Valloric/YouCompleteMe/issues/36
 function! g:UltiSnips_Complete()
