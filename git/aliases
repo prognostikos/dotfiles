@@ -8,7 +8,7 @@ alias gc='git commit -v '
 alias gd='git diff '
 alias gdc='git diff --cached '
 alias gco='git checkout '
-alias gl='pretty_git_log '
+alias gl="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit "
 alias got='git '
 alias get='git '
 alias gnm='git branch --no-merged master'
