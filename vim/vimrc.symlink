@@ -430,8 +430,8 @@ noremap <leader>rv :RV<CR>
 
 " Edit or view files in same directory as current file
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
-map <leader>ed :edit %%
-map <leader>vd :vsplit %%
+map <leader>ed :edit %%<cr>
+map <leader>vd :vsplit %%<cr>
 
 " Map keys to go to specific files
 noremap <leader>gr :topleft :split config/routes.rb<cr>
