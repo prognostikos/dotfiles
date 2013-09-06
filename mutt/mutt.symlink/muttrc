@@ -24,7 +24,7 @@ set thorough_search      # strip headers and eval mimes before searching
 
 # Sidebar Patch --------------------------------------
 set sidebar_delim   = '  '
-set sidebar_visible = yes
+set sidebar_visible = no
 set sidebar_width   = 48
 
 # Header Options -------------------------------------
