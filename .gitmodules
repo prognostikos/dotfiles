@@ -136,6 +136,3 @@
 [submodule "vim/vim.symlink/bundle/vim-easymotion"]
 	path = vim/vim.symlink/bundle/vim-easymotion
 	url = git@github.com:Lokaltog/vim-easymotion.git
-[submodule "vim/vim.symlink/bundle/vim-golang"]
-	path = vim/vim.symlink/bundle/vim-golang
-	url = git@github.com:jnwhiteh/vim-golang.git
