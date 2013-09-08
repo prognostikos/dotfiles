@@ -117,10 +117,6 @@
 [submodule "vim/vim.symlink/bundle/vim-bats"]
 	path = vim/vim.symlink/bundle/vim-bats
 	url = git@github.com:rosstimson/bats.vim.git
-[submodule "vim/vim.symlink/bundle/vim-ultisnips"]
-	path = vim/vim.symlink/bundle/vim-ultisnips
-	url = git@github.com:SirVer/ultisnips.git
-[submodule "vim/vim.symlink/bundle/vim-golden-ratio"]
 [submodule "vim/vim.symlink/bundle/vim-airline"]
 	path = vim/vim.symlink/bundle/vim-airline
 	url = git@github.com:bling/vim-airline.git

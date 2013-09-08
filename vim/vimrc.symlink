@@ -418,6 +418,9 @@ augroup resize
   autocmd VimResized * :wincmd =
 augroup END
 
+" make delimitmate work nicely with { on multiple lines
+imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
+
 " rails.vim settings
 "
 " open the 'alternate' (test) file in a split window
@@ -530,24 +533,6 @@ let g:ycm_filetype_blacklist = {
       \ 'gitcommit' : 1,
       \ 'mail' : 1,
       \}
-
-" https://github.com/Valloric/YouCompleteMe/issues/36
-function! g:UltiSnips_Complete()
-  call UltiSnips_ExpandSnippet()
-  if g:ulti_expand_res == 0
-    if pumvisible()
-      return "\<C-n>"
-    else
-      call UltiSnips_JumpForwards()
-      if g:ulti_jump_forwards_res == 0
-        return "\<TAB>"
-      endif
-    endif
-  endif
-  return ""
-endfunction
-au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
 
 let g:airline_theme='solarized'
 let g:airline_powerline_fonts=0
