@@ -408,7 +408,8 @@ augroup END
 
 augroup golang
   autocmd!
-  autocmd BufRead,BufNewFile *.go setlocal noexpandtab nolist
+  autocmd FileType go setlocal noexpandtab nolist
+  autocmd FileType go compiler go
 augroup END
 
 " Resize splits when the window is resized
