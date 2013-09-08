@@ -58,7 +58,7 @@ GEM
     little-plugger (1.1.3)
     logging (1.6.2)
       little-plugger (>= 1.1.3)
-    method_source (0.8.1)
+    method_source (0.8.2)
     minitar (0.5.4)
     mixlib-authentication (1.3.0)
       mixlib-log
@@ -112,13 +112,13 @@ GEM
     slop (3.4.6)
     solve (0.8.0)
     teamocil (0.4.4)
-    test-kitchen (1.0.0.beta.2)
+    test-kitchen (1.0.0.beta.3)
       celluloid
       mixlib-shellout
       net-scp
       net-ssh
       pry
-      safe_yaml (~> 0.9.3)
+      safe_yaml (~> 0.9.5)
       thor
     thor (0.18.1)
     timers (1.1.0)
@@ -150,5 +150,5 @@ DEPENDENCIES
   rbenv-gem-rehash
   rcodetools
   teamocil
-  test-kitchen (~> 1.0.0.beta.2)
+  test-kitchen (~> 1.0.0.beta.3)
   zeus

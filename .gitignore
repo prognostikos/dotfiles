@@ -3,3 +3,4 @@ mutt/mutt.symlink/cache/*
 mutt/mutt.symlink/temp/
 *.pyc
 vim/vim.symlink/spell/
+.kitchen

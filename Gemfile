@@ -18,7 +18,7 @@ gem "teamocil"
 gem "zeus"
 
 gem "berkshelf", "~> 2.0.8"
-gem "test-kitchen", "~> 1.0.0.beta.2"
+gem "test-kitchen", "~> 1.0.0.beta.3"
 gem "kitchen-vagrant"
 
 gem "rcodetools"
