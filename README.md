@@ -1,12 +1,12 @@
 # These are my dotfiles. There are many like them but these are mine.
 
-Concept and Rakefile stolen from [@holman's dotfiles](https://github.com/holman/dotfiles)
+Concept and `script/bootstrap` stolen from [@holman's dotfiles](https://github.com/holman/dotfiles)
 
 ## Installation
 
     $ git clone --recursive https://github.com/prognostikos/dotfiles.git ~/.dotfiles
     $ cd ~/.dotfiles
-    $ rake install
+    $ ./script/bootstrap
 
 ## Layout
 
@@ -25,9 +25,3 @@ Concept and Rakefile stolen from [@holman's dotfiles](https://github.com/holman/
 ## Submodules
 
 Vim plugins that are available in public git repositories are added as submodules.
-
-To update the submodules:
-
-    $ cd ~/.dotfiles
-    $ rake update
-
