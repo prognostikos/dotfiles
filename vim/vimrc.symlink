@@ -307,7 +307,7 @@ augroup END
 
 augroup makefile
   autocmd!
-  autocmd FileType make setlocal noexpandtab tabstop=8 shiftwidth=8 softtabstop=8
+  autocmd FileType make setlocal noexpandtab
 augroup END
 
 augroup rb
@@ -342,7 +342,7 @@ augroup END
 
 augroup gitconfig
   autocmd!
-  autocmd BufRead,BufNewFile .gitconfig,gitconfig.symlink setlocal noexpandtab tabstop=8 shiftwidth=8 softtabstop=8
+  autocmd BufRead,BufNewFile .gitconfig,gitconfig.symlink setlocal noexpandtab
 augroup END
 
 augroup sql
