@@ -314,7 +314,7 @@ augroup rb
   autocmd!
   autocmd BufRead,BufNewFile Vagrantfile,Rakefile,Guardfile,Cheffile setfiletype ruby
   autocmd FileType ruby setlocal makeprg=rspec
-  autocmd FileType ruby :compiler rspec
+  autocmd FileType ruby compiler rspec
 augroup END
 
 augroup java
@@ -382,7 +382,7 @@ augroup tabby
 augroup END
 
 " Save when losing focus
-au FocusLost * :silent! wall
+autocmd FocusLost * :silent! wall
 
 " Only show cursorline & colorcolumn in the current window
 augroup cline
@@ -395,7 +395,7 @@ augroup END
 augroup cpos
   autocmd!
   autocmd BufReadPost *
-        \ if line("'\"") > 1 && line("'\"") <= line("$") |
+        \ if &filetype !~ '^git\c' && line("'\"") > 1 && line("'\"") <= line("$") |
         \   exe "normal! g`\"" |
         \ endif
 augroup END
@@ -419,23 +419,21 @@ augroup resize
 augroup END
 
 " make delimitmate work nicely with { on multiple lines
-imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
+" imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
 
 " rails.vim settings
 "
-" open the 'alternate' (test) file in a split window
+" open the 'alternate' (test) files
 noremap <leader>as :AS<CR>
-" open the 'alternate' (test) file in a vertical split window
 noremap <leader>av :AV<CR>
-" open the 'related' (template/presenter) file in a split window
+" open the 'related' (template/presenter) files
 noremap <leader>rs :RS<CR>
-" open the 'related' (template/presenter) file in a split window
 noremap <leader>rv :RV<CR>
 
 " Edit or view files in same directory as current file
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
-map <leader>ed :edit %%<cr>
-map <leader>vd :vsplit %%<cr>
+map <leader>de :edit %%<cr>
+map <leader>dv :vsplit %%<cr>
 
 " Map keys to go to specific files
 noremap <leader>gr :topleft :split config/routes.rb<cr>
