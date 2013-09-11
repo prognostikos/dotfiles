@@ -418,9 +418,6 @@ augroup resize
   autocmd VimResized * :wincmd =
 augroup END
 
-" make delimitmate work nicely with { on multiple lines
-" imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
-
 " rails.vim settings
 "
 " open the 'alternate' (test) files
