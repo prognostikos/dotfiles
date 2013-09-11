@@ -238,6 +238,9 @@ iab <expr> dts strftime("%d-%b %Y %H:%M")
 " <c-c> is not exactly equivalent to <esc> - make it so
 noremap <c-c> <esc>
 
+" make grep (ag) easier
+noremap <leader>f :grep\ 
+
 function! Cleanup()
   " save my current context
   let save_cursor = getpos(".")
