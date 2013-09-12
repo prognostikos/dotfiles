@@ -1,6 +1,10 @@
 session:
   name: home
   windows:
+    - name: mail
+      root: ~/
+      splits:
+        - cmd: mutt
     - name: dotfiles
       root: ~/.dotfiles
       splits:
@@ -11,5 +15,9 @@ session:
         - cmd:
     - name: dropbox
       root: ~/d
+      splits:
+        - cmd:
+    - name: go
+      root: $GOPATH
       splits:
         - cmd:
