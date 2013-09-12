@@ -180,6 +180,9 @@ set switchbuf=useopen
 " find a tags file somewhere
 set tags+=../tags;/
 
+" ask me if I want to write unsaved changes
+set confirm
+
 """ Custom mappings
 
 " prefer , rather than default \
