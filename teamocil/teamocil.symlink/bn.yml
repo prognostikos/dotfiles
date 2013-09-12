@@ -9,22 +9,18 @@ session:
       root: "~/c/bn/bn"
       panes:
         - cmd: "$EDITOR"
-    - name: "dotorg DB"
-      root: "~/c/bn/bn"
-      panes:
-        - cmd: mysql -u root bnrails
     - name: "dotorg srv"
       root: "~/c/bn/bn"
       layout: main-vertical
       panes:
-        - cmd: ''
+        - cmd: tail -f log/development.log
         - cmd: unicorn -c config/unicorn.development.rb
         - cmd: zeus start
         - cmd: guard
-    - name: "moneynow"
-      root: "~/c/bn/money-now"
+    - name: "dotorg DB"
+      root: "~/c/bn/bn"
       panes:
-        - cmd: ''
+        - cmd: mysql -u root bnrails
     - name: "chef"
       root: "~/c/bn/chef"
       panes:
