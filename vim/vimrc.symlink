@@ -542,6 +542,9 @@ let g:ycm_filetype_blacklist = {
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_seed_identifiers_with_syntax = 1
 
+" let g:ycm_autoclose_preview_window_after_completion = 0
+let g:ycm_add_preview_to_completeopt = 1
+
 let g:airline_theme='solarized'
 let g:airline_powerline_fonts=0
 let g:airline_left_sep = ''
@@ -558,3 +561,6 @@ let g:gist_post_private = 1
 let g:gist_get_multiplefile = 1
 let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 1
+
+" delimitMate
+let delimitMate_expand_cr = 1
