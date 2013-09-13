@@ -271,6 +271,9 @@ nnoremap j gj
 " hardish mode
 inoremap <BS> <nop>
 
+" delete all buffers
+nnoremap <leader>bd :bd *<c-a><cr>
+
 function! RenameFile()
   let old_name = expand('%')
   let new_name = input('New file name: ', expand('%'), 'file')
