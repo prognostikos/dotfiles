@@ -5,6 +5,6 @@ set -e
 TMPFILE=`mktemp -t git-ctags`
 
 PATH="/usr/local/bin:$PATH"
-trap "rm -f $TMPFILE EXIT
+trap "rm -f $TMPFILE" EXIT
 ctags --tag-relative -Rf$TMPFILE --exclude=.git
 mv $TMPFILE .git/tags
