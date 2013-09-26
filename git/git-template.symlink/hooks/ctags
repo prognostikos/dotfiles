@@ -6,5 +6,5 @@ TMPFILE=`mktemp -t git-ctags`
 
 PATH="/usr/local/bin:$PATH"
 trap "rm -f $TMPFILE" EXIT
-ctags --tag-relative -Rf$TMPFILE --exclude=.git
+ctags --tag-relative -Rf$TMPFILE --exclude=.git --languages=-javascript,sql
 mv $TMPFILE .git/tags
