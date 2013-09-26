@@ -4,6 +4,7 @@
 [core]
 	excludesfile = /Users/rohrer/.gitignore
 	editor = /Users/rohrer/.dotfiles/bin/vim
+	precomposeunicode = true
 [alias]
 	co = checkout
 	ci = commit

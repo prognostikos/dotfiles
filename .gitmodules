@@ -129,3 +129,6 @@
 [submodule "vim/vim.symlink/bundle/vim-easymotion"]
 	path = vim/vim.symlink/bundle/vim-easymotion
 	url = git@github.com:Lokaltog/vim-easymotion.git
+[submodule "vim/vim.symlink/bundle/vim-slim"]
+	path = vim/vim.symlink/bundle/vim-slim
+	url = git@github.com:slim-template/vim-slim.git
