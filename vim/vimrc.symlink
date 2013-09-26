@@ -20,7 +20,7 @@ filetype plugin indent on
 syntax on
 set expandtab
 set backspace=start,indent,eol
-set nowrap
+set wrap
 set shiftround
 
 " turn off matching paren highlighting
