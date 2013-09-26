@@ -13,6 +13,8 @@
 # used to split on them. A } in the commit subject or any other field will
 # break this.
 
+eval "$(hub alias -s zsh)"
+
 HASH="%C(yellow)%h%Creset"
 RELATIVE_TIME="%C(cyan)(%ar)%Creset"
 AUTHOR="%C(blue)<%an>%Creset"
