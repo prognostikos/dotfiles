@@ -446,6 +446,7 @@ noremap <leader>rv :RV<CR>
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 map <leader>de :edit %%<cr>
 map <leader>dv :vsplit %%<cr>
+map <leader>ds :split %%<cr>
 
 " Map keys to go to specific files
 noremap <leader>gr :topleft :split config/routes.rb<cr>
