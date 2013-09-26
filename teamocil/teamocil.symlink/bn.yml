@@ -16,7 +16,7 @@ session:
         - cmd: tail -f log/development.log
         - cmd: unicorn -c config/unicorn.development.rb
         - cmd: zeus start
-        - cmd: guard
+        - cmd: #guard
     - name: "dotorg DB"
       root: "~/c/bn/bn"
       panes:
