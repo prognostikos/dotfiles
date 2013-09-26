@@ -33,8 +33,11 @@ else
   colorscheme $VIMCOLORS
 endif
 
+highlight CursorLineNR ctermfg=DarkGreen
+
 " more info
 set number
+set relativenumber
 set showmode
 set showcmd
 set ruler
@@ -397,8 +400,10 @@ autocmd FocusLost * :silent! wall
 " Only show cursorline & colorcolumn in the current window
 augroup cline
   autocmd!
-  autocmd WinLeave * set nocursorline colorcolumn=0
-  autocmd WinEnter * set cursorline colorcolumn=80
+  autocmd WinLeave * setlocal nocursorline colorcolumn=0 norelativenumber
+  autocmd InsertEnter * setlocal norelativenumber
+  autocmd InsertLeave * setlocal relativenumber
+  autocmd WinEnter * setlocal cursorline colorcolumn=80 relativenumber
 augroup END
 
 " Restore last cursor position
