@@ -21,6 +21,7 @@ unset mark_old           # read/new is good enough for me
 unset beep_new           # no bell on new mails
 set pipe_decode          # strip headers and eval mimes when piping
 set thorough_search      # strip headers and eval mimes before searching
+set sleep_time = 0       # don't pause after displaying messages
 
 # Sidebar Patch --------------------------------------
 set sidebar_delim   = '  '
