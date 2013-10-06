@@ -247,7 +247,7 @@ iab <expr> dts strftime("%d-%b %Y %H:%M")
 noremap <c-c> <esc>
 
 " make grep (ag) easier
-noremap <leader>f :grep\
+noremap <leader>f :grep <C-R><C-W>
 
 function! Cleanup()
   " save my current context
