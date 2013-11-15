@@ -44,7 +44,6 @@
 [difftool]
 	prompt = false
 [heroku]
-	account = betternow
 [init]
 	templatedir = /Users/rohrer/.git-template
 [push]
