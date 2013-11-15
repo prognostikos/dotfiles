@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+for git_dir in `find ~/ -type d -name .git`
+do
+  cd "${git_dir}/.."
+  rm -r .git/hooks
+  git init
+done
