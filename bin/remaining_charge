@@ -3,6 +3,6 @@
 
 pmset -g batt |
   tr "\n" ";" |
-  sed -e "s/^Currently drawing from 'AC Power'//" \
-      -e "s/Currently drawing from 'Battery Power'/⚛/" |
+  sed -e "s/^Now drawing from 'AC Power'//" \
+      -e "s/Now drawing from 'Battery Power'/⚛/" |
   awk '{print $1 " " $3}'|tr -d ";"
