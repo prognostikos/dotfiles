@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+if [ ! -n "$1" ]
+then
+  echo "Usage: `basename $0` /Volumes/<destination-drive>"
+  exit 1
+fi 
+
+SOURCE="/Applications/Install OS X Mavericks.app"
+DESTINATION="$1"
+
+"${SOURCE}/Contents/Resources/createinstallmedia" \
+  --volume "$DESTINATION" \
+  --applicationpath "$SOURCE" \
+  --nointeraction
