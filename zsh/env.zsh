@@ -1,6 +1,5 @@
-export PATH=$HOME/.rbenv/bin:/usr/local/heroku/bin:/usr/local/share/npm/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/X11/bin
+export PATH=~/c/bn/sub/bin:.git/safe/../../bin:~/.dotfiles/bin:~/.rbenv/bin:/usr/local/heroku/bin:/usr/local/share/npm/bin:/opt/X11/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
 eval "$(rbenv init -)"
-export PATH=./bin:$HOME/.dotfiles/bin:$HOME/c/bn/sub/bin:$PATH
 
 export EDITOR=vim
 export LANG=en_US.UTF-8
@@ -17,4 +16,3 @@ export RUBY_FREE_MIN=500000
 export RUBY_HEAP_MIN_SLOTS=40000
 
 export GOPATH=$HOME/c/go
-export PATH=$GOPATH/bin:$PATH
