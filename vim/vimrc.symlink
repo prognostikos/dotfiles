@@ -117,8 +117,6 @@ set grepprg=ag\ --smart-case
 " http://www.shallowsky.com/linux/noaltscreen.html
 set t_ti= t_te=
 
-" avoid problems with $PATH
-set shell=/bin/bash\ --login
 
 " more info
 set list listchars=tab:▸\ ,extends:❯,precedes:❮
@@ -517,7 +515,6 @@ let g:CommandTRefreshMap = '<F5>'
 
 " Turbux
 let g:no_turbux_mappings = 1
-let g:turbux_runner  = 'vimux'
 if filereadable("./.zeus.sock")
   let g:turbux_command_rspec = 'zeus rspec'
 endif
