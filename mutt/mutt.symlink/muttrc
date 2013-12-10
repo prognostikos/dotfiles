@@ -23,11 +23,6 @@ set pipe_decode          # strip headers and eval mimes when piping
 set thorough_search      # strip headers and eval mimes before searching
 set sleep_time = 0       # don't pause after displaying messages
 
-# Sidebar Patch --------------------------------------
-set sidebar_delim   = '  '
-set sidebar_visible = no
-set sidebar_width   = 48
-
 # Header Options -------------------------------------
 ignore *                                # ignore all headers
 unignore from: to: cc: date: subject:   # show only these
@@ -100,11 +95,6 @@ macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
 
 # Search with notmuch
 macro index / "<enter-command>unset wait_key<enter><shell-escape>mutt-notmuch ~/.mail/temporary/search<enter><change-folder-readonly>+temporary/search<enter>" "search mail (using notmuch)"
-
-# Sidebar Navigation ---------------------------------
-bind index,pager <down>   sidebar-next
-bind index,pager <up>     sidebar-prev
-bind index,pager <right>  sidebar-open
 
 # Pager View Options ---------------------------------
 set pager_index_lines = 10 # number of index lines to show
