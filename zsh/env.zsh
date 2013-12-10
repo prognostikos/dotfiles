@@ -1,5 +1,8 @@
-export PATH=~/c/bn/sub/bin:.git/safe/../../bin:~/.dotfiles/bin:~/.rbenv/bin:/usr/local/heroku/bin:/usr/local/share/npm/bin:/opt/X11/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
+export PATH=/opt/X11/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
+export PATH=/usr/local/heroku/bin:/usr/local/share/npm/bin:$PATH
 eval "$(rbenv init -)"
+export PATH=.git/safe/../../bin:~/.dotfiles/bin:$PATH
+export PATH=~/c/bn/sub/bin:$PATH
 
 export EDITOR=vim
 export LANG=en_US.UTF-8
