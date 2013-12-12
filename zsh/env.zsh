@@ -19,3 +19,5 @@ export RUBY_FREE_MIN=500000
 export RUBY_HEAP_MIN_SLOTS=40000
 
 export GOPATH=$HOME/c/go
+
+export VAGRANT_DEFAULT_PROVIDER=vmware_fusion
