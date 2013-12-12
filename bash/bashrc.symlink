@@ -21,6 +21,3 @@ shopt -s checkwinsize
 source ~/.dotfiles/zsh/aliases
 source ~/.dotfiles/git/git.zsh
 source ~/.dotfiles/git/aliases
-
-fstr() { find "${2:-.}" -type f -exec egrep "$1" {} /dev/null \;|grep -v .git; }
-fistr() { find "${2:-.}" -type f -exec egrep -i "$1" {} /dev/null \;|grep -v .git; }
