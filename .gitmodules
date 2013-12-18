@@ -108,9 +108,6 @@
 [submodule "vim/vim.symlink/bundle/vim-ycm"]
 	path = vim/vim.symlink/bundle/vim-ycm
 	url = git://github.com/Valloric/YouCompleteMe.git
-[submodule "vim/vim.symlink/bundle/vim-command-t"]
-	path = vim/vim.symlink/bundle/vim-command-t
-	url = git://git.wincent.com/command-t.git
 [submodule "vim/vim.symlink/bundle/vim-ragtag"]
 	path = vim/vim.symlink/bundle/vim-ragtag
 	url = git://github.com/tpope/vim-ragtag.git
@@ -135,3 +132,15 @@
 [submodule "vim/vim.symlink/bundle/vim-base16"]
 	path = vim/vim.symlink/bundle/vim-base16
 	url = git@github.com:chriskempson/base16-vim.git
+[submodule "vim/vim.symlink/bundle/vim-ctrlp"]
+	path = vim/vim.symlink/bundle/vim-ctrlp
+	url = git@github.com:kien/ctrlp.vim.git
+[submodule "vim/vim.symlink/bundle/vim-codereview"]
+	path = vim/vim.symlink/bundle/vim-codereview
+	url = git@github.com:codegram/vim-codereview.git
+[submodule "vim/vim.symlink/bundle/vim-patchreview"]
+	path = vim/vim.symlink/bundle/vim-patchreview
+	url = git@github.com:junkblocker/patchreview-vim.git
+[submodule "vim/vim.symlink/bundle/vim-sparkup"]
+	path = vim/vim.symlink/bundle/vim-sparkup
+	url = https://github.com/tristen/vim-sparkup

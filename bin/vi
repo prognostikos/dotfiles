@@ -2,7 +2,7 @@
 
 name="`basename "$0"`"
 
-[[ -z $@ ]] && cmd='-c :CommandT'
+[[ -z $@ ]] && cmd='-c :CtrlPMixed'
 
 [[ $name -eq 'vi' ]] && name=vim
 

@@ -504,14 +504,14 @@ map <Leader>rl :VimuxRunLastCommand<CR>
 map <Leader>rm :make<CR>
 
 " CommandT
-nnoremap <silent> <Leader>t :CommandT<CR>
-nnoremap <silent> <Leader>b :CommandTBuffer<CR>
-let g:CommandTMatchWindowAtTop = 1
-let g:CommandTBackspaceMap = ['<BS>', '<C-h>']
-let g:CommandTDeleteMap = ['<Del>', '<C-d>']
-let g:CommandTCursorLeftMap = ['<C-b>', '<Left>']
-let g:CommandTCursorRightMap = ['<C-f>', '<Right>']
-let g:CommandTRefreshMap = '<F5>'
+" nnoremap <silent> <Leader>t :CommandT<CR>
+" nnoremap <silent> <Leader>b :CommandTBuffer<CR>
+" let g:CommandTMatchWindowAtTop = 1
+" let g:CommandTBackspaceMap = ['<BS>', '<C-h>']
+" let g:CommandTDeleteMap = ['<Del>', '<C-d>']
+" let g:CommandTCursorLeftMap = ['<C-b>', '<Left>']
+" let g:CommandTCursorRightMap = ['<C-f>', '<Right>']
+" let g:CommandTRefreshMap = '<F5>'
 
 " Turbux
 let g:no_turbux_mappings = 1
@@ -586,3 +586,11 @@ let g:gist_open_browser_after_post = 1
 
 " delimitMate
 let delimitMate_expand_cr = 1
+
+" ctrl-p
+let g:ctrlp_match_window = 'top,order:ttb,min:1,max:32'
+let g:ctrlp_use_caching = 0
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+let g:ctrlp_map = '<Leader>t'
+let g:ctrlp_cmd = 'CtrlPMixed'
+nnoremap <silent> <Leader>b :CtrlPBuffer<CR>
