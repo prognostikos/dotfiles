@@ -15,7 +15,9 @@ gem "gem-ctags"
 gem "rbenv-gem-rehash"
 
 gem "teamocil"
-gem "zeus"
+gem "spring"
+gem "spring-commands-rspec"
+gem "spring-commands-testunit"
 
 gem "berkshelf", "~> 2.0.8"
 gem "test-kitchen", "~> 1.0.0.beta.3"

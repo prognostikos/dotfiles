@@ -458,11 +458,7 @@ function! ShowRoutes()
   " Delete everything
   :normal 1GdG
   " Put routes output in buffer
-  if filereadable("./.zeus.sock")
-    :0r! zeus rake -s routes
-  else
-    :0r! rake -s routes
-  endif
+  :0r! rake -s routes
   " Size window to number of lines (1 plus rake output length)
   :exec ":normal " . line("$") . "_ "
   " Move cursor to bottom
@@ -515,9 +511,6 @@ map <Leader>rm :make<CR>
 
 " Turbux
 let g:no_turbux_mappings = 1
-if filereadable("./.zeus.sock")
-  let g:turbux_command_rspec = 'zeus rspec'
-endif
 map <leader>rt <Plug>SendTestToTmux
 map <leader>rT <Plug>SendFocusedTestToTmux
 

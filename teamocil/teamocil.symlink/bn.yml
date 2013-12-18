@@ -11,12 +11,10 @@ session:
         - cmd: "$EDITOR"
     - name: "dotorg srv"
       root: "~/c/bn/bn"
-      layout: main-vertical
+      layout: even-horizontal
       panes:
-        - cmd: tail -f log/development.log
         - cmd: unicorn -c config/unicorn.development.rb
-        - cmd: zeus start
-        - cmd: #guard
+        - cmd: tail -f log/development.log
     - name: "dotorg DB"
       root: "~/c/bn/bn"
       panes:
@@ -27,5 +25,13 @@ session:
         - cmd: ''
     - name: "sub"
       root: "~/c/bn/sub"
+      panes:
+        - cmd: ''
+    - name: "chef2"
+      root: "~/c/bn/chef2"
+      panes:
+        - cmd: ''
+    - name: "chef-betternow"
+      root: "~/c/bn/chef-betternow"
       panes:
         - cmd: ''
