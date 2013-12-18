@@ -17,9 +17,8 @@ bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
 unbind -t vi-copy Enter
 bind-key -t vi-copy Enter copy-pipe "reattach-to-user-namespace pbcopy"
 
-# use bin/remaining_charge to display remaining battery & power source
+# utf-8 is great
 set -g status-utf8 on
-set -g status-right ' #(remaining_charge) %H:%M %d-%b'
 
 # use wrapper for access to pbcopy & pbpaste
 set-option -g default-command "reattach-to-user-namespace -l $SHELL"
@@ -53,36 +52,56 @@ set-option -g terminal-overrides '*88col*:colors=88,*256col*:colors=256,xterm*:X
 # need more history
 set -g history-limit 10000
 
-# colors (solarized dark)
+# need more colors
 set -g default-terminal "screen-256color"
 
-# default statusbar colors
-set -g status-bg black
-set -g status-fg yellow
-set -g status-attr default
+# Allow lengthy session names
+set -g status-left-length 50
 
-# default window title colors
-setw -g window-status-fg brightblue
-setw -g window-status-bg default
+# Status bar 
+set-option -g status-bg '#373b41' 
+set-option -g status-fg blue
+set -g status-left ' #[fg=blue]#S #[fg=#c5c8c6]|'
+set -g status-right '#[fg=blue] #(remaining_charge) #[fg=#c5c8c6]| #[fg=blue]%H:%M %d-%b'
 
-# active window title colors
-setw -g window-status-current-fg yellow
-setw -g window-status-current-bg default
-setw -g window-status-current-attr dim
+# Format window names in status bar
+setw -g window-status-format " #I: #W "
+setw -g window-status-current-format " #I: #W "
 
-# pane border
-set -g pane-border-fg black
-set -g pane-border-bg default
-set -g pane-active-border-fg yellow
-set -g pane-active-border-bg default
+# Highlight active window
+setw -g window-status-current-fg '#c5c8c6'
+setw -g window-status-current-bg '#525252'
 
-# command line/message text
-set -g message-bg black
-set -g message-fg yellow
+# # colors (solarized dark)
+# set -g default-terminal "screen-256color"
 
-# pane number display
-set -g display-panes-active-colour yellow
-set -g display-panes-colour brightblue
+# # default statusbar colors
+# set -g status-bg black
+# set -g status-fg yellow
+# set -g status-attr default
 
-# clock
-setw -g clock-mode-colour yellow
+# # default window title colors
+# setw -g window-status-fg brightblue
+# setw -g window-status-bg default
+
+# # active window title colors
+# setw -g window-status-current-fg yellow
+# setw -g window-status-current-bg default
+# setw -g window-status-current-attr dim
+
+# # pane border
+# set -g pane-border-fg black
+# set -g pane-border-bg default
+# set -g pane-active-border-fg yellow
+# set -g pane-active-border-bg default
+
+# # command line/message text
+# set -g message-bg black
+# set -g message-fg yellow
+
+# # pane number display
+# set -g display-panes-active-colour yellow
+# set -g display-panes-colour brightblue
+
+# # clock
+# setw -g clock-mode-colour yellow
