@@ -73,7 +73,7 @@
 	url = git://github.com/scrooloose/syntastic.git
 [submodule "vim/vim.symlink/bundle/vim-jscomplete"]
 	path = vim/vim.symlink/bundle/vim-jscomplete
-	url = git://github.com/teramako/jscomplete-vim.git
+	url = git://github.com/mattn/jscomplete-vim.git
 [submodule "vim/vim.symlink/bundle/vim-molokai"]
 	path = vim/vim.symlink/bundle/vim-molokai
 	url = git://github.com/tomasr/molokai.git
