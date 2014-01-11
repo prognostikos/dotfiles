@@ -11,7 +11,7 @@ session:
         - cmd: "$EDITOR"
     - name: "dotorg srv"
       root: "~/c/bn/bn"
-      layout: even-horizontal
+      layout: even-vertical
       panes:
         - cmd: unicorn -c config/unicorn.development.rb
         - cmd: tail -f log/development.log
@@ -27,11 +27,7 @@ session:
       root: "~/c/bn/sub"
       panes:
         - cmd: ''
-    - name: "chef2"
-      root: "~/c/bn/chef2"
-      panes:
-        - cmd: ''
-    - name: "chef-betternow"
-      root: "~/c/bn/chef-betternow"
+    - name: "bn-cookbook"
+      root: "~/c/bn/bn-cookbook"
       panes:
         - cmd: ''
