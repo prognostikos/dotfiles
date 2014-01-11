@@ -135,12 +135,6 @@
 [submodule "vim/vim.symlink/bundle/vim-ctrlp"]
 	path = vim/vim.symlink/bundle/vim-ctrlp
 	url = git@github.com:kien/ctrlp.vim.git
-[submodule "vim/vim.symlink/bundle/vim-codereview"]
-	path = vim/vim.symlink/bundle/vim-codereview
-	url = git@github.com:codegram/vim-codereview.git
-[submodule "vim/vim.symlink/bundle/vim-patchreview"]
-	path = vim/vim.symlink/bundle/vim-patchreview
-	url = git@github.com:junkblocker/patchreview-vim.git
 [submodule "vim/vim.symlink/bundle/vim-sparkup"]
 	path = vim/vim.symlink/bundle/vim-sparkup
 	url = https://github.com/tristen/vim-sparkup
