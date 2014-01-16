@@ -91,6 +91,7 @@ set t_vb=
 " files - use version control instead
 set nobackup
 set nowritebackup
+set noswapfile
 
 "When on a buffer becomes hidden when it is abandoned.
 set hidden
