@@ -599,3 +599,22 @@ let g:ctrlp_cmd = 'CtrlPMixed'
 let g:ctrlp_reuse_window = 'netrw'
 let g:ctrlp_mruf_relative = 1
 nnoremap <silent> <Leader>b :CtrlPBuffer<CR>
+
+" Tabularize
+"  NOTES:
+"  * \zs is basically a zero-width lookbehind assertion;
+"    it eats spaces before the comma/colon/whatever.
+"    See: http://vimcasts.org/episodes/aligning-text-with-tabular-vim/
+"  * l0c1 is a format specifier that says
+"    "left, then zero spaces, then [delimiter], then 1 space"
+"    See: https://raw.github.com/godlygeek/tabular/master/doc/Tabular.txt
+noremap <leader>a# :Tabularize/#<CR>
+vnoremap <leader>a# :Tabularize/#<CR>
+noremap <leader>ah :Tabularize/=><CR>
+vnoremap <leader>ah :Tabularize/=><CR>
+noremap <leader>a= :Tabularize/=<CR>
+vnoremap <leader>a= :Tabularize/=<CR>
+noremap <leader>a: :Tabularize/:\zs/l0c1<CR>
+vnoremap <leader>a: :Tabularize/:\zs/l0c1<CR>
+noremap <leader>a, :Tabularize/,\zs/l0c1<CR>
+vnoremap <leader>a, :Tabularize/,\zs/l0c1<CR>
