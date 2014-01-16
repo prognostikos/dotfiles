@@ -25,18 +25,13 @@
 	interactive = auto
 	ui = auto
 [merge]
-	tool = vimdiff
-	summary = true
-	; ff = only
+	tool = diffconflicts
 [gc]
 	auto = 1
 [branch]
 	autosetuprebase = always
 [help]
 	autocorrect = 1
-[mergetool]
-	keepBackup = false
-	prompt = false
 [github]
 	user = prognostikos
 [diff]
@@ -50,3 +45,7 @@
 	default = upstream
 [rerere]
 	enabled = true
+[mergetool "diffconflicts"]
+	cmd = diffconflicts vim $BASE $LOCAL $REMOTE $MERGED
+	trustExitCode = true
+	keepBackup = false
