@@ -596,4 +596,6 @@ let g:ctrlp_use_caching = 0
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 let g:ctrlp_map = '<Leader>t'
 let g:ctrlp_cmd = 'CtrlPMixed'
+let g:ctrlp_reuse_window = 'netrw'
+let g:ctrlp_mruf_relative = 1
 nnoremap <silent> <Leader>b :CtrlPBuffer<CR>
