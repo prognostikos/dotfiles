@@ -16,7 +16,7 @@
 	unstage = reset HEAD
 	uncommit = reset --soft HEAD^
 	ctags = !.git/hooks/ctags
-	unpushed = log --branches --not --remotes --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	unpushed = log --branches --not --remotes --simplify-by-decoration --decorate --oneline
 # some goodies from http://yanpritzker.com/git-book/
 [color]
 	diff = auto
