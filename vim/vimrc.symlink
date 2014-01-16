@@ -150,7 +150,7 @@ if has("gui_running")
   set guioptions-=T
   " always show tabs
   set showtabline=2
-  set guifont=Monaco:h18
+  set guifont=Monofur:h18
 endif
 
 " switch cursor from block in insert mode
