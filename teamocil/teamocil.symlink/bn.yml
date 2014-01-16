@@ -8,7 +8,7 @@ session:
     - name: "dotorg"
       root: "~/c/bn/bn"
       panes:
-        - cmd: "$EDITOR"
+        - cmd: "spring binstub --all && rails runner 'exit' && spring status"
     - name: "dotorg srv"
       root: "~/c/bn/bn"
       layout: even-vertical
