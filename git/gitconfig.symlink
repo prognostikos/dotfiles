@@ -2,8 +2,8 @@
 	name = Matt Rohrer
 	email = matt@prognostikos.com
 [core]
-	excludesfile = /Users/rohrer/.gitignore
-	editor = /Users/rohrer/.dotfiles/bin/vim
+	excludesfile = ~/.gitignore
+	editor = ~/.dotfiles/bin/vim
 	precomposeunicode = true
 [alias]
 	co = checkout
@@ -45,7 +45,7 @@
 	prompt = false
 [heroku]
 [init]
-	templatedir = /Users/rohrer/.git-template
+	templatedir = ~/.git-template
 [push]
 	default = upstream
 [rerere]
