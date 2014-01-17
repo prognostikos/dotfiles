@@ -3,7 +3,6 @@
 	email = matt@prognostikos.com
 [core]
 	excludesfile = ~/.gitignore
-	editor = ~/.dotfiles/bin/vim
 	precomposeunicode = true
 [alias]
 	co = checkout
