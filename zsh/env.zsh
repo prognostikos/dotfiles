@@ -1,5 +1,5 @@
 export PATH=/opt/X11/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
-export PATH=/usr/local/heroku/bin:/usr/local/share/npm/bin:$PATH
+export PATH=/usr/local/heroku/bin:/usr/local/share/npm/bin:~/Library/Python/2.7/bin:$PATH
 eval "$(rbenv init -)"
 export PATH=.git/safe/../../bin:~/.dotfiles/bin:$PATH
 export PATH=~/c/bn/sub/bin:$PATH
