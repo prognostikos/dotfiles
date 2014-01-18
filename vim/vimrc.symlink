@@ -443,6 +443,15 @@ augroup resize
   autocmd VimResized * :wincmd =
 augroup END
 
+" Use CtrlPMixed when started without any arguments
+augroup ctrlpme
+  autocmd!
+  autocmd VimEnter *
+        \ if argc() == 0 | 
+        \   :CtrlPMixed |
+        \ endif
+augroup END
+
 " rails.vim settings
 "
 " open the 'alternate' (test) files
