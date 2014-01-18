@@ -9,6 +9,14 @@ set nocompatible
 set fileencoding=utf-8
 set spelllang=en_us
 
+" Disable copy-as-rtf on non-Macs
+if has("unix")
+  let s:uname = system("uname -s")
+  if s:uname != "Darwin\n"
+    let g:loaded_copy_as_rtf = 1
+  endif
+endif
+
 " autoloading
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 call pathogen#infect()
