@@ -418,8 +418,8 @@ autocmd FocusLost * :silent! wall
 " Only show cursorline & colorcolumn in the current window
 augroup cline
   autocmd!
-  autocmd WinLeave * setlocal nocursorline colorcolumn=0 norelativenumber
-  autocmd InsertEnter * setlocal norelativenumber
+  autocmd WinLeave * setlocal nocursorline colorcolumn=0 norelativenumber number
+  autocmd InsertEnter * setlocal norelativenumber number
   autocmd InsertLeave * setlocal relativenumber
   autocmd WinEnter * setlocal cursorline colorcolumn=80 relativenumber
 augroup END
@@ -455,7 +455,7 @@ augroup END
 augroup ctrlpme
   autocmd!
   autocmd VimEnter *
-        \ if argc() == 0 | 
+        \ if argc() == 0 |
         \   :CtrlPMixed |
         \ endif
 augroup END
