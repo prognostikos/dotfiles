@@ -49,3 +49,13 @@ for completion_file ($ZSH/**/completion.sh) source $completion_file
 
 # use direnv https://github.com/zimbatm/direnv/wiki/
 eval "$(direnv hook zsh)"
+
+# run this after reattaching to a detached tmux session to update the ssh-agent forwarding config
+fixssh() {
+  for key in SSH_AUTH_SOCK SSH_CONNECTION SSH_CLIENT; do
+    if (tmux show-environment | grep "^${key}" > /dev/null); then
+      value=`tmux show-environment | grep "^${key}" | sed -e "s/^[A-Z_]*=//"`
+      export ${key}="${value}"
+    fi
+  done
+}
