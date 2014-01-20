@@ -2,8 +2,13 @@
 local hostname="%m:"
 local username=''
 
-[ -z $SSH_TTY ]       && hostname=''
-[ 'rohrer' != $USER ] && username="%n@"
+if [ $USER = vagrant ]; then
+  username="v@"
+  hostname="vm:"
+else
+  [ -z $SSH_TTY ]       && hostname=''
+  [ "$USER" != rohrer ] && username="%n@"
+fi
 
 PROMPT='%{$fg[magenta]%}${username}${hostname}%{$fg[blue]%}%.%{$fg[cyan]%}$(git-cwd-info)%{$reset_color%}%# '
 # RPROMPT='%{$fg[magenta]%} $(rbenv version-name)%{$reset_color%}'
