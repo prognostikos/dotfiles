@@ -2,9 +2,15 @@
 #
 # bootstrap installs things.
 
+set -e
+
 DOTFILES_ROOT="`pwd`"
 
-set -e
+if [ -z "$1" ]; then
+  DEST_ROOT=$HOME
+else
+  DEST_ROOT="$1"
+fi
 
 echo ''
 
@@ -32,7 +38,7 @@ link_files () {
 }
 
 install_dotfiles () {
-  info 'installing dotfiles'
+  info "Installing dotfiles from $DOTFILES_ROOT to $DEST_ROOT"
 
   overwrite_all=false
   backup_all=false
@@ -40,7 +46,7 @@ install_dotfiles () {
 
   for source in `find $DOTFILES_ROOT -maxdepth 2 -name \*.symlink`
   do
-    dest="$HOME/.`basename \"${source%.*}\"`"
+    dest="$DEST_ROOT/.`basename \"${source%.*}\"`"
 
     if [ -f $dest ] || [ -d $dest ]
     then
