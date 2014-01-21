@@ -23,3 +23,5 @@ export RUBY_HEAP_FREE_MIN=100000
 [ -d ~/javaclasses ] && export CLASSPATH=$CLASSPATH:~/javaclasses:.
 
 export VAGRANT_DEFAULT_PROVIDER=vmware_fusion
+
+export TZ=Europe/Copenhagen
