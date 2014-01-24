@@ -3,6 +3,12 @@
 #                  https://github.com/holman/dotfiles
 #
 
+if [ -z "$TMUX" ]; then
+  if $(which tmux) && [ ! -z $SSH_TTY ]; then
+    tmux attach
+  fi
+fi
+
 # shortcut to this dotfiles path is $ZSH
 export ZSH=$HOME/.dotfiles
 
