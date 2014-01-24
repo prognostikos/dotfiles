@@ -37,6 +37,7 @@ let loaded_matchparen = 1
 " $VIMCOLORS is set in iTerm profile
 if empty($VIMCOLORS)
   colorscheme base16-tomorrow
+  set background=dark
 else
   colorscheme $VIMCOLORS
 endif
