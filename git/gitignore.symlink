@@ -7,3 +7,4 @@ tags
 /node_modules/
 custom_plan.rb
 zeus.json
+*.pyc

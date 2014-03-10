@@ -80,12 +80,12 @@ set complete=.,w,b,u,t,i,]
 set completeopt=longest,menuone,preview
 
 function! InsertTabWrapper()
-    let col = col('.') - 1
-    if !col || getline('.')[col - 1] !~ '\k'
-        return "\<tab>"
-    else
-        return "\<c-p>"
-    endif
+  let col = col('.') - 1
+  if !col || getline('.')[col - 1] !~ '\k'
+    return "\<tab>"
+  else
+    return "\<c-p>"
+  endif
 endfunction
 inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
 " remember
@@ -135,7 +135,6 @@ set grepprg=ag\ --smart-case
 " http://www.shallowsky.com/linux/noaltscreen.html
 set t_ti= t_te=
 
-
 " more info
 set list listchars=tab:▸\ ,extends:❯,precedes:❮
 set showbreak=↪
@@ -159,6 +158,9 @@ if has("gui_running")
   " always show tabs
   set showtabline=2
   set guifont=Monofur:h18
+  set background=light
+else
+  set background=dark
 endif
 
 " switch cursor from block in insert mode
@@ -272,7 +274,7 @@ function! Cleanup()
   " use my tab/space setup on the whole file
   :retab
   " use my indentation setup on the whole file
-  :normal gg=G
+  " :normal gg=G
   " strip trailing whitespace
   :%s/\s\+$//e
   " remove any repeated blank lines
@@ -523,8 +525,8 @@ map <Leader>rp :VimuxPromptCommand<CR>
 " Run last command executed by VimuxRunCommand
 map <Leader>rl :VimuxRunLastCommand<CR>
 
-" Run makeprog in the same way as vimux
-map <Leader>rm :make<CR>
+" Run makeprog (via Dispatch) in the same way as vimux
+map <Leader>rm :Dispatch<CR>
 
 " CommandT
 " nnoremap <silent> <Leader>t :CommandT<CR>
