@@ -206,6 +206,9 @@ set tags+=../tags;/
 " ask me if I want to write unsaved changes
 set confirm
 
+" I don't edit pure .sh files very often...
+let g:is_bash=1
+
 """ Custom mappings
 
 " prefer , rather than default \
