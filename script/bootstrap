@@ -37,6 +37,41 @@ link_files () {
   success "linked $1 to $2"
 }
 
+install_xcode_cmdline_tools () {
+  info "Installing Xcode command line tools"
+  xcode-select --install
+}
+
+install_homebrew () {
+  info "Installing Homebrew"
+  ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+}
+
+install_homebrew_cask () {
+  info "Installing Homebrew Cask"
+  brew tap phinze/cask
+  brew install brew-cask
+  export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+}
+
+install_packages () {
+  for pkg in ctags direnv hub mobile-shell rbenv reattach-to-user-namespace\
+    ruby-build the_silver_searcher tmux vim zsh-completions
+  do
+    info "Installing $pkg"
+    echo brew install "$pkg"
+  done
+}
+
+install_mac_apps () {
+  for app in alfred dropbox firefox phinze-cask/f-lux google-chrome hipchat\
+    iterm2 rescuetime skype vagrant
+  do
+    info "Installing $app"
+    echo brew cask install "$app"
+  done
+}
+
 install_dotfiles () {
   info "Installing dotfiles from $DOTFILES_ROOT to $DEST_ROOT"
 
@@ -104,4 +139,15 @@ install_dotfiles () {
   done
 }
 
-install_dotfiles
+if [ -z "$1" ]; then
+  install_dotfiles
+else
+  info "Waiting 2 seconds to do a full bootstrap (incl. apps & packages). CTRL-C to cancel."
+  sleep 2
+  install_homebrew
+  install_homebrew_cask
+  install_packages
+  install_mac_apps
+  install_dotfiles
+fi
+
