@@ -636,3 +636,6 @@ noremap <leader>a: :Tabularize/:\zs/l0c1<CR>
 vnoremap <leader>a: :Tabularize/:\zs/l0c1<CR>
 noremap <leader>a, :Tabularize/,\zs/l0c1<CR>
 vnoremap <leader>a, :Tabularize/,\zs/l0c1<CR>
+
+" sparkup
+let g:sparkupDoubleQuote = 1
