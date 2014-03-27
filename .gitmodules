@@ -110,3 +110,6 @@
 [submodule "vim/vim.symlink/bundle/vim-sparkup"]
 	path = vim/vim.symlink/bundle/vim-sparkup
 	url = https://github.com/tristen/vim-sparkup
+[submodule "vim/vim.symlink/bundle/vim-eunuch"]
+	path = vim/vim.symlink/bundle/vim-eunuch
+	url = git@github.com:tpope/vim-eunuch.git
