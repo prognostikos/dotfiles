@@ -4,7 +4,7 @@
 #
 
 if [ -z "$TMUX" ]; then
-  if $(which tmux) && [ ! -z $SSH_TTY ]; then
+  if [ -n "$(command -v tmux)" ] && [ ! -z $SSH_TTY ]; then
     tmux attach
   fi
 fi
