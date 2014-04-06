@@ -113,3 +113,6 @@
 [submodule "vim/vim.symlink/bundle/vim-eunuch"]
 	path = vim/vim.symlink/bundle/vim-eunuch
 	url = git@github.com:tpope/vim-eunuch.git
+[submodule "vim/vim.symlink/bundle/vim-trailertrash"]
+	path = vim/vim.symlink/bundle/vim-trailertrash
+	url = git@github.com:csexton/trailertrash.vim.git

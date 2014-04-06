@@ -645,3 +645,4 @@ vnoremap <leader>a, :Tabularize/,\zs/l0c1<CR>
 let g:sparkupDoubleQuote = 1
 
 highlight CursorLineNr ctermfg=red
+highlight UnwantedTrailerTrash guibg=red ctermbg=red
