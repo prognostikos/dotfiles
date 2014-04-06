@@ -42,7 +42,6 @@ else
   colorscheme $VIMCOLORS
 endif
 
-highlight CursorLineNR ctermfg=DarkGreen
 
 " more info
 set number
@@ -644,3 +643,5 @@ vnoremap <leader>a, :Tabularize/,\zs/l0c1<CR>
 
 " sparkup
 let g:sparkupDoubleQuote = 1
+
+highlight CursorLineNr ctermfg=red
