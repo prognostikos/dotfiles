@@ -116,3 +116,6 @@
 [submodule "vim/vim.symlink/bundle/vim-trailertrash"]
 	path = vim/vim.symlink/bundle/vim-trailertrash
 	url = git@github.com:csexton/trailertrash.vim.git
+[submodule "vim/vim.symlink/bundle/vim-ruby-xmpfilter"]
+	path = vim/vim.symlink/bundle/vim-ruby-xmpfilter
+	url = git@github.com:t9md/vim-ruby-xmpfilter.git
