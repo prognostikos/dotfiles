@@ -119,3 +119,9 @@
 [submodule "vim/vim.symlink/bundle/vim-ruby-xmpfilter"]
 	path = vim/vim.symlink/bundle/vim-ruby-xmpfilter
 	url = git@github.com:t9md/vim-ruby-xmpfilter.git
+[submodule "vim/vim.symlink/bundle/vim-gocode"]
+	path = vim/vim.symlink/bundle/vim-gocode
+	url = git@github.com:Blackrush/vim-gocode.git
+[submodule "vim/vim.symlink/bundle/vim-supertab"]
+	path = vim/vim.symlink/bundle/vim-supertab
+	url = git@github.com:ervandew/supertab.git
