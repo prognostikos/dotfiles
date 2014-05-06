@@ -19,7 +19,7 @@ export RUBY_GC_MALLOC_LIMIT=59000000
 export RUBY_HEAP_MIN_SLOTS=600000
 export RUBY_HEAP_FREE_MIN=100000
 
-[ -d ~/c/go ] && export GOPATH=~/c/go
+[ -d ~/c/go ] && export GOPATH=~/c/go; export PATH=$PATH:$GOPATH/bin
 [ -d ~/javaclasses ] && export CLASSPATH=$CLASSPATH:~/javaclasses:.
 
 export VAGRANT_DEFAULT_PROVIDER=vmware_fusion
