@@ -79,16 +79,17 @@ set complete=.,w,b,u,t,i,]
 " there's only one match
 set completeopt=longest,menuone,preview
 
-function! InsertTabWrapper()
-  let col = col('.') - 1
-  if !col || getline('.')[col - 1] !~ '\k'
-    return "\<tab>"
-  else
-    return "\<c-p>"
-  endif
-endfunction
-inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
+" function! InsertTabWrapper()
+"   let col = col('.') - 1
+"   if !col || getline('.')[col - 1] !~ '\k'
+"     return "\<tab>"
+"   else
+"     return "\<c-p>"
+"   endif
+" endfunction
+" inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
 " remember
+
 set history=256
 
 " shut up
@@ -351,6 +352,8 @@ augroup rb
   autocmd BufRead,BufNewFile Vagrantfile,Rakefile,Guardfile,Cheffile setfiletype ruby
   autocmd FileType ruby setlocal makeprg=rspec
   autocmd FileType ruby compiler rspec
+  autocmd FileType ruby let g:rubycomplete_buffer_loading=1
+  autocmd FileType ruby let g:rubycomplete_classes_in_global=1
 augroup END
 
 augroup java
@@ -661,9 +664,9 @@ autocmd FileType ruby xmap <buffer> <D-r> <Plug>(seeing_is_believing-run_-x)
 autocmd FileType ruby imap <buffer> <D-r> <Plug>(seeing_is_believing-run_-x)
 
 " auto insert mark at appropriate spot.
-autocmd FileType ruby nmap <buffer> <F5> <Plug>(seeing_is_believing-run)
-autocmd FileType ruby xmap <buffer> <F5> <Plug>(seeing_is_believing-run)
-autocmd FileType ruby imap <buffer> <F5> <Plug>(seeing_is_believing-run)
+
+" supertab
+let g:SuperTabDefaultCompletionType = "context"
 
 " keep last
 highlight CursorLineNr ctermfg=red
