@@ -125,3 +125,6 @@
 [submodule "vim/vim.symlink/bundle/vim-supertab"]
 	path = vim/vim.symlink/bundle/vim-supertab
 	url = git@github.com:ervandew/supertab.git
+[submodule "vim/vim.symlink/bundle/vim-vitality"]
+	path = vim/vim.symlink/bundle/vim-vitality
+	url = git@github.com:sjl/vitality.vim.git
