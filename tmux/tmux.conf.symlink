@@ -58,8 +58,8 @@ set -g default-terminal "screen-256color"
 # Allow lengthy session names
 set -g status-left-length 50
 
-# Status bar 
-set-option -g status-bg '#373b41' 
+# Status bar
+set-option -g status-bg '#373b41'
 set-option -g status-fg blue
 set -g status-left ' #[fg=blue]#S #[fg=#c5c8c6]|'
 set -g status-right '#[fg=blue] #(remaining_charge) #[fg=#c5c8c6]| #[fg=blue]%H:%M %d-%b'
