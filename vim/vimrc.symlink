@@ -655,3 +655,6 @@ let g:SuperTabDefaultCompletionType = "context"
 
 " keep last
 highlight CursorLineNr ctermfg=red
+
+" always
+let g:vitality_always_assume_iterm = 1
