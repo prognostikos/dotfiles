@@ -629,6 +629,7 @@ vnoremap <leader>a, :Tabularize/,\zs/l0c1<CR>
 
 " sparkup
 let g:sparkupDoubleQuote = 1
+let g:sparkupMappingInsertModeOnly = 1
 
 " seeing_is_believing
 let g:xmpfilter_cmd = "seeing_is_believing"
