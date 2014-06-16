@@ -62,7 +62,8 @@ set smartcase
 set wrapscan
 
 " file & dir matching mode
-set wildmode=list:longest
+set wildmode=full
+" set wildmode=list:longest
 
 " Make tab completion for files/buffers act like bash/readline
 set wildmenu
