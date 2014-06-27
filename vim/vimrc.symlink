@@ -409,10 +409,8 @@ autocmd FocusLost * :silent! wall
 " Only show cursorline & colorcolumn in the current window
 augroup cline
   autocmd!
-  autocmd WinLeave * setlocal nocursorline colorcolumn=0 norelativenumber number
-  autocmd InsertEnter * setlocal norelativenumber number
-  autocmd InsertLeave * setlocal relativenumber
-  autocmd WinEnter * setlocal cursorline colorcolumn=80 relativenumber
+  autocmd WinLeave * setlocal nocursorline colorcolumn=0
+  autocmd WinEnter * setlocal cursorline colorcolumn=80
 augroup END
 
 " Restore last cursor position
