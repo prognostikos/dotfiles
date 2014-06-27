@@ -654,6 +654,10 @@ autocmd FileType ruby imap <buffer> <leader>rs <Plug>(seeing_is_believing-run)
 
 " supertab
 let g:SuperTabDefaultCompletionType = "context"
+autocmd FileType *
+  \ if &omnifunc != '' |
+  \   call SuperTabChain(&omnifunc, "<c-p>") |
+  \ endif
 
 " keep last
 highlight CursorLineNr ctermfg=red
