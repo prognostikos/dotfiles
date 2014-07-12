@@ -353,7 +353,6 @@ augroup END
 
 augroup js
   autocmd!
-  autocmd BufRead,BufNewFile *.json setfiletype javascript
   autocmd FileType javascript setlocal omnifunc=jscomplete#CompleteJS
 augroup END
 
@@ -662,3 +661,6 @@ highlight CursorLineNr ctermfg=red
 
 " always
 let g:vitality_always_assume_iterm = 1
+
+" don't be crazy
+let g:vim_json_syntax_conceal = 0
