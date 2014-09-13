@@ -18,6 +18,4 @@ export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 [ -d ~/c/go ] && export GOPATH=~/c/go; export PATH=$PATH:$GOPATH/bin
 [ -d ~/javaclasses ] && export CLASSPATH=$CLASSPATH:~/javaclasses:.
 
-export VAGRANT_DEFAULT_PROVIDER=vmware_fusion
-
 export TZ=Europe/Copenhagen
