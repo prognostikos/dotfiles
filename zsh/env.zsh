@@ -15,10 +15,6 @@ export GIT_PS1_SHOWDIRTYSTATE=true
 export GIT_PS1_SHOWUNTRACKEDFILES=true
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
-export RUBY_GC_MALLOC_LIMIT=59000000
-export RUBY_HEAP_MIN_SLOTS=600000
-export RUBY_HEAP_FREE_MIN=100000
-
 [ -d ~/c/go ] && export GOPATH=~/c/go; export PATH=$PATH:$GOPATH/bin
 [ -d ~/javaclasses ] && export CLASSPATH=$CLASSPATH:~/javaclasses:.
 
