@@ -664,3 +664,7 @@ let g:vitality_always_assume_iterm = 1
 
 " don't be crazy
 let g:vim_json_syntax_conceal = 0
+
+" ctrl-p window is apparently filetype 'fil'
+let g:numbers_exclude = ['unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m', 'nerdtree', 'fil', 'fugitiveblame', 'prt', 'path', 'mru', 'fil + mru + buf', '<->']
+
