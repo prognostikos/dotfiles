@@ -5,7 +5,7 @@
 
 if [ -z "$TMUX" ]; then
   if [ -n "$(command -v tmux)" ] && [ ! -z $SSH_TTY ]; then
-    tmux attach
+    tmux new-session -As "$(basename "$PWD" | tr . -)"
   fi
 fi
 
