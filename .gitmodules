@@ -128,12 +128,15 @@
 [submodule "vim/vim.symlink/bundle/vim-vitality"]
 	path = vim/vim.symlink/bundle/vim-vitality
 	url = git@github.com:sjl/vitality.vim.git
-[submodule "vim/vim.symlink/bundle/vim-numbers"]
-	path = vim/vim.symlink/bundle/vim-numbers
-	url = git@github.com:myusuf3/numbers.vim.git
 [submodule "vim/vim.symlink/bundle/vim-json"]
 	path = vim/vim.symlink/bundle/vim-json
 	url = git@github.com:elzr/vim-json.git
 [submodule "vim/vim.symlink/bundle/vim-dockerfile"]
 	path = vim/vim.symlink/bundle/vim-dockerfile
 	url = git@github.com:ekalinin/Dockerfile.vim.git
+[submodule "vim/vim.symlink/bundle/vim-projectionist"]
+	path = vim/vim.symlink/bundle/vim-projectionist
+	url = git@github.com:tpope/vim-projectionist.git
+[submodule "vim/vim.symlink/bundle/vim-autornu"]
+	path = vim/vim.symlink/bundle/vim-autornu
+	url = git@github.com:RyanMcG/vim-autornu.git
