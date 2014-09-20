@@ -2,8 +2,7 @@
 
 rbenv version
 
-gem update --system
-gem install bundler
+gem install bundler --conservative
 bundle install --system --gemfile=~/.dotfiles/Gemfile
 
 gem list

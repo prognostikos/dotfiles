@@ -6,22 +6,12 @@
 #
 # All other gems should be managed by bundler per-project via:
 #
-#     bundle install --path vendor/bundle
+#     bundle install --path .bundle
 #
 
 source "https://rubygems.org"
 
 gem "gem-ctags"
 gem "rbenv-gem-rehash"
-
-gem "teamocil"
-gem "spring"
-gem "spring-commands-rspec"
-gem "spring-commands-testunit"
-
-gem "berkshelf", "~> 2.0"
-gem "test-kitchen", "~> 1.1.0"
-gem "kitchen-vagrant"
-
 gem "rcodetools"
 gem "fastri"

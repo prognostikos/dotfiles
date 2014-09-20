@@ -1,7 +1,0 @@
-session:
-  name: algs
-  windows:
-    - name: algs
-      root: ~/l/algs4part1
-      splits:
-        - cmd:
