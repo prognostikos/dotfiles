@@ -186,6 +186,7 @@ set switchbuf=useopen
 
 " find a tags file somewhere
 set tags+=../tags;/
+set tags+=\.git/tags
 
 " ask me if I want to write unsaved changes
 set confirm
