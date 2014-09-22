@@ -304,6 +304,8 @@ function! Mkdir()
   endif
 endfunction
 
+noremap <leader><leader> <c-^>
+
 """ Autocomd/Filetype-specific settings
 
 augroup dowhatimean
