@@ -224,6 +224,8 @@ cnoremap <C-E> <End>
 cnoremap <C-K> <C-U>
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
+cnoremap <C-F> <Left>
+cnoremap <C-D> <Delete>
 
 " Toggle spell checking for the current file
 noremap <leader>sc :setlocal spell!<cr>
