@@ -1,8 +1,8 @@
 #!/bin/sh
 
-exit 0
-
 set -e
+
+export PATH=/usr/local/bin:$PATH
 
 TMPDIR=".git"
 TMPFILE=`mktemp -t tags` || exit 1
