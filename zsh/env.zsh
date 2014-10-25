@@ -1,7 +1,12 @@
-export PATH=/opt/X11/bin:/usr/local/bin:/usr/local/sbin:$PATH
-export PATH=/usr/local/heroku/bin:/usr/local/share/npm/bin:~/Library/Python/2.7/bin:$PATH
+if command -v brew > /dev/null ; then
+  export PATH="$PATH:/usr/local/lib/node_modules"
+  source $(brew --prefix nvm)/nvm.sh
+fi
 
-[ -d ~/.rbenv ] && eval "$(rbenv init -)"
+if [ -d ~/.rbenv ]; then
+  export PATH="$HOME/.rbenv/bin:$PATH"
+  eval "$(rbenv init - zsh --no-rehash)"
+fi
 
 export PATH=.git/safe/../../bin:~/.dotfiles/bin:$PATH
 
