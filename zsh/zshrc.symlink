@@ -64,3 +64,5 @@ fixssh() {
     fi
   done
 }
+
+export TZ=Europe/Copenhagen
