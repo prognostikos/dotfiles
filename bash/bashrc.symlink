@@ -1,4 +1,4 @@
-source ~/.dotfiles/zsh/env.zsh
+source ~/.dotfiles/zsh/zshenv.symlink
 
 # If not running interactively, don't do anything below here
 [ -z "$PS1" ] && return
