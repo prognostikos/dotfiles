@@ -1,4 +1,4 @@
-alias git=hub
+alias git=gh
 alias gs='git status -sb '
 alias ga='git add '
 alias gaa='git add --update'
