@@ -8,7 +8,7 @@ if [ -d ~/.rbenv ]; then
   eval "$(~/.rbenv/bin/rbenv init - zsh --no-rehash)"
 fi
 
-export PATH=.git/safe/../../bin:~/.dotfiles/bin:/usr/local/bin:$PATH
+export PATH=.git/safe/../../bin:~/.dotfiles/bin:/usr/local/sbin:$PATH
 
 [ -d ~/c/bn/sub/bin ] && export PATH=~/c/bn/sub/bin:$PATH
 
