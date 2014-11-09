@@ -610,6 +610,7 @@ let g:ctrlp_map = '<Leader>t'
 let g:ctrlp_cmd = 'CtrlPMixed'
 let g:ctrlp_reuse_window = 'netrw'
 let g:ctrlp_mruf_relative = 1
+let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
 nnoremap <silent> <Leader>b :CtrlPBuffer<CR>
 
 " Tabularize

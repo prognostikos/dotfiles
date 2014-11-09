@@ -137,3 +137,6 @@
 [submodule "vim/vim.symlink/bundle/vim-autornu"]
 	path = vim/vim.symlink/bundle/vim-autornu
 	url = git@github.com:RyanMcG/vim-autornu.git
+[submodule "vim/vim.symlink/bundle/vim-ctrlp-py-matcher"]
+	path = vim/vim.symlink/bundle/vim-ctrlp-py-matcher
+	url = git@github.com:FelikZ/ctrlp-py-matcher.git
