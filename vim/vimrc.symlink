@@ -601,7 +601,7 @@ let g:gist_open_browser_after_post = 1
 let delimitMate_expand_cr = 1
 
 " ctrl-p
-let g:ctrlp_match_window = 'top,order:ttb,min:1,max:32'
+let g:ctrlp_match_window = 'top,order:ttb'
 let g:ctrlp_use_caching = 0
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 let g:ctrlp_map = '<Leader>t'
