@@ -9,8 +9,12 @@ if [ -z "$TMUX" ]; then
   fi
 fi
 
+if [ -n "$(command -v gh)" ]; then
+  $(gh alias -s)
+fi
+
 # add homebrew's completions to fpath
-fpath=(/usr/local/share/zsh/site-functions /usr/local/share/zsh-completions $fpath)
+fpath=(/usr/local/share/zsh/site-functions $fpath)
 
 # shortcut to this dotfiles path is $ZSH
 export ZSH=$HOME/.dotfiles
