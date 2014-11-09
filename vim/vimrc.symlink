@@ -131,7 +131,7 @@ set equalalways
 set eadirection=hor
 
 " use ag instead of grep
-set grepprg=ag\ --smart-case
+set grepprg=ag\ --smart-case\ --nogroup\ --nocolor
 
 " eliminate clearing of terminal when suspending/quiting
 " http://www.shallowsky.com/linux/noaltscreen.html
