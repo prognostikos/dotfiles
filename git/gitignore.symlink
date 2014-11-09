@@ -8,3 +8,4 @@ tags
 custom_plan.rb
 zeus.json
 *.pyc
+.bundle
