@@ -7,7 +7,7 @@
 # configured here named ".notmuch".
 #
 [database]
-path=/Users/rohrer/.mail/finitesoup-gmail.com
+path=/Users/rohrer/.mail/personal
 
 # User configuration
 #
@@ -27,7 +27,7 @@ path=/Users/rohrer/.mail/finitesoup-gmail.com
 [user]
 name=Matt Rohrer
 primary_email=matt@prognostikos.com
-other_email=finitesoup@gmail.com;matt@influestor.com;mr@betternow.org;maroh11@student.sdu.dk;
+other_email=finitesoup@gmail.com;mr@betternow.org
 
 # Configuration for "notmuch new"
 #

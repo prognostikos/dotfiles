@@ -12,7 +12,7 @@ postsynchook = notmuch new
 
 [Repository MattRohrer-Local]
 type = Maildir
-localfolders = ~/.mail/finitesoup-gmail.com
+localfolders = ~/.mail/personal
 nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
                             'sent':    '[Gmail]/Sent Mail',
                             'flagged': '[Gmail]/Starred',
@@ -21,7 +21,7 @@ nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
                             }.get(folder, folder)
 
 [Repository MattRohrer-Remote]
-cert_fingerprint=89091347184d41768bfc0da9fad94bfe882dd358
+cert_fingerprint=fb679e12a6ff179e00a454da8441cc1b6c3d261f
 maxconnections = 1
 type = Gmail
 remoteuser = finitesoup@gmail.com

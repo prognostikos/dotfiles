@@ -32,30 +32,30 @@ hdr_order from: to: cc: date: subject:  # and in this order
 # Account Settings -----------------------------------
 
 # Default inbox.
-set spoolfile = "+finitesoup-gmail.com/INBOX"
+set spoolfile = "+personal/INBOX"
 
 # Alternate email addresses.
 alternates matt@prognostikos.com finitesoup@gmail.com
 
 # Mailboxes to show in the sidebar.
-mailboxes +finitesoup-gmail.com/INBOX \
-          +finitesoup-gmail.com/sent \
-          +finitesoup-gmail.com/drafts \
-          +finitesoup-gmail.com/RR\ Parley \
-          +finitesoup-gmail.com/Chef \
-          +finitesoup-gmail.com/CTO-list \
-          +finitesoup-gmail.com/Nerdery\
-          +finitesoup-gmail.com/Jobs\
-          +finitesoup-gmail.com/School\
-          +finitesoup-gmail.com/BAWCH\
-          +finitesoup-gmail.com/BN\
-          +finitesoup-gmail.com/Invoices\ and\ Receipts\
-          +finitesoup-gmail.com/Banks\
-          +finitesoup-gmail.com/FDJ\
-          +finitesoup-gmail.com/Golf\
-          +finitesoup-gmail.com/Kids\
-          +finitesoup-gmail.com/LinkedIn\
-          +finitesoup-gmail.com/eBay\ PayPal\
+mailboxes +personal/INBOX \
+          +personal/sent \
+          +personal/drafts \
+          +personal/RR\ Parley \
+          +personal/Chef \
+          +personal/CTO-list \
+          +personal/Nerdery\
+          +personal/Jobs\
+          +personal/School\
+          +personal/BAWCH\
+          +personal/BN\
+          +personal/Invoices\ and\ Receipts\
+          +personal/Banks\
+          +personal/FDJ\
+          +personal/Golf\
+          +personal/Kids\
+          +personal/LinkedIn\
+          +personal/eBay\ PayPal\
           +temporary/search \
 
 # Other special folders.
@@ -129,7 +129,7 @@ macro pager \Cu "|urlview<enter>" "call urlview to open links"
 macro pager O "<shell-escape>offlineimap<enter>"           "run offlineimap to sync all mail"
 macro pager o "<shell-escape>offlineimap -qf INBOX<enter>" "run offlineimap to sync inbox"
 
-macro index,pager gi "<change-folder>~/.mail/finitesoup-gmail.com/INBOX<enter>" "Go to INBOX"
+macro index,pager gi "<change-folder>~/.mail/personal/INBOX<enter>" "Go to INBOX"
 
 # Compose View Options -------------------------------
 set realname = "Matt Rohrer"         # who am i?
