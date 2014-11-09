@@ -14,6 +14,8 @@ if has("unix")
   let s:uname = system("uname -s")
   if s:uname != "Darwin\n"
     let g:loaded_copy_as_rtf = 1
+  else
+    let g:ctrlp_mruf_case_sensitive = 0
   endif
 endif
 
