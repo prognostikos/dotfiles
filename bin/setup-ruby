@@ -1,8 +1,0 @@
-#!/bin/sh
-
-rbenv version
-
-gem install bundler --conservative
-bundle install --system --gemfile=~/.dotfiles/Gemfile
-
-gem list
