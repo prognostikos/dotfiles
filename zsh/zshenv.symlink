@@ -4,8 +4,8 @@ if command -v brew > /dev/null ; then
 fi
 
 if [ -d ~/.rbenv ]; then
-  export PATH="~/.rbenv/bin:$PATH"
-  eval "$(~/.rbenv/bin/rbenv init - zsh --no-rehash)"
+  export PATH=~/.rbenv/bin:$PATH
+  eval "$(rbenv init -)"
 fi
 
 export PATH=.git/safe/../../bin:~/.dotfiles/bin:/usr/local/sbin:$PATH
