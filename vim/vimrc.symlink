@@ -573,26 +573,6 @@ let g:ycm_seed_identifiers_with_syntax = 1
 " let g:ycm_autoclose_preview_window_after_completion = 0
 let g:ycm_add_preview_to_completeopt = 1
 
-let g:airline_theme='base16'
-let g:airline_powerline_fonts=0
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_mode_map = {
-    \ '__' : '-',
-    \ 'n'  : 'N',
-    \ 'i'  : 'I',
-    \ 'R'  : 'R',
-    \ 'c'  : 'C',
-    \ 'v'  : 'V',
-    \ 'V'  : 'V',
-    \ '' : 'V',
-    \ 's'  : 'S',
-    \ 'S'  : 'S',
-    \ '' : 'S',
-    \ }
-
 " Gist.vim
 let g:gist_post_private = 1
 let g:gist_get_multiplefile = 1
@@ -676,3 +656,16 @@ let g:vim_json_syntax_conceal = 0
 " ctrl-p window is apparently filetype 'fil'
 let g:autornu_filetype_blacklist = ['gitcommit', 'help', 'unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m', 'nerdtree', 'fil', 'fugitiveblame', 'prt', 'path', 'mru', 'fil + mru + buf', '<->']
 
+let g:lightline = {}
+let g:lightline.mode_map = {
+    \ 'n' :     'N',
+    \ 'i' :     'I',
+    \ 'R' :     'R',
+    \ 'v' :     'V',
+    \ 'V' :     'V',
+    \ 'c' :     'C',
+    \ "\<C-v>": 'V',
+    \ 's' :     'S',
+    \ 'S' :     'S',
+    \ "\<C-s>": 'S',
+    \ '?':      ' ' }
