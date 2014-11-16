@@ -287,7 +287,7 @@ nnoremap j gj
 inoremap <BS> <nop>
 
 " delete all buffers
-nnoremap <leader>bd :bd *<c-a><cr>
+nnoremap <leader>dd :bd *<c-a><cr>
 
 function! RenameFile()
   let old_name = expand('%')
