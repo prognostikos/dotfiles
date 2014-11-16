@@ -493,17 +493,6 @@ noremap <leader>gg :topleft 100 :split Gemfile<cr>
 " needed for textobj-user & textobj-rubyblock
 runtime macros/matchit.vim
 
-" Vimux should split horizontally, but only if there isn't already a split
-" and only if there is room to split to the side and have two windows open.
-if (&columns > (&winwidth * 2) + (&winwidth * 0.25))
-  let g:VimuxOrientation = "h"
-else
-  let g:VimuxOrientation = "v"
-endif
-
-" The percent of the screen the split pane Vimux will spawn should take up.
-let g:VimuxHeight = "25"
-
 " Vimux should only open a pane when there isn't one already
 let g:VimuxUseNearestPane = 1
 
