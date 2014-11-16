@@ -631,9 +631,6 @@ let g:vitality_always_assume_iterm = 1
 " don't be crazy
 let g:vim_json_syntax_conceal = 0
 
-" ctrl-p window is apparently filetype 'fil'
-let g:autornu_filetype_blacklist = ['gitcommit', 'help', 'unite', 'tagbar', 'startify', 'gundo', 'vimshell', 'w3m', 'nerdtree', 'fil', 'fugitiveblame', 'prt', 'path', 'mru', 'fil + mru + buf', '<->']
-
 let g:lightline = {}
 let g:lightline.mode_map = {
     \ 'n' :     'N',
