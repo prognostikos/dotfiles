@@ -170,7 +170,6 @@ endif
 " assume a fast terminal connection
 set ttyfast
 set ttimeout
-set ttimeoutlen=50
 
 " don't redraw each line when executing macros
 set lazyredraw
