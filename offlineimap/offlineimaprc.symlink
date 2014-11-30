@@ -19,7 +19,7 @@ nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
                             }.get(folder, folder)
 
 [Repository MattRohrer-Remote]
-cert_fingerprint=fb679e12a6ff179e00a454da8441cc1b6c3d261f
+sslcacertfile = /usr/local/etc/openssl/cert.pem
 maxconnections = 1
 type = Gmail
 remoteuser = finitesoup@gmail.com
