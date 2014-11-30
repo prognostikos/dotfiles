@@ -30,37 +30,14 @@ unhdr_order *                           # some distros order things by default
 hdr_order from: to: cc: date: subject:  # and in this order
 
 # Account Settings -----------------------------------
+source ~/.mutt/personal.muttrc
+folder-hook '+personal/' 'source ~/.mutt/personal.muttrc'
 
-# Default inbox.
-set spoolfile = "+personal/INBOX"
+source ~/.mutt/bn.muttrc
+folder-hook '+bn/' 'source ~/.mutt/bn.muttrc'
 
 # Alternate email addresses.
-alternates matt@prognostikos.com finitesoup@gmail.com
-
-# Mailboxes to show in the sidebar.
-mailboxes +personal/INBOX \
-          +personal/sent \
-          +personal/drafts \
-          +personal/RR\ Parley \
-          +personal/Chef \
-          +personal/CTO-list \
-          +personal/Nerdery\
-          +personal/Jobs\
-          +personal/School\
-          +personal/BAWCH\
-          +personal/BN\
-          +personal/Invoices\ and\ Receipts\
-          +personal/Banks\
-          +personal/FDJ\
-          +personal/Golf\
-          +personal/Kids\
-          +personal/LinkedIn\
-          +personal/eBay\ PayPal\
-          +temporary/search \
-
-# Other special folders.
-set mbox      = "+personal/archive"
-set postponed = "+personal/drafts"
+alternates matt@prognostikos.com mr@betternow.org finitesoup@gmail.com
 
 # Index View Options ---------------------------------
 set date_format = "%m/%d"
@@ -84,10 +61,6 @@ bind index p recall-message
 # Ctrl-R to mark all as read
 macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
 # macro index \Cr "T~N<enter>;WNT~O<enter>;WO\CT~T<enter>" "mark all messages read"
-
-# Sync email
-macro index O "<shell-escape>offlineimap<enter>"           "run offlineimap to sync all mail"
-macro index o "<shell-escape>offlineimap -qf INBOX<enter>" "run offlineimap to sync inbox"
 
 # Saner copy/move dialogs
 macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
@@ -125,12 +98,6 @@ auto_view text/html
 
 macro pager \Cu "|urlview<enter>" "call urlview to open links"
 
-# Sync email
-macro pager O "<shell-escape>offlineimap<enter>"           "run offlineimap to sync all mail"
-macro pager o "<shell-escape>offlineimap -qf INBOX<enter>" "run offlineimap to sync inbox"
-
-macro index,pager gi "<change-folder>~/.mail/personal/INBOX<enter>" "Go to INBOX"
-
 # Compose View Options -------------------------------
 set realname = "Matt Rohrer"         # who am i?
 set envelope_from                    # which from?
@@ -157,14 +124,6 @@ bind editor ^T    complete
 # Compose Keybindings ----------------------------------------------
 bind compose p postpone-message
 
-# Sending ----------------------------------------------
-set from     = "matt@prognostikos.com"
-set sendmail = "/usr/local/bin/msmtp -a mattrohrer"
-set sendmail_wait = 0
-unset record
-
 # Colors ----------------------------------------------
-# source ~/.mutt/colors-solarized/mutt-colors-solarized-dark-16.muttrc
-# source ~/.mutt/light-colors.muttrc
 source ~/.mutt/boring.muttrc
 

@@ -386,6 +386,7 @@ augroup END
 augroup mail
   autocmd!
   autocmd FileType mail setlocal wrap linebreak autoindent nolist textwidth=72 spell
+  autocmd FileType mail setlocal complete+=kspell
 augroup END
 
 augroup git

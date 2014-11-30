@@ -1,0 +1,38 @@
+# Sending ----------------------------------------------
+set from     = "matt@prognostikos.com"
+set sendmail = "/usr/local/bin/msmtp -a mattrohrer"
+set sendmail_wait = 0
+unset record
+
+# Default inbox.
+set spoolfile = "+personal/INBOX"
+
+# Mailboxes to show in the sidebar.
+mailboxes +personal/INBOX \
+          +personal/sent \
+          +personal/drafts \
+          +personal/CTO-list \
+          +personal/Nerdery\
+          +personal/Jobs\
+          +personal/School\
+          +personal/BAWCH\
+          +personal/BN\
+          +personal/Invoices\ and\ Receipts\
+          +personal/Banks\
+          +personal/Kids\
+          +personal/jose\
+          +personal/LinkedIn\
+          +personal/eBay\ PayPal\
+          +temporary/search \
+
+# Other special folders.
+set mbox      = "+personal/archive"
+set postponed = "+personal/drafts"
+
+# Sync email
+macro index O "<shell-escape>offlineimap -a personal<enter>"           "run offlineimap to sync all mail"
+macro index o "<shell-escape>offlineimap -a personal -qf INBOX<enter>" "run offlineimap to sync inbox"
+macro index,pager gi "<change-folder>~/.mail/personal/INBOX<enter>" "Go to INBOX"
+macro index,pager ga "<change-folder>~/.mail/personal/archive<enter>" "Go to Archive"
+macro index,pager gs "<change-folder>~/.mail/personal/sent<enter>" "Go to Sent Mail"
+

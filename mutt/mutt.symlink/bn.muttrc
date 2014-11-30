@@ -1,0 +1,26 @@
+# Sending ----------------------------------------------
+set from     = "mr@betternow.org"
+set sendmail = "/usr/local/bin/msmtp -a betternow"
+set sendmail_wait = 0
+unset record
+
+# Default inbox.
+set spoolfile = "+bn/INBOX"
+
+# Mailboxes to show in the sidebar.
+mailboxes +bn/INBOX \
+          +bn/sent \
+          +bn/drafts \
+          +temporary/search \
+
+# Other special folders.
+set mbox      = "+bn/archive"
+set postponed = "+bn/drafts"
+
+# Sync email
+macro index O "<shell-escape>offlineimap -a bn<enter>"           "run offlineimap to sync all mail"
+macro index o "<shell-escape>offlineimap -a bn -qf INBOX<enter>" "run offlineimap to sync inbox"
+macro index,pager gi "<change-folder>~/.mail/bn/INBOX<enter>" "Go to INBOX"
+macro index,pager ga "<change-folder>~/.mail/bn/archive<enter>" "Go to Archive"
+macro index,pager gs "<change-folder>~/.mail/bn/sent<enter>" "Go to Sent Mail"
+

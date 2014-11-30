@@ -1,16 +1,16 @@
 [general]
 ui = ttyui
-accounts = MattRohrer
-pythonfile=~/.mutt/get_keychain_pass.py
+accounts = personal,bn
+pythonfile = ~/.mutt/get_keychain_pass.py
 fsync = False
 
-[Account MattRohrer]
-localrepository = MattRohrer-Local
-remoterepository = MattRohrer-Remote
+[Account personal]
+localrepository = personal-local
+remoterepository = personal-remote
 status_backend = sqlite
 postsynchook = notmuch new
 
-[Repository MattRohrer-Local]
+[Repository personal-local]
 type = Maildir
 localfolders = ~/.mail/personal
 nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
@@ -18,13 +18,44 @@ nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
                             'archive': '[Gmail]/All Mail'
                             }.get(folder, folder)
 
-[Repository MattRohrer-Remote]
+[Repository personal-remote]
 sslcacertfile = /usr/local/etc/openssl/cert.pem
 maxconnections = 1
 type = Gmail
 remoteuser = finitesoup@gmail.com
 remotehost = imap.gmail.com
 remotepasseval = get_keychain_pass(account="finitesoup@gmail.com", server="imap.gmail.com")
+realdelete = no
+ssl = yes
+nametrans = lambda folder: {'[Gmail]/Drafts':    'drafts',
+                            '[Gmail]/Sent Mail': 'sent',
+                            '[Gmail]/All Mail':  'archive'
+                            }.get(folder, folder)
+folderfilter = lambda folder: folder not in ['[Gmail]/Trash',
+                                             '[Gmail]/Spam',
+                                             '[Gmail]/Important',
+                                            ]
+[Account bn]
+localrepository = bn-local
+remoterepository = bn-remote
+status_backend = sqlite
+postsynchook = notmuch new
+
+[Repository bn-local]
+type = Maildir
+localfolders = ~/.mail/bn
+nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
+                            'sent':    '[Gmail]/Sent Mail',
+                            'archive': '[Gmail]/All Mail'
+                            }.get(folder, folder)
+
+[Repository bn-remote]
+sslcacertfile = /usr/local/etc/openssl/cert.pem
+maxconnections = 1
+type = Gmail
+remoteuser = mr@betternow.org
+remotehost = imap.gmail.com
+remotepasseval = get_keychain_pass(account="mr@betternow.org", server="imap.gmail.com")
 realdelete = no
 ssl = yes
 nametrans = lambda folder: {'[Gmail]/Drafts':    'drafts',

@@ -8,4 +8,14 @@ user finitesoup@gmail.com
 tls on
 tls_trust_file /usr/local/etc/openssl/cert.pem
 
+account betternow
+host smtp.gmail.com
+port 587
+protocol smtp
+auth on
+from mr@betternow.org
+user mr@betternow.org
+tls on
+tls_trust_file /usr/local/etc/openssl/cert.pem
+
 account default: mattrohrer
