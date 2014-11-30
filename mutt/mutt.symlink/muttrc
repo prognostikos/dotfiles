@@ -59,8 +59,8 @@ mailboxes +personal/INBOX \
           +temporary/search \
 
 # Other special folders.
-set mbox      = "+finitesoup-gmail.com/archive"
-set postponed = "+finitesoup-gmail.com/drafts"
+set mbox      = "+personal/archive"
+set postponed = "+personal/drafts"
 
 # Index View Options ---------------------------------
 set date_format = "%m/%d"
