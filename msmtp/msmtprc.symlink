@@ -6,6 +6,6 @@ auth on
 from matt@prognostikos.com
 user finitesoup@gmail.com
 tls on
-tls_trust_file ~/.mutt/gmail.cert
+tls_trust_file /usr/local/etc/openssl/cert.pem
 
 account default: mattrohrer
