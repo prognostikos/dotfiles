@@ -147,7 +147,7 @@ set reply_to                         # reply to Reply to: field
 set reverse_name                     # reply as whomever it was to
 set include                          # include message in replies
 set forward_quote                    # include message in forwards
-set editor = "mvim -v '+/^$'"
+set editor = "vim -v '+/^$'"
 
 # Use Contacts.app / Address Book ----------------------------------------
 set query_command = "contacts -Sf '%eTOKEN%n' '%s' | sed -e 's/TOKEN/\t/g'"
