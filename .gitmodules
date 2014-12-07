@@ -59,9 +59,6 @@
 [submodule "vim/vim.symlink/bundle/vim-markdown-preview"]
 	path = vim/vim.symlink/bundle/vim-markdown-preview
 	url = git://github.com/nelstrom/vim-markdown-preview.git
-[submodule "vim/vim.symlink/bundle/vim-nerdtree"]
-	path = vim/vim.symlink/bundle/vim-nerdtree
-	url = git://github.com/scrooloose/nerdtree.git
 [submodule "mutt/mutt.symlink/colors-solarized"]
 	path = mutt/mutt.symlink/colors-solarized
 	url = git://github.com/altercation/mutt-colors-solarized.git
