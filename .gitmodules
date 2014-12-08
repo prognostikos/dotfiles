@@ -137,3 +137,6 @@
 [submodule "vim/vim.symlink/bundle/vim-neocomplete"]
 	path = vim/vim.symlink/bundle/vim-neocomplete
 	url = git@github.com:Shougo/neocomplete.vim.git
+[submodule "vim/vim.symlink/bundle/vim-vinegar"]
+	path = vim/vim.symlink/bundle/vim-vinegar
+	url = git://github.com/tpope/vim-vinegar.git
