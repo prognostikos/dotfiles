@@ -11,6 +11,13 @@ set spoolfile = "+bn/INBOX"
 mailboxes +bn/INBOX \
           +bn/sent \
           +bn/drafts \
+          +bn/Dev\ Tools \
+          +bn/Service\ Spam \
+          +bn/STAGING \
+          +bn/[Mailbox].Later \
+          +bn/[Mailbox].To\ Buy \
+          +bn/[Mailbox].To\ Read \
+          +bn/[Mailbox].To\ Watch \
           +temporary/search \
 
 # Other special folders.

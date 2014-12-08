@@ -24,6 +24,10 @@ mailboxes +personal/INBOX \
           +personal/jose\
           +personal/LinkedIn\
           +personal/eBay\ PayPal\
+          +personal/[Mailbox].Later \
+          +personal/[Mailbox].To\ Buy \
+          +personal/[Mailbox].To\ Read \
+          +personal/[Mailbox].To\ Watch \
           +temporary/search \
 
 # Other special folders.
