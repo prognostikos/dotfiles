@@ -20,7 +20,7 @@ nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
 
 [Repository personal-remote]
 sslcacertfile = /usr/local/etc/openssl/cert.pem
-maxconnections = 1
+maxconnections = 3
 type = Gmail
 remoteuser = finitesoup@gmail.com
 remotehost = imap.gmail.com
@@ -51,7 +51,7 @@ nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
 
 [Repository bn-remote]
 sslcacertfile = /usr/local/etc/openssl/cert.pem
-maxconnections = 1
+maxconnections = 3
 type = Gmail
 remoteuser = mr@betternow.org
 remotehost = imap.gmail.com
