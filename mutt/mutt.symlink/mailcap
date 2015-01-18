@@ -1,6 +1,8 @@
 # MS Word documents
 application/msword; ~/.mutt/view_attachment.sh %s "-" '/Applications/Microsoft\ Office\ 2011/Microsoft\ Word.app'
 application/vnd.openxmlformats-officedocument.wordprocessingml.document;  ~/.mutt/view_attachment.sh %s "-" '/Applications/Microsoft\ Office\ 2011/Microsoft\ Word.app'
+application/vnd.openxmlformats-officedocument.presentationml.presentation;  ~/.mutt/view_attachment.sh %s "-" '/Applications/Microsoft\ Office\ 2011/Microsoft\ PowerPoint.app'
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; ~/.mutt/view_attachment.sh %s "-" '/Applications/Microsoft\ Office\ 2011/Microsoft\ Excel.app'
 
 # Images
 image/jpg; ~/.mutt/view_attachment.sh %s jpg
