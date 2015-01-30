@@ -514,11 +514,6 @@ map <Leader>rl :VimuxRunLastCommand<CR>
 " Run makeprog (via Dispatch) in the same way as vimux
 map <Leader>rm :Dispatch<CR>
 
-" Turbux
-let g:no_turbux_mappings = 1
-map <leader>rt <Plug>SendTestToTmux
-map <leader>rT <Plug>SendFocusedTestToTmux
-
 " Syntastic
 let g:syntastic_enable_highlighting = 0
 let g:syntastic_auto_loc_list       = 1
@@ -694,3 +689,10 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
+
+" vim-test
+let g:test#strategy = 'dispatch'
+nmap <silent> <leader>rt :TestFile<CR>
+nmap <silent> <leader>rT :TestNearest<CR>
+nmap <silent> <leader>ra :TestSuite<CR>
+

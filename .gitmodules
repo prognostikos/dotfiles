@@ -53,9 +53,6 @@
 [submodule "vim/vim.symlink/bundle/vim-bundler"]
 	path = vim/vim.symlink/bundle/vim-bundler
 	url = git://github.com/tpope/vim-bundler.git
-[submodule "vim/vim.symlink/bundle/vim-turbux"]
-	path = vim/vim.symlink/bundle/vim-turbux
-	url = git://github.com/jgdavey/vim-turbux.git
 [submodule "vim/vim.symlink/bundle/vim-markdown-preview"]
 	path = vim/vim.symlink/bundle/vim-markdown-preview
 	url = git://github.com/nelstrom/vim-markdown-preview.git
@@ -146,3 +143,6 @@
 [submodule "vim/vim.symlink/bundle/vim-snippits"]
 	path = vim/vim.symlink/bundle/vim-snippits
 	url = https://github.com/honza/vim-snippets.git
+[submodule "vim/vim.symlink/bundle/vim-test"]
+	path = vim/vim.symlink/bundle/vim-test
+	url = git@github.com:janko-m/vim-test.git
