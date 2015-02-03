@@ -137,9 +137,6 @@
 [submodule "vim/vim.symlink/bundle/vim-vinegar"]
 	path = vim/vim.symlink/bundle/vim-vinegar
 	url = git://github.com/tpope/vim-vinegar.git
-[submodule "vim/vim.symlink/bundle/vim-ultisnips"]
-	path = vim/vim.symlink/bundle/vim-ultisnips
-	url = git@github.com:SirVer/ultisnips.git
 [submodule "vim/vim.symlink/bundle/vim-snippits"]
 	path = vim/vim.symlink/bundle/vim-snippits
 	url = https://github.com/honza/vim-snippets.git
