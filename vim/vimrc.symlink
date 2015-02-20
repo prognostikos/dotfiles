@@ -324,7 +324,7 @@ augroup textmarkdown
   autocmd BufRead,BufNewFile *.txt setfiletype text
   autocmd FileType text,markdown setlocal wrap linebreak autoindent nolist textwidth=80 spell
   autocmd FileType text,markdown setlocal complete+=kspell
-  autocmd FileType text,markdown :NeoCompleteDisable
+  autocmd FileType text,markdown NeoCompleteLock
 augroup END
 
 augroup help
@@ -388,14 +388,14 @@ augroup mail
   autocmd!
   autocmd FileType mail setlocal wrap linebreak autoindent nolist textwidth=72 spell
   autocmd FileType mail setlocal complete+=kspell
-  autocmd FileType mail :NeoCompleteDisable
+  autocmd FileType mail NeoCompleteLock
   autocmd FileType mail silent :Trim
 augroup END
 
 augroup git
   autocmd!
   autocmd FileType gitcommit setlocal spell complete+=kspell
-  autocmd FileType gitcommit :NeoCompleteDisable
+  autocmd FileType gitcommit NeoCompleteLock
 augroup END
 
 augroup cukes
