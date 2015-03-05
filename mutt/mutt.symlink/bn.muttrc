@@ -25,8 +25,8 @@ set mbox      = "+bn/archive"
 set postponed = "+bn/drafts"
 
 # Sync email
-macro index,pager O "<shell-escape>offlineimap -a bn<enter>"           "run offlineimap to sync all mail"
-macro index,pager o "<shell-escape>offlineimap -a bn -qf INBOX<enter>" "run offlineimap to sync inbox"
+macro index,pager O "<shell-escape>offlineimap<enter>"           "run offlineimap to sync all mail"
+macro index,pager o "<shell-escape>offlineimap -a bn -qf INBOX<enter>" "run offlineimap to sync bn inbox"
 macro index,pager gi "<change-folder>~/.mail/bn/INBOX<enter>" "Go to INBOX"
 macro index,pager ga "<change-folder>~/.mail/bn/archive<enter>" "Go to Archive"
 macro index,pager gs "<change-folder>~/.mail/bn/sent<enter>" "Go to Sent Mail"
