@@ -344,6 +344,7 @@ augroup rb
   autocmd FileType ruby compiler rspec
   autocmd FileType ruby let g:rubycomplete_buffer_loading=1
   autocmd FileType ruby let g:rubycomplete_classes_in_global=1
+  autocmd FileType ruby set iskeyword=@,!,?,48-57,_,192-255
 augroup END
 
 augroup java
