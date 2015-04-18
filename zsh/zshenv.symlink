@@ -11,6 +11,7 @@ fi
 export PATH=.git/safe/../../bin:~/.dotfiles/bin:/usr/local/sbin:$PATH
 
 [ -d ~/c/bn/sub/bin ] && eval "$(~/c/bn/sub/bin/bn init -)"
+[ -d ~/c/lib/amzn/bin ] && eval "$(~/c/lib/amzn/bin/amzn init -)"
 
 export EDITOR=vim
 export LANG=en_US.UTF-8
