@@ -11,12 +11,9 @@ set spoolfile = "+personal/INBOX"
 mailboxes +personal/INBOX \
           +personal/sent \
           +personal/drafts \
-          +personal/docker-user \
           +personal/CTO-list \
           +personal/Nerdery\
           +personal/Jobs\
-          +personal/School\
-          +personal/BAWCH\
           +personal/BN\
           +personal/Invoices\ and\ Receipts\
           +personal/Banks\
