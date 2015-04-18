@@ -15,7 +15,8 @@ type = Maildir
 localfolders = ~/.mail/personal
 nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
                             'sent':    '[Gmail]/Sent Mail',
-                            'archive': '[Gmail]/All Mail'
+                            'archive': '[Gmail]/All Mail',
+                            'starred': '[Gmail]/Starred'
                             }.get(folder, folder)
 
 [Repository personal-remote]
@@ -29,7 +30,8 @@ realdelete = no
 ssl = yes
 nametrans = lambda folder: {'[Gmail]/Drafts':    'drafts',
                             '[Gmail]/Sent Mail': 'sent',
-                            '[Gmail]/All Mail':  'archive'
+                            '[Gmail]/All Mail':  'archive',
+                            '[Gmail]/Starred':  'starred'
                             }.get(folder, folder)
 folderfilter = lambda folder: folder not in ['[Gmail]/Trash',
                                              '[Gmail]/Spam',
@@ -46,7 +48,8 @@ type = Maildir
 localfolders = ~/.mail/bn
 nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
                             'sent':    '[Gmail]/Sent Mail',
-                            'archive': '[Gmail]/All Mail'
+                            'archive': '[Gmail]/All Mail',
+                            'starred': '[Gmail]/Starred'
                             }.get(folder, folder)
 
 [Repository bn-remote]
@@ -60,7 +63,8 @@ realdelete = no
 ssl = yes
 nametrans = lambda folder: {'[Gmail]/Drafts':    'drafts',
                             '[Gmail]/Sent Mail': 'sent',
-                            '[Gmail]/All Mail':  'archive'
+                            '[Gmail]/All Mail':  'archive',
+                            '[Gmail]/Starred':  'starred'
                             }.get(folder, folder)
 folderfilter = lambda folder: folder not in ['[Gmail]/Trash',
                                              '[Gmail]/Spam',
