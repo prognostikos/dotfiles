@@ -13,7 +13,6 @@ mailboxes +bn/INBOX \
           +bn/drafts \
           +bn/Dev\ Tools \
           +bn/Service\ Spam \
-          +bn/STAGING \
           +bn/[Mailbox].Later \
           +bn/[Mailbox].To\ Buy \
           +bn/[Mailbox].To\ Read \
