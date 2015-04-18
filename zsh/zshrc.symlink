@@ -16,6 +16,11 @@ fi
 # add homebrew's completions to fpath
 fpath=(/usr/local/share/zsh/site-functions $fpath)
 
+# FIXME: the line above should make this redundant
+if command -v aws > /dev/null ; then
+  source /usr/local/share/zsh/site-functions/_aws
+fi
+
 # shortcut to this dotfiles path is $ZSH
 export ZSH=$HOME/.dotfiles
 
