@@ -91,7 +91,7 @@
 	url = git@github.com:chriskempson/base16-vim.git
 [submodule "vim/vim.symlink/bundle/vim-ctrlp"]
 	path = vim/vim.symlink/bundle/vim-ctrlp
-	url = git@github.com:kien/ctrlp.vim.git
+	url = git@github.com:ctrlpvim/ctrlp.vim.git
 [submodule "vim/vim.symlink/bundle/vim-sparkup"]
 	path = vim/vim.symlink/bundle/vim-sparkup
 	url = https://github.com/tristen/vim-sparkup
