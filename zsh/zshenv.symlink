@@ -25,3 +25,6 @@ export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 [ -d ~/c/go ] && export GOPATH=~/c/go; export PATH=$PATH:$GOPATH/bin
 [ -d ~/javaclasses ] && export CLASSPATH=$CLASSPATH:~/javaclasses:.
 
+if command -v boot2docker > /dev/null; then
+  eval $(boot2docker shellinit 2>/dev/null)
+fi
