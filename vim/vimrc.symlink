@@ -336,11 +336,11 @@ augroup END
 augroup rb
   autocmd!
   autocmd BufRead,BufNewFile Vagrantfile,Rakefile,Guardfile,Cheffile setfiletype ruby
+  autocmd FileType ruby setlocal iskeyword+=!,?
   autocmd FileType ruby setlocal makeprg=rspec
   autocmd FileType ruby compiler rspec
   autocmd FileType ruby let g:rubycomplete_buffer_loading=1
   autocmd FileType ruby let g:rubycomplete_classes_in_global=1
-  autocmd FileType ruby set iskeyword=@,!,?,48-57,_,192-255
 augroup END
 
 augroup java
