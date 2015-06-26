@@ -1,0 +1,7 @@
+#!/bin/bash
+
+tmux rename-window editor
+tmux new-window -n console rails c
+tmux new-window -n db rails db
+tmux new-window -n servers
+tmux select-window -t editor
