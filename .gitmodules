@@ -155,3 +155,6 @@
 [submodule "vim/vim.symlink/bundle/vim-jsx"]
 	path = vim/vim.symlink/bundle/vim-jsx
 	url = git@github.com:mxw/vim-jsx.git
+[submodule "vim/vim.symlink/bundle/vim/vim-rbenv"]
+	path = vim/vim.symlink/bundle/vim/vim-rbenv
+	url = git@github.com:tpope/vim-rbenv.git
