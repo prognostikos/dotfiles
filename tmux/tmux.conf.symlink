@@ -56,8 +56,6 @@ set -g default-terminal "screen-256color"
 set -g status-left-length 50
 
 # Status bar
-set-option -g status-bg '#373b41'
-set-option -g status-fg blue
 set -g status-left ' #[fg=blue]#S #[fg=#c5c8c6]|'
 set -g status-right '#[fg=blue] #(remaining_charge) #[fg=#c5c8c6]| #[fg=blue]%H:%M %d-%b'
 
@@ -65,40 +63,4 @@ set -g status-right '#[fg=blue] #(remaining_charge) #[fg=#c5c8c6]| #[fg=blue]%H:
 setw -g window-status-format " #I: #W "
 setw -g window-status-current-format " #I: #W "
 
-# Highlight active window
-setw -g window-status-current-fg '#c5c8c6'
-setw -g window-status-current-bg '#525252'
-
-# # colors (solarized dark)
-# set -g default-terminal "screen-256color"
-
-# # default statusbar colors
-# set -g status-bg black
-# set -g status-fg yellow
-# set -g status-attr default
-
-# # default window title colors
-# setw -g window-status-fg brightblue
-# setw -g window-status-bg default
-
-# # active window title colors
-# setw -g window-status-current-fg yellow
-# setw -g window-status-current-bg default
-# setw -g window-status-current-attr dim
-
-# # pane border
-# set -g pane-border-fg black
-# set -g pane-border-bg default
-# set -g pane-active-border-fg yellow
-# set -g pane-active-border-bg default
-
-# # command line/message text
-# set -g message-bg black
-# set -g message-fg yellow
-
-# # pane number display
-# set -g display-panes-active-colour yellow
-# set -g display-panes-colour brightblue
-
-# # clock
-# setw -g clock-mode-colour yellow
+source-file ~/.dotfiles/tmux/16color.conf
