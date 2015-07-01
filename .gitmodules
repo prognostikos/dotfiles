@@ -125,9 +125,6 @@
 [submodule "vim/vim.symlink/bundle/vim-ctrlp-py-matcher"]
 	path = vim/vim.symlink/bundle/vim-ctrlp-py-matcher
 	url = git@github.com:FelikZ/ctrlp-py-matcher.git
-[submodule "vim/vim.symlink/bundle/vim-lightline"]
-	path = vim/vim.symlink/bundle/vim-lightline
-	url = git@github.com:itchyny/lightline.vim.git
 [submodule "vim/vim.symlink/bundle/vim-neocomplete"]
 	path = vim/vim.symlink/bundle/vim-neocomplete
 	url = git@github.com:Shougo/neocomplete.vim.git
@@ -158,3 +155,6 @@
 [submodule "vim/vim.symlink/bundle/vim/vim-rbenv"]
 	path = vim/vim.symlink/bundle/vim/vim-rbenv
 	url = git@github.com:tpope/vim-rbenv.git
+[submodule "vim/vim.symlink/bundle/vim-flagship"]
+	path = vim/vim.symlink/bundle/vim-flagship
+	url = git://github.com/tpope/vim-flagship.git
