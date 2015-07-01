@@ -38,7 +38,7 @@ let loaded_matchparen = 1
 
 " $VIMCOLORS is set in iTerm profile
 if empty($VIMCOLORS)
-  colorscheme base16-tomorrow
+  colorscheme base16-summerfruit
   set background=dark
 else
   colorscheme $VIMCOLORS
@@ -46,13 +46,20 @@ endif
 
 
 " more info
-set number
-set relativenumber
+set nonumber
+set norelativenumber
 set showmode
 set showcmd
 set ruler
 set laststatus=2
-set cursorline
+set showtabline=1
+set nocursorline
+
+let g:autornu_enable = 0
+" " show me column 80
+if exists('+colorcolumn')
+  set colorcolumn=0
+endif
 
 " always keep the cursor line in the middle of the screen if possible
 set scrolloff=999
@@ -121,7 +128,7 @@ set autowrite
 set nofoldenable
 
 " Make sure the current window is always wide & tall enough
-set winwidth=84
+set winwidth=81
 
 " We have to have a winheight bigger than we want to set winminheight. But if
 " we set winheight to be huge before winminheight, the winminheight set will
@@ -154,7 +161,7 @@ set splitright
 set splitbelow
 
 " syntax hl can be slowwwww
-" set synmaxcol=128
+set synmaxcol=128
 
 if has("gui_running")
   " don't need that ugly toolbar
@@ -173,11 +180,6 @@ set ttimeout
 
 " don't redraw each line when executing macros
 set lazyredraw
-
-" show me column 80
-if exists('+colorcolumn')
-  set colorcolumn=80
-endif
 
 " don't assume I want a commented line after a commented line
 set formatoptions-=or
@@ -612,30 +614,12 @@ autocmd FileType ruby nmap <buffer> <leader>rs <Plug>(seeing_is_believing-run)
 autocmd FileType ruby xmap <buffer> <leader>rs <Plug>(seeing_is_believing-run)
 autocmd FileType ruby imap <buffer> <leader>rs <Plug>(seeing_is_believing-run)
 
-" keep last
-highlight CursorLineNr ctermfg=red
-
 " always
 let g:vitality_always_assume_iterm = 1
 
 " don't be crazy
 let g:vim_json_syntax_conceal = 0
 
-let g:lightline = {}
-let g:lightline.mode_map = {
-    \ 'n' :     'N',
-    \ 'i' :     'I',
-    \ 'R' :     'R',
-    \ 'v' :     'V',
-    \ 'V' :     'V',
-    \ 'c' :     'C',
-    \ "\<C-v>": 'V',
-    \ 's' :     'S',
-    \ 'S' :     'S',
-    \ "\<C-s>": 'S',
-    \ '?':      ' ' }
-
-let g:acp_enableAtStartup = 0
 " Use neocomplete.
 let g:neocomplete#enable_at_startup = 1
 " Use smartcase.
@@ -647,7 +631,7 @@ let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 " Define dictionary.
 let g:neocomplete#sources#dictionary#dictionaries = {
     \ 'default' : ''
-        \ }
+    \ }
 
 " Define keyword.
 if !exists('g:neocomplete#keyword_patterns')
