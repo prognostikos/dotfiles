@@ -60,12 +60,6 @@ set laststatus=2
 set showtabline=1
 set nocursorline
 
-let g:autornu_enable = 0
-" " show me column 80
-if exists('+colorcolumn')
-  set colorcolumn=0
-endif
-
 " always keep the cursor line in the middle of the screen if possible
 set scrolloff=999
 
