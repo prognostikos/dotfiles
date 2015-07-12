@@ -149,9 +149,6 @@ set ttimeoutlen=100
 " don't redraw each line when executing macros
 set lazyredraw
 
-" don't assume I want a commented line after a commented line
-set formatoptions-=or
-
 " better behavior for the quickfix window and :sb
 set switchbuf=useopen
 
