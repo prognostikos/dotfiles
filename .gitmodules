@@ -65,9 +65,6 @@
 [submodule "vim/vim.symlink/bundle/vim-dispatch"]
 	path = vim/vim.symlink/bundle/vim-dispatch
 	url = git://github.com/tpope/vim-dispatch.git
-[submodule "vim/vim.symlink/bundle/vim-colors-github"]
-	path = vim/vim.symlink/bundle/vim-colors-github
-	url = git@github.com:prognostikos/vim-colors-github.git
 [submodule "vim/vim.symlink/bundle/vim-copy-as-rtf"]
 	path = vim/vim.symlink/bundle/vim-copy-as-rtf
 	url = git://github.com/zerowidth/vim-copy-as-rtf.git
@@ -83,9 +80,6 @@
 [submodule "vim/vim.symlink/bundle/vim-webapi"]
 	path = vim/vim.symlink/bundle/vim-webapi
 	url = https://github.com/mattn/webapi-vim
-[submodule "vim/vim.symlink/bundle/vim-slim"]
-	path = vim/vim.symlink/bundle/vim-slim
-	url = git@github.com:slim-template/vim-slim.git
 [submodule "vim/vim.symlink/bundle/vim-base16"]
 	path = vim/vim.symlink/bundle/vim-base16
 	url = git@github.com:chriskempson/base16-vim.git
@@ -104,9 +98,6 @@
 [submodule "vim/vim.symlink/bundle/vim-ruby-xmpfilter"]
 	path = vim/vim.symlink/bundle/vim-ruby-xmpfilter
 	url = git@github.com:t9md/vim-ruby-xmpfilter.git
-[submodule "vim/vim.symlink/bundle/vim-supertab"]
-	path = vim/vim.symlink/bundle/vim-supertab
-	url = git@github.com:ervandew/supertab.git
 [submodule "vim/vim.symlink/bundle/vim-vitality"]
 	path = vim/vim.symlink/bundle/vim-vitality
 	url = git@github.com:sjl/vitality.vim.git
@@ -119,9 +110,6 @@
 [submodule "vim/vim.symlink/bundle/vim-projectionist"]
 	path = vim/vim.symlink/bundle/vim-projectionist
 	url = git@github.com:tpope/vim-projectionist.git
-[submodule "vim/vim.symlink/bundle/vim-autornu"]
-	path = vim/vim.symlink/bundle/vim-autornu
-	url = git@github.com:RyanMcG/vim-autornu.git
 [submodule "vim/vim.symlink/bundle/vim-ctrlp-py-matcher"]
 	path = vim/vim.symlink/bundle/vim-ctrlp-py-matcher
 	url = git@github.com:FelikZ/ctrlp-py-matcher.git
@@ -131,9 +119,6 @@
 [submodule "vim/vim.symlink/bundle/vim-vinegar"]
 	path = vim/vim.symlink/bundle/vim-vinegar
 	url = git://github.com/tpope/vim-vinegar.git
-[submodule "vim/vim.symlink/bundle/vim-snippits"]
-	path = vim/vim.symlink/bundle/vim-snippits
-	url = https://github.com/honza/vim-snippets.git
 [submodule "vim/vim.symlink/bundle/vim-test"]
 	path = vim/vim.symlink/bundle/vim-test
 	url = git@github.com:janko-m/vim-test.git
@@ -152,9 +137,6 @@
 [submodule "vim/vim.symlink/bundle/vim-jsx"]
 	path = vim/vim.symlink/bundle/vim-jsx
 	url = git@github.com:mxw/vim-jsx.git
-[submodule "vim/vim.symlink/bundle/vim/vim-rbenv"]
-	path = vim/vim.symlink/bundle/vim/vim-rbenv
-	url = git@github.com:tpope/vim-rbenv.git
 [submodule "vim/vim.symlink/bundle/vim-flagship"]
 	path = vim/vim.symlink/bundle/vim-flagship
 	url = git://github.com/tpope/vim-flagship.git
