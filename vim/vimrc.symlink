@@ -219,7 +219,7 @@ function! Cleanup()
   " use my tab/space setup on the whole file
   :retab
   " use my indentation setup on the whole file
-  " :normal gg=G
+  :normal gg=G
   " strip trailing whitespace
   :%s/\s\+$//e
   " remove any repeated blank lines
