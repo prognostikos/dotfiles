@@ -297,8 +297,12 @@ augroup rb
   autocmd FileType ruby setlocal iskeyword+=!,?
   autocmd FileType ruby setlocal makeprg=rspec
   autocmd FileType ruby compiler rspec
-  autocmd FileType ruby let g:rubycomplete_buffer_loading=1
-  autocmd FileType ruby let g:rubycomplete_classes_in_global=1
+  autocmd FileType ruby nmap <buffer> <leader>rc <Plug>(seeing_is_believing-clean)
+  autocmd FileType ruby xmap <buffer> <leader>rc <Plug>(seeing_is_believing-clean)
+  autocmd FileType ruby imap <buffer> <leader>rc <Plug>(seeing_is_believing-clean)
+  autocmd FileType ruby nmap <buffer> <leader>rs <Plug>(seeing_is_believing-run)
+  autocmd FileType ruby xmap <buffer> <leader>rs <Plug>(seeing_is_believing-run)
+  autocmd FileType ruby imap <buffer> <leader>rs <Plug>(seeing_is_believing-run)
 augroup END
 
 augroup java
@@ -514,24 +518,6 @@ let g:sparkupMappingInsertModeOnly = 1
 
 " seeing_is_believing
 let g:xmpfilter_cmd = "seeing_is_believing"
-
-" autocmd FileType ruby nmap <buffer> <D-m> <Plug>(seeing_is_believing-mark)
-" autocmd FileType ruby xmap <buffer> <D-m> <Plug>(seeing_is_believing-mark)
-" autocmd FileType ruby imap <buffer> <D-m> <Plug>(seeing_is_believing-mark)
-
-autocmd FileType ruby nmap <buffer> <leader>rc <Plug>(seeing_is_believing-clean)
-autocmd FileType ruby xmap <buffer> <leader>rc <Plug>(seeing_is_believing-clean)
-autocmd FileType ruby imap <buffer> <leader>rc <Plug>(seeing_is_believing-clean)
-
-" xmpfilter compatible
-" autocmd FileType ruby nmap <buffer> <D-r> <Plug>(seeing_is_believing-run_-x)
-" autocmd FileType ruby xmap <buffer> <D-r> <Plug>(seeing_is_believing-run_-x)
-" autocmd FileType ruby imap <buffer> <D-r> <Plug>(seeing_is_believing-run_-x)
-
-" auto insert mark at appropriate spot.
-autocmd FileType ruby nmap <buffer> <leader>rs <Plug>(seeing_is_believing-run)
-autocmd FileType ruby xmap <buffer> <leader>rs <Plug>(seeing_is_believing-run)
-autocmd FileType ruby imap <buffer> <leader>rs <Plug>(seeing_is_believing-run)
 
 " always
 let g:vitality_always_assume_iterm = 1
