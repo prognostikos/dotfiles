@@ -217,15 +217,6 @@ vnoremap < <gv
 noremap <leader>ev :vsplit $MYVIMRC<CR>
 noremap <leader>sv :source $MYVIMRC<CR>
 
-" Bash/readline-like keys for the command line
-cnoremap <C-A> <Home>
-cnoremap <C-E> <End>
-cnoremap <C-K> <C-U>
-cnoremap <C-P> <Up>
-cnoremap <C-N> <Down>
-cnoremap <C-F> <Left>
-cnoremap <C-D> <Delete>
-
 " Toggle spell checking for the current file
 noremap <leader>sc :setlocal spell!<cr>
 " move to next misspelled word

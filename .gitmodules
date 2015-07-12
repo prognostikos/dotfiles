@@ -140,3 +140,6 @@
 [submodule "vim/vim.symlink/bundle/vim-flagship"]
 	path = vim/vim.symlink/bundle/vim-flagship
 	url = git://github.com/tpope/vim-flagship.git
+[submodule "vim/vim.symlink/bundle/vim-rsi"]
+	path = vim/vim.symlink/bundle/vim-rsi
+	url = git@github.com:tpope/vim-rsi.git
