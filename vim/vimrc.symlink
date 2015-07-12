@@ -117,13 +117,6 @@ set nofoldenable
 
 " Make sure the current window is always wide & tall enough
 set winwidth=81
-
-" We have to have a winheight bigger than we want to set winminheight. But if
-" we set winheight to be huge before winminheight, the winminheight set will
-" fail.
-" set winheight=5
-" set winminheight=5
-" set winheight=999
 set equalalways
 set eadirection=hor
 
@@ -477,43 +470,6 @@ map <Leader>rl :VimuxRunLastCommand<CR>
 
 " Run makeprog (via Dispatch) in the same way as vimux
 map <Leader>rm :Dispatch<CR>
-
-" Syntastic
-let g:syntastic_enable_highlighting = 0
-let g:syntastic_auto_loc_list       = 1
-let g:syntastic_quiet_messages = {'level': 'warnings'}
-let g:syntastic_mode_map = {
-      \ 'mode' : 'active',
-      \ 'passive_filetypes' : ['sass', 'scss', 'scss.css', 'slim', 'sh']
-      \ }
-
-" SQLComplete
-let g:omni_sql_no_default_maps = 1
-let g:ftplugin_sql_omni_key = '<Tab>'
-let g:sql_type_default = 'postgresql'
-
-" DBExt
-let g:dbext_default_usermaps = 0
-
-" jscomplete
-let g:jscomplete_use = ['dom', 'moz']
-
-" make Netrw prettier/more useful
-let NERDTreeHijackNetrw = 1
-
-" disable YCM for most text-type files
-let g:ycm_filetype_blacklist = {
-      \ 'notes' : 1,
-      \ 'markdown' : 1,
-      \ 'text' : 1,
-      \ 'gitcommit' : 1,
-      \ 'mail' : 1,
-      \}
-let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_seed_identifiers_with_syntax = 1
-
-" let g:ycm_autoclose_preview_window_after_completion = 0
-let g:ycm_add_preview_to_completeopt = 1
 
 " Gist.vim
 let g:gist_post_private = 1
