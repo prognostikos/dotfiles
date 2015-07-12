@@ -20,6 +20,7 @@ if has("unix")
 endif
 
 " autoloading
+let g:pathogen_disabled = ['vim-bundler']
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 call pathogen#infect()
 
