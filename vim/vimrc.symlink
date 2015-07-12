@@ -165,6 +165,8 @@ endif
 set undodir=~/.undo-vim
 set undofile
 
+set shortmess+=AIc
+
 """ Custom mappings
 
 " prefer , rather than default \
