@@ -317,11 +317,6 @@ augroup cccc
   autocmd BufRead,BufNewFile *.h,*.c set makeprg=make\ %:r
 augroup END
 
-augroup js
-  autocmd!
-  autocmd FileType javascript setlocal omnifunc=jscomplete#CompleteJS
-augroup END
-
 augroup mustache
   autocmd!
   autocmd BufRead,BufNewFile *.html setfiletype mustache
@@ -416,6 +411,15 @@ augroup ctrlpme
         \ if argc() == 0 |
         \   :CtrlPMixed |
         \ endif
+augroup END
+
+" Enable omni completion.
+augroup compl
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 augroup END
 
 " rails.vim settings
@@ -563,13 +567,6 @@ inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><C-y>  neocomplete#close_popup()
 inoremap <expr><C-e>  neocomplete#cancel_popup()
-
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 " Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
