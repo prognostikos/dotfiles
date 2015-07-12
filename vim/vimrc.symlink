@@ -9,10 +9,10 @@ set nocompatible
 set fileencoding=utf-8
 set spelllang=en_us
 
-" Disable copy-as-rtf on non-Macs
 if has("unix")
   let s:uname = system("uname -s")
   if s:uname != "Darwin\n"
+    " Disable copy-as-rtf on non-Macs
     let g:loaded_copy_as_rtf = 1
   else
     let g:ctrlp_mruf_case_sensitive = 0
