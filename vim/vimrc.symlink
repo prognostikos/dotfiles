@@ -88,17 +88,6 @@ set complete-=i
 " there's only one match
 set completeopt=longest,menuone,preview
 
-" function! InsertTabWrapper()
-"   let col = col('.') - 1
-"   if !col || getline('.')[col - 1] !~ '\k'
-"     return "\<tab>"
-"   else
-"     return "\<c-p>"
-"   endif
-" endfunction
-" inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
-" remember
-
 set history=256
 
 " shut up
