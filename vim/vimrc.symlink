@@ -312,6 +312,10 @@ augroup rb
   autocmd FileType ruby nmap <buffer> <leader>rs <Plug>(seeing_is_believing-run)
   autocmd FileType ruby xmap <buffer> <leader>rs <Plug>(seeing_is_believing-run)
   autocmd FileType ruby imap <buffer> <leader>rs <Plug>(seeing_is_believing-run)
+  let g:rubycomplete_buffer_loading = 1
+  let g:rubycomplete_classes_in_global = 1
+  let g:rubycomplete_rails = 1
+  let g:rubycomplete_use_bundler = 1
 augroup END
 
 augroup java
