@@ -1,17 +1,10 @@
-if command -v brew > /dev/null ; then
-  export PATH="$PATH:/usr/local/lib/node_modules"
-  source $(brew --prefix nvm)/nvm.sh
-fi
-
 if [ -d ~/.rbenv ]; then
   export PATH=~/.rbenv/bin:$PATH
   eval "$(rbenv init - --no-rehash)"
 fi
 
-export PATH=.git/safe/../../bin:~/.dotfiles/bin:/usr/local/sbin:$PATH
-
-[ -d ~/c/bn/sub/bin ] && eval "$(~/c/bn/sub/bin/bn init -)"
-[ -d ~/c/lib/amzn/bin ] && eval "$(~/c/lib/amzn/bin/amzn init -)"
+export PATH=.git/safe/../../bin:$PATH
+export PATH=~/.dotfiles/bin:$PATH
 
 export EDITOR=vim
 export LANG=en_US.UTF-8
@@ -22,9 +15,7 @@ export GIT_PS1_SHOWDIRTYSTATE=true
 export GIT_PS1_SHOWUNTRACKEDFILES=true
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
-[ -d ~/c/go ] && export GOPATH=~/c/go; export PATH=$PATH:$GOPATH/bin
-[ -d ~/javaclasses ] && export CLASSPATH=$CLASSPATH:~/javaclasses:.
-
-if command -v boot2docker > /dev/null; then
-  eval $(boot2docker shellinit 2>/dev/null)
+if [ -d ~/c/go ]; then
+  export GOPATH=~/c/go
+  export PATH=$PATH:$GOPATH/bin
 fi

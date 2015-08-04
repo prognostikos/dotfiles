@@ -9,10 +9,6 @@ if [ -z "$TMUX" ]; then
   fi
 fi
 
-if [ -n "$(command -v gh)" ]; then
-  $(gh alias -s)
-fi
-
 # add homebrew's completions to fpath
 fpath=(/usr/local/share/zsh/site-functions $fpath)
 
@@ -29,9 +25,6 @@ for config_file ($ZSH/**/*.zsh) source $config_file
 
 # pull in all aliases
 for aliases_file ($ZSH/**/aliases) source $aliases_file
-
-# pull in a local file for secrets not in repo
-[[ -a ~/.local-zshrc ]] && source ~/.local-zshrc
 
 # Act like emacs even though Vim is my editor
 bindkey -e
@@ -57,9 +50,6 @@ zstyle ':completion:*' use-cache on
 
 # Ignore some files when completing
 fignore=(.o .class .ctxt .obj)
-
-# zle
-autoload -U zsh/zle
 
 # pull in all custom completion.sh files
 for completion_file ($ZSH/**/completion.sh) source $completion_file
