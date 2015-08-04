@@ -43,6 +43,7 @@ stty -ixon
 # Turn on completions (`brew install zsh-completions` for even more)
 autoload -U compinit
 compinit
+zmodload -i zsh/complist
 
 # Speed up path completion
 zstyle ':completion:*' accept-exact '*(N)'
