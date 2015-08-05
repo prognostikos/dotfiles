@@ -410,15 +410,6 @@ augroup resize
   autocmd VimResized * :wincmd =
 augroup END
 
-" Use CtrlPMixed when started without any arguments
-augroup ctrlpme
-  autocmd!
-  autocmd VimEnter *
-        \ if argc() == 0 |
-        \   :CtrlPMixed |
-        \ endif
-augroup END
-
 " Enable omni completion.
 augroup compl
   autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -491,19 +482,6 @@ let g:gist_open_browser_after_post = 1
 
 " delimitMate
 let delimitMate_expand_cr = 1
-
-" ctrl-p
-let g:ctrlp_match_window = 'top,order:ttb'
-let g:ctrlp_use_caching = 1
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_lazy_update = 1
-let g:ctrlp_user_command = 'ag -l --nocolor -g "" %s'
-let g:ctrlp_map = '<Leader>t'
-let g:ctrlp_cmd = 'CtrlPMixed'
-let g:ctrlp_reuse_window = 'netrw'
-let g:ctrlp_mruf_relative = 1
-let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
-nnoremap <silent> <Leader>b :CtrlPBuffer<CR>
 
 " Tabularize
 "  NOTES:
@@ -592,3 +570,10 @@ let g:jsx_ext_required = 0
 
 " vim-markdown
 let g:markdown_fenced_languages = ['coffee', 'coffeescript=coffee', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'bash=sh', 'sh']
+
+let g:fzf_action = {
+  \ 'ctrl-m': 'e',
+  \ 'ctrl-t': 'tabedit',
+  \ 'ctrl-s': 'split',
+  \ 'ctrl-v': 'vsplit' }
+nnoremap <silent> <Leader>t :FZF<CR>

@@ -83,9 +83,6 @@
 [submodule "vim/vim.symlink/bundle/vim-base16"]
 	path = vim/vim.symlink/bundle/vim-base16
 	url = https://github.com/chriskempson/base16-vim.git
-[submodule "vim/vim.symlink/bundle/vim-ctrlp"]
-	path = vim/vim.symlink/bundle/vim-ctrlp
-	url = https://github.com/ctrlpvim/ctrlp.vim.git
 [submodule "vim/vim.symlink/bundle/vim-sparkup"]
 	path = vim/vim.symlink/bundle/vim-sparkup
 	url = https://github.com/tristen/vim-sparkup
@@ -110,9 +107,6 @@
 [submodule "vim/vim.symlink/bundle/vim-projectionist"]
 	path = vim/vim.symlink/bundle/vim-projectionist
 	url = https://github.com/tpope/vim-projectionist.git
-[submodule "vim/vim.symlink/bundle/vim-ctrlp-py-matcher"]
-	path = vim/vim.symlink/bundle/vim-ctrlp-py-matcher
-	url = https://github.com/FelikZ/ctrlp-py-matcher.git
 [submodule "vim/vim.symlink/bundle/vim-neocomplete"]
 	path = vim/vim.symlink/bundle/vim-neocomplete
 	url = https://github.com/Shougo/neocomplete.vim.git

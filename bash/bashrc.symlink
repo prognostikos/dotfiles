@@ -21,3 +21,4 @@ shopt -s checkwinsize
 source ~/.dotfiles/zsh/aliases
 source ~/.dotfiles/git/git.zsh
 source ~/.dotfiles/git/aliases
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
