@@ -251,6 +251,9 @@ inoremap <BS> <nop>
 " delete all buffers
 nnoremap <leader>dd :bd *<c-a><cr>
 
+" flying
+nnoremap <leader>l :ls<cr>:b<space>
+
 function! RenameFile()
   let old_name = expand('%')
   let new_name = input('New file name: ', expand('%'), 'file')
