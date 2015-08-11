@@ -22,5 +22,8 @@ if [ -z "$SSID" ]; then
   exit 0
 fi
 
+if [ ${#SSID} -gt 6 ]; then
+  SSID=${SSID:(-6)}
+fi
 
-echo "${SSID:(-6)} @ $SPEED"
+echo "$SSID @ $SPEED"
