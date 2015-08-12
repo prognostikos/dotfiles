@@ -574,6 +574,7 @@ let g:jsx_ext_required = 0
 " vim-markdown
 let g:markdown_fenced_languages = ['coffee', 'coffeescript=coffee', 'css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'bash=sh', 'sh']
 
+" fzf
 let g:fzf_action = {
   \ 'ctrl-m': 'e',
   \ 'ctrl-t': 'tabedit',
