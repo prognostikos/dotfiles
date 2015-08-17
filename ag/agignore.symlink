@@ -1,13 +1,2 @@
-.bundle
-config/locales
-coverage
-doc
-log
 node_modules
-phrase/locales
-public
-tags
-tmp
-vendor/assets
 vendor/cache
-vendor/ruby
