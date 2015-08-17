@@ -156,9 +156,10 @@ fstash() {
 # ftags - search ctags
 ftags() {
   local line
-  [ -e tags ] &&
+  local tagfile=.git/tags
+  [ -e $tagfile ] &&
   line=$(
-    awk 'BEGIN { FS="\t" } !/^!/ {print toupper($4)"\t"$1"\t"$2"\t"$3}' tags |
+    awk 'BEGIN { FS="\t" } !/^!/ {print toupper($4)"\t"$1"\t"$2"\t"$3}' $tagfile |
     cut -c1-80 | fzf --nth=1,2
   ) && $EDITOR $(cut -f3 <<< "$line") -c "set nocst" \
                                       -c "silent tag $(cut -f2 <<< "$line")"
