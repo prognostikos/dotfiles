@@ -49,6 +49,11 @@ fhe() {
   ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed -re 's/^\s*[0-9]+\s*//' | writecmd
 }
 
+# fps - find process id
+fps() {
+  ps axww -o pid,user,%cpu,%mem,start,time,command | fzf +s | sed 's/^ *//' | cut -f1 -d' '
+}
+
 # fkill - kill process
 fkill() {
   pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
