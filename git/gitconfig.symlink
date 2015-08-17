@@ -4,6 +4,7 @@
 [core]
 	excludesfile = ~/.gitignore
 	precomposeunicode = true
+	autocrlf = input
 [alias]
 	co = checkout
 	ci = commit
