@@ -14,7 +14,7 @@ else
   AIRPORT=/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport
   SSID=`$AIRPORT -I | grep  SSID | tail -1 | cut -d':' -f2 | tr -d " "`
   SPEED=`$AIRPORT -I | grep lastTxRate | cut -d':' -f2 | tr -d " "`
-  SPEED="$SPEED mbps"
+  SPEED="${SPEED}mbps"
 fi
 
 if [ -z "$SSID" ]; then
@@ -22,8 +22,8 @@ if [ -z "$SSID" ]; then
   exit 0
 fi
 
-if [ ${#SSID} -gt 6 ]; then
-  SSID=${SSID:(-6)}
+if [ ${#SSID} -gt 7 ]; then
+  SSID=${SSID:(-7)}
 fi
 
-echo "$SSID @ $SPEED"
+echo "$SSID $SPEED"
