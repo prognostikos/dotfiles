@@ -146,3 +146,6 @@
 [submodule "vim/vim.symlink/bundle/vim-hardmode"]
 	path = vim/vim.symlink/bundle/vim-hardmode
 	url = https://github.com/wikitopian/hardmode.git
+[submodule "vim/vim.symlink/bundle/vim-mustache-handlebars"]
+	path = vim/vim.symlink/bundle/vim-mustache-handlebars
+	url = https://github.com/mustache/vim-mustache-handlebars.git

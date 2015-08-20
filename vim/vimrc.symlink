@@ -375,7 +375,7 @@ augroup END
 
 augroup curly
   autocmd!
-  autocmd BufRead,BufNewFile *.html.curly setfiletype html
+  autocmd BufNewFile,BufRead *.curly set filetype=html.mustache syntax=mustache
 augroup END
 
 augroup tabby
