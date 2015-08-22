@@ -18,6 +18,9 @@
 	ctags = !.git/hooks/ctags
 	unpushed = log --branches --not --remotes --simplify-by-decoration --decorate --oneline
 	wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
+	save = !git add -A && git commit -m 'SAVEPOINT'
+	wip = !git add -u && git commit -m 'WIP'
+	up = !git pull --rebase --prune $@ && git submodule update --init --recursive
 # some goodies from http://yanpritzker.com/git-book/
 [color]
 	diff = auto
@@ -33,8 +36,6 @@
 	auto = 1
 [branch]
 	autosetuprebase = always
-[help]
-	autocorrect = 1
 [mergetool]
 	keepBackup = false
 	prompt = false
