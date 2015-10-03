@@ -146,3 +146,9 @@
 [submodule "vim/vim.symlink/bundle/vim-mustache-handlebars"]
 	path = vim/vim.symlink/bundle/vim-mustache-handlebars
 	url = https://github.com/mustache/vim-mustache-handlebars.git
+[submodule "vim/vim.symlink/bundle/vim-completes-me"]
+	path = vim/vim.symlink/bundle/vim-completes-me
+	url = https://github.com/ajh17/VimCompletesMe.git
+[submodule "vim/vim.symlink/bundle/vim-syntastic"]
+	path = vim/vim.symlink/bundle/vim-syntastic
+	url = https://github.com/scrooloose/syntastic.git
