@@ -24,6 +24,8 @@ let g:pathogen_disabled = ['vim-neocomplete']
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 call pathogen#infect()
 
+set rtp+=/usr/local/opt/fzf
+
 " Enable filetype detection
 filetype plugin indent on
 
