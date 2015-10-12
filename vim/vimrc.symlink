@@ -413,6 +413,8 @@ augroup compl
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 augroup END
 
+iabbr fundrasier fundraiser
+
 " rails.vim settings
 "
 " open the 'alternate' (test) files
