@@ -1,17 +1,33 @@
-#
-# Starting points: https://github.com/topfunky/zsh-simple
-#                  https://github.com/holman/dotfiles
-#
+### ENV
 
-if [ -z "$TMUX" ]; then
-  if [ -n "$(command -v tmux)" ] && [ ! -z $SSH_TTY ]; then
-    tat
-  fi
+export EDITOR=vim
+export LANG=en_US.UTF-8
+export LC_ALL=$LANG
+export CLICOLOR=true
+
+export GIT_PS1_SHOWDIRTYSTATE=true
+export GIT_PS1_SHOWUNTRACKEDFILES=true
+export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+
+### PATH manipulation
+
+if command -v rbenv > /dev/null; then
+  eval "$(rbenv init - zsh)"
 fi
+
+if command -v direnv > /dev/null; then
+  eval "$(direnv hook zsh)"
+fi
+
+if [ -d ~/c/go ]; then
+  export GOPATH=~/c/go
+  export PATH="$GOPATH/bin:$PATH"
+fi
+
+export PATH="/usr/local/foreman/bin:.git/safe/../../bin:$HOME/.dotfiles/bin:$PATH"
 
 # add homebrew's completions to fpath
 fpath=(/usr/local/share/zsh/site-functions $fpath)
-
 
 # shortcut to this dotfiles path is $ZSH
 export ZSH=$HOME/.dotfiles
@@ -51,9 +67,6 @@ fignore=(.o .class .ctxt .obj)
 # pull in all custom completion.sh files
 for completion_file ($ZSH/**/completion.sh) source $completion_file
 
-# use direnv https://github.com/zimbatm/direnv/wiki/
-eval "$(direnv hook zsh)"
-
 # run this after reattaching to a detached tmux session to update the ssh-agent forwarding config
 fixssh() {
   for key in SSH_AUTH_SOCK SSH_CONNECTION SSH_CLIENT; do
@@ -69,6 +82,10 @@ if command -v aws > /dev/null ; then
   source /usr/local/share/zsh/site-functions/_aws
 fi
 
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# if we're sshed somewhere, then try to reattach to a session
+if [ -z "$TMUX" ]; then
+  if [ -n "$(command -v tmux)" ] && [ ! -z $SSH_TTY ]; then
+    tmux attach
+  fi
+fi
+
