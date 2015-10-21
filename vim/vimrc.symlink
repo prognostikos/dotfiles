@@ -269,6 +269,11 @@ endfunction
 
 noremap <leader><leader> <c-^>
 
+command! TagFiles :call EchoTags()
+function! EchoTags()
+  echo join(split(&tags, ","), "\n")
+endfunction
+
 """ Autocomd/Filetype-specific settings
 
 augroup dowhatimean
