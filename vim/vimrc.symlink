@@ -180,7 +180,7 @@ vnoremap < <gv
 
 " if I'm going to spend this much time tweaking I might as well make it as
 " easy as possible
-noremap <leader>ev :vsplit $MYVIMRC<CR>
+noremap <leader>ev :tabedit $MYVIMRC<CR>
 noremap <leader>sv :source $MYVIMRC<CR>
 
 " Toggle spell checking for the current file
