@@ -104,9 +104,6 @@
 [submodule "vim/vim.symlink/bundle/vim-projectionist"]
 	path = vim/vim.symlink/bundle/vim-projectionist
 	url = https://github.com/tpope/vim-projectionist.git
-[submodule "vim/vim.symlink/bundle/vim-neocomplete"]
-	path = vim/vim.symlink/bundle/vim-neocomplete
-	url = https://github.com/Shougo/neocomplete.vim.git
 [submodule "vim/vim.symlink/bundle/vim-vinegar"]
 	path = vim/vim.symlink/bundle/vim-vinegar
 	url = https://github.com/tpope/vim-vinegar.git
@@ -143,9 +140,6 @@
 [submodule "vim/vim.symlink/bundle/vim-mustache-handlebars"]
 	path = vim/vim.symlink/bundle/vim-mustache-handlebars
 	url = https://github.com/mustache/vim-mustache-handlebars.git
-[submodule "vim/vim.symlink/bundle/vim-completes-me"]
-	path = vim/vim.symlink/bundle/vim-completes-me
-	url = https://github.com/ajh17/VimCompletesMe.git
 [submodule "vim/vim.symlink/bundle/vim-syntastic"]
 	path = vim/vim.symlink/bundle/vim-syntastic
 	url = https://github.com/scrooloose/syntastic.git
