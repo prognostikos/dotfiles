@@ -357,6 +357,7 @@ augroup END
 augroup sql
   autocmd!
   autocmd BufRead,BufNewFile */psql.edit.* setfiletype sql
+  autocmd BufRead,BufNewFile */psql.edit.* silent :SQLSetType postgresql
   autocmd BufRead,BufNewFile */sql* setfiletype sql
 augroup END
 
@@ -542,3 +543,6 @@ let g:fzf_action = {
   \ 'ctrl-s': 'split',
   \ 'ctrl-v': 'vsplit' }
 nnoremap <silent> <Leader>t :FZF<CR>
+
+" ft_sql
+let g:omni_sql_no_default_maps = 1
