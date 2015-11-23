@@ -14,8 +14,6 @@ if has("unix")
   if s:uname != "Darwin\n"
     " Disable copy-as-rtf on non-Macs
     let g:loaded_copy_as_rtf = 1
-  else
-    let g:ctrlp_mruf_case_sensitive = 0
   endif
 endif
 
