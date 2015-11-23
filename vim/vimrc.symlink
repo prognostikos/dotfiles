@@ -21,6 +21,7 @@ endif
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 call pathogen#infect()
 
+" fzf is installed via homebrew instead of pathogen+submodules
 set rtp+=/usr/local/opt/fzf
 
 " Enable filetype detection
