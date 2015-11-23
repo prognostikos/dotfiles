@@ -546,3 +546,11 @@ nnoremap <silent> <Leader>t :FZF<CR>
 
 " ft_sql
 let g:omni_sql_no_default_maps = 1
+
+" syntastic/tidy
+let g:syntastic_html_tidy_ignore_errors = [ "plain text isn't allowed in <head> elements" ]
+let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go', 'html'] }
+
+" vim-go
+let g:go_fmt_command = "goimports"
