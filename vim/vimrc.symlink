@@ -281,6 +281,12 @@ endfunction
 inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
 
+" Edit or view files in same directory as current file
+cnoremap %% <C-R>=expand('%:h').'/'<cr>
+map <leader>de :edit %%<cr>
+map <leader>dv :vsplit %%<cr>
+map <leader>ds :split %%<cr>
+
 """ Autocomd/Filetype-specific settings
 
 augroup dowhatimean
@@ -435,12 +441,6 @@ noremap <leader>av :AV<CR>
 " open the 'related' (template/presenter) files
 noremap <leader>rs :RS<CR>
 noremap <leader>rv :RV<CR>
-
-" Edit or view files in same directory as current file
-cnoremap %% <C-R>=expand('%:h').'/'<cr>
-map <leader>de :edit %%<cr>
-map <leader>dv :vsplit %%<cr>
-map <leader>ds :split %%<cr>
 
 " Map keys to go to specific files
 noremap <leader>gr :topleft :split config/routes.rb<cr>
