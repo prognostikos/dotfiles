@@ -238,9 +238,6 @@ noremap <leader>cs :SyntasticCheck<CR>
 nnoremap k gk
 nnoremap j gj
 
-" hardish mode
-inoremap <BS> <nop>
-
 " delete all buffers
 nnoremap <leader>dd :bd *<c-a><cr>
 
