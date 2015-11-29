@@ -1,3 +1,12 @@
 node_modules
 vendor/cache
 Godeps
+*.ttf
+*.woff
+*.woff2
+*.jpeg
+*.jpg
+*.ico
+*.gif
+*.png
+*.gz
