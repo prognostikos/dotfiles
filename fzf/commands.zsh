@@ -204,7 +204,11 @@ ftpane() {
 # }
 
 v() {
-  fe
+  if [[ -z $@ ]]; then
+    fe
+  else
+    vi "$@"
+  fi
 }
 
 # c - browse chrome history
