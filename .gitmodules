@@ -149,3 +149,6 @@
 [submodule "vim/vim.symlink/bundle/vim-rbenv"]
 	path = vim/vim.symlink/bundle/vim-rbenv
 	url = https://github.com/tpope/vim-rbenv.git
+[submodule "vim/vim.symlink/bundle/vim-monochrome"]
+	path = vim/vim.symlink/bundle/vim-monochrome
+	url = https://github.com/fxn/vim-monochrome.git
