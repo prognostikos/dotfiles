@@ -6,8 +6,23 @@ docker-cleanupi() {
   docker images | grep '<none>' | awk '{print $3}' | xargs docker rmi
 }
 
+docker-ip() {
+  docker inspect --format '{{ .NetworkSettings.IPAddress }}'
+}
+
+docker-kill() {
+  docker kill $(docker ps -q)
+}
+
 docker-vars() {
   while IFS='' read -r line || [[ -n $line ]]; do
-      [[ $line == '#'* ]] || echo -n "-e $line "
+    [[ $line == '#'* ]] || echo -n "-e $line "
   done < "$1"
+}
+
+docker-env() {
+  if [[ -z "$DOCKER_HOST" ]]; then
+    eval $(docker-machine env dockerhost)
+  fi
+  \docker $@
 }
