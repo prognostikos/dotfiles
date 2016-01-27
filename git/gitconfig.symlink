@@ -52,3 +52,5 @@
 	default = upstream
 [rerere]
 	enabled = true
+[credential]
+	helper = osxkeychain
