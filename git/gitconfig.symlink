@@ -54,3 +54,5 @@
 	enabled = true
 [credential]
 	helper = osxkeychain
+[ghi]
+	token = !security find-internet-password -a prognostikos -s github.com -l 'ghi token' -w
