@@ -77,7 +77,7 @@ set wildmenu
 
 " remove binary files from completion menus
 set wildignore+=*.o,*.obj,*.class,*.png,*.jpg,*.jpeg,*.gif,*.ico,*.pdf,*.doc,*.docx,*.ppt,*.pptx,*.xls,*.xlsx,tags
-set wildignore+=*vendor/cache/*,*/vendor/ruby/*,*/vendor/bundle/*,*/tmp/*,*/log/*,*/.chef/checksums/*,*/node_modules/*,public/assets*
+set wildignore+=*vendor/cache/*,*/vendor/ruby/*,*/vendor/bundle/*,*/tmp/*,*/log/*,*/.chef/checksums/*,*/node_modules/*,public/assets*,_build/*
 if has('wildignorecase')
   set wildignorecase
 endif
