@@ -4,6 +4,6 @@ tmux rename-window editor
 tmux new-window -n console rails c
 tmux new-window -n db rails db
 tmux new-window -n servers
-tmux new-window -n heroku
+tmux new-window -n prod
 tmux new-window -n certs cd ~/b/certs
 tmux select-window -t editor
