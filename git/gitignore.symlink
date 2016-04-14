@@ -11,3 +11,4 @@ zeus.json
 *.pyc
 .bundle
 .envrc
+.byebug_history
