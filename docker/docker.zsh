@@ -20,6 +20,7 @@ docker-vars() {
   done < "$1"
 }
 
+# Normally docker is aliased to this, for now it's disabled with new Docker.app
 docker-env() {
   if [[ -z "$DOCKER_HOST" ]]; then
     eval $(docker-machine env dockerhost)

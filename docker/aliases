@@ -6,4 +6,3 @@ alias dcu=docker-cleanup
 alias dcui=docker-cleanupi
 alias dm=docker-machine
 alias dc=docker-compose
-alias docker=docker-env
