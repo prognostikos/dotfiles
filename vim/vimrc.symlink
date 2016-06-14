@@ -309,6 +309,7 @@ augroup END
 augroup help
   autocmd!
   autocmd FileType help setlocal nospell
+  autocmd FileType help wincmd L
 augroup END
 
 augroup makefile
