@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+if [ -z $OMNIFOCUS_MAILDROP ]; then
+  echo "OMNIFOCUS_MAILDROP must be set"
+  exit 1
+fi
+
+echo ''|mailx -s "$*" "$OMNIFOCUS_MAILDROP"
