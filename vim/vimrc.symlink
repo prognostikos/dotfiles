@@ -431,6 +431,21 @@ augroup compl
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 augroup END
 
+augroup journal
+  autocmd!
+  autocmd BufWinEnter */journal.asc setfiletype markdown
+  autocmd BufWinEnter */journal.asc call PrependDateHeader()
+augroup END
+
+function! PrependDateHeader()
+  let format = '+%Y-%m-%d %H:%M%n'
+  let cmd = 'date ' . shellescape(format)
+  let result = substitute(system(cmd), '[\]\|[[:cntrl:]]', '', 'g')
+  call append(0, '## ' . result)
+  :normal ggo
+  :normal gg2o
+endfunction
+
 iabbr fundrasier fundraiser
 
 " rails.vim settings
@@ -553,3 +568,6 @@ let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go', 'html
 
 " vim-go
 let g:go_fmt_command = "goimports"
+
+" vim-gnupg
+let g:GPGDefaultRecipients = [ "Matt Rohrer <matt@prognostikos.com" ]
