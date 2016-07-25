@@ -434,8 +434,8 @@ augroup END
 
 augroup journal
   autocmd!
-  autocmd BufWinEnter */journal.asc setfiletype markdown
-  autocmd BufWinEnter */journal.asc call PrependDateHeader()
+  autocmd BufWinEnter */journal.pgp setfiletype markdown
+  autocmd BufWinEnter */journal.pgp call PrependDateHeader()
 augroup END
 
 function! PrependDateHeader()
