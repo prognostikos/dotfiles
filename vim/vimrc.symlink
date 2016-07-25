@@ -271,12 +271,12 @@ function! EchoTags()
 endfunction
 
 function! InsertTabWrapper()
-    let col = col('.') - 1
-    if !col || getline('.')[col - 1] !~ '\k'
-        return "\<tab>"
-    else
-        return "\<c-p>"
-    endif
+  let col = col('.') - 1
+  if !col || getline('.')[col - 1] !~ '\k'
+    return "\<tab>"
+  else
+    return "\<c-p>"
+  endif
 endfunction
 inoremap <expr> <tab> InsertTabWrapper()
 inoremap <s-tab> <c-n>
@@ -552,10 +552,10 @@ let g:markdown_fenced_languages = ['coffee', 'coffeescript=coffee', 'css', 'erb=
 
 " fzf
 let g:fzf_action = {
-  \ 'ctrl-m': 'e',
-  \ 'ctrl-t': 'tabedit',
-  \ 'ctrl-s': 'split',
-  \ 'ctrl-v': 'vsplit' }
+      \ 'ctrl-m': 'e',
+      \ 'ctrl-t': 'tabedit',
+      \ 'ctrl-s': 'split',
+      \ 'ctrl-v': 'vsplit' }
 nnoremap <silent> <Leader>t :FZF<CR>
 
 " ft_sql
