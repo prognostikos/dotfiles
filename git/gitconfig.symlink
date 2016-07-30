@@ -1,6 +1,7 @@
 [user]
 	name = Matt Rohrer
 	email = matt@prognostikos.com
+	signingkey = 1E3668A2A42B3FC3
 [core]
 	excludesfile = ~/.gitignore
 	precomposeunicode = true
@@ -56,3 +57,5 @@
 	helper = osxkeychain
 [ghi]
 	token = !security find-internet-password -a prognostikos -s github.com -l 'ghi token' -w
+[commit]
+	gpgsign = true
