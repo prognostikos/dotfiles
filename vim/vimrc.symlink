@@ -300,7 +300,7 @@ augroup END
 
 augroup textmarkdown
   autocmd!
-  autocmd BufRead,BufNewFile *.md,*.mkd,*.md.txt setfiletype markdown
+  autocmd BufRead,BufNewFile *.md,*.mkd,*.md.txt,*.md.gpg setfiletype markdown
   autocmd BufRead,BufNewFile *.txt setfiletype text
   autocmd FileType text,markdown setlocal wrap linebreak autoindent nolist textwidth=80 spell
   autocmd FileType text,markdown setlocal complete+=kspell
@@ -434,8 +434,7 @@ augroup END
 
 augroup journal
   autocmd!
-  autocmd BufWinEnter */journal.pgp setfiletype markdown
-  autocmd BufWinEnter */journal.pgp call PrependDateHeader()
+  autocmd BufWinEnter */journal.md.pgp call PrependDateHeader()
 augroup END
 
 function! PrependDateHeader()
