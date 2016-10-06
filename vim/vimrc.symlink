@@ -47,7 +47,8 @@ if has("gui_running")
   colorscheme solarized-light
 else
   set background=dark
-  colorscheme base16-summerfruit
+  set t_Co=256
+  colorscheme monochrome
 endif
 
 " more info
