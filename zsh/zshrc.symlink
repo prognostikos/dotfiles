@@ -9,6 +9,10 @@ export GIT_PS1_SHOWDIRTYSTATE=true
 export GIT_PS1_SHOWUNTRACKEDFILES=true
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
+if [ ! -d /Volumes/secrets ]; then
+  hdiutil attach ~/Documents/secrets.sparseimage
+fi
+
 ### PATH manipulation
 
 if command -v rbenv > /dev/null; then

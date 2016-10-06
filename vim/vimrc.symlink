@@ -303,7 +303,7 @@ augroup textmarkdown
   autocmd!
   autocmd BufRead,BufNewFile *.md,*.mkd,*.md.txt,*.md.gpg setfiletype markdown
   autocmd BufRead,BufNewFile *.txt setfiletype text
-  autocmd FileType text,markdown setlocal wrap linebreak autoindent nolist textwidth=80 spell
+  autocmd FileType text,markdown setlocal wrap linebreak autoindent nolist textwidth=80
   autocmd FileType text,markdown setlocal complete+=kspell
 augroup END
 
