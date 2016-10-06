@@ -303,8 +303,7 @@ augroup textmarkdown
   autocmd!
   autocmd BufRead,BufNewFile *.md,*.mkd,*.md.txt,*.md.gpg setfiletype markdown
   autocmd BufRead,BufNewFile *.txt setfiletype text
-  autocmd FileType text,markdown setlocal wrap linebreak autoindent nolist textwidth=80
-  autocmd FileType text,markdown setlocal complete+=kspell
+  autocmd FileType text,markdown setlocal wrap linebreak autoindent nolist textwidth=80 complete+=kspell
 augroup END
 
 augroup help
@@ -375,7 +374,7 @@ augroup END
 
 augroup git
   autocmd!
-  autocmd FileType gitcommit setlocal spell complete+=kspell
+  autocmd FileType gitcommit setlocal nospell complete+=kspell
 augroup END
 
 augroup cukes
@@ -427,7 +426,7 @@ augroup END
 augroup compl
   autocmd!
   autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType html setlocal omnifunc=htmlcomplete#CompleteTags
   autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
   autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
