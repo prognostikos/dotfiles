@@ -14,5 +14,5 @@ PROMPT='%{$fg[magenta]%}${username}${hostname}%{$fg[blue]%}%.%{$fg[cyan]%}$(git-
 local fancy_left=$PROMPT
 local fancy_right=$RPROMPT
 
-fancy_prompt(){ export PROMPT=$fancy_left; export RPROMPT=$fancy_right}
+fancy_prompt(){ export PROMPT=$fancy_left; export RPROMPT=$fancy_right }
 simple_prompt(){ export PROMPT='$ '; export RPROMPT='' }
