@@ -2,7 +2,7 @@
 # print the remaining charge on a macbook
 
 if command -v pmset > /dev/null; then
-  pmset -g 'batt' | tr '\n' ';' | awk '{print $7}' | tr -d ';'
+  pmset -g 'batt' | tr '\n' ';' | awk '{print $8}' | tr -d ';'
 else
   echo '!'
 fi
