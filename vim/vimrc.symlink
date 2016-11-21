@@ -58,8 +58,7 @@ set showmode
 set showcmd
 set ruler
 set laststatus=2
-set showtabline=1
-set nocursorline
+set showtabline=2
 
 " always keep the cursor line in the middle of the screen if possible
 set scrolloff=999
@@ -430,6 +429,12 @@ augroup compl
   autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
   autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+augroup END
+
+augroup cursorline
+  autocmd!
+  autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  autocmd WinLeave * setlocal nocursorline
 augroup END
 
 augroup journal
