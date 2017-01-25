@@ -524,12 +524,12 @@ noremap <leader>a# :Tabularize/#<CR>
 vnoremap <leader>a# :Tabularize/#<CR>
 noremap <leader>ah :Tabularize/=><CR>
 vnoremap <leader>ah :Tabularize/=><CR>
-noremap <leader>a= :Tabularize/=<CR>
-vnoremap <leader>a= :Tabularize/=<CR>
+" noremap <leader>a= :Tabularize/=<CR>
+" vnoremap <leader>a= :Tabularize/=<CR>
 noremap <leader>a: :Tabularize/:\zs/l0c1<CR>
 vnoremap <leader>a: :Tabularize/:\zs/l0c1<CR>
-noremap <leader>a, :Tabularize/,\zs/l0c1<CR>
-vnoremap <leader>a, :Tabularize/,\zs/l0c1<CR>
+" noremap <leader>a, :Tabularize/,\zs/l0c1<CR>
+" vnoremap <leader>a, :Tabularize/,\zs/l0c1<CR>
 
 " sparkup
 let g:sparkupDoubleQuote = 1
