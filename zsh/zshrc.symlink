@@ -86,19 +86,15 @@ if command -v aws > /dev/null ; then
   source /usr/local/share/zsh/site-functions/_aws
 fi
 
-# if we're sshed somewhere, then try to reattach to a session
-if [ -z "$TMUX" ]; then
-  if [ -n "$(command -v tmux)" ] && [ ! -z $SSH_TTY ]; then
-    tmux attach
-  fi
+# use ssh-agent
+if [ -z $SSH_AGENT_PID ]; then
+  eval $(ssh-agent)
+  ssh-add
 fi
 
 # use gpg-agent
-if [ -f ~/.gnupg/.gpg-agent-info ] && [ -n "$(pgrep gpg-agent)" ]; then
-    source ~/.gnupg/.gpg-agent-info
-    export GPG_AGENT_INFO
-else
-    eval $(gpg-agent --daemon --write-env-file ~/.gnupg/.gpg-agent-info)
+if ! pgrep -x -u "${USER}" gpg-agent >/dev/null 2>&1; then
+  gpg-connect-agent /bye >/dev/null 2>&1
 fi
 
 export GPG_TTY=$(tty)
