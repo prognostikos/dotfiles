@@ -23,6 +23,7 @@ call pathogen#infect()
 
 " fzf is installed via homebrew instead of pathogen+submodules
 set rtp+=/usr/local/opt/fzf
+set rtp+=~/.fzf
 
 " Enable filetype detection
 filetype plugin indent on
