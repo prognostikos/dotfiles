@@ -9,8 +9,10 @@ export GIT_PS1_SHOWDIRTYSTATE=true
 export GIT_PS1_SHOWUNTRACKEDFILES=true
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
-if [ ! -d /Volumes/secrets ]; then
-  hdiutil attach ~/Documents/secrets.sparseimage
+if command -v hdiutil > /dev/null; then
+  if [ ! -d /Volumes/secrets ]; then
+    hdiutil attach ~/Documents/secrets.sparseimage
+  fi
 fi
 
 ### PATH manipulation
