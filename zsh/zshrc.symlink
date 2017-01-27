@@ -85,7 +85,9 @@ fixssh() {
 
 # the awscli completion seems to need explicit sourcing - fpath is not enough
 if command -v aws > /dev/null ; then
-  source /usr/local/share/zsh/site-functions/_aws
+  if [ -f /usr/local/share/zsh/site-functions/_aws ]; then
+    source /usr/local/share/zsh/site-functions/_aws
+  fi
 fi
 
 # use ssh-agent
