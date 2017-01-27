@@ -48,3 +48,11 @@ __git_files() {
     _wanted files expl 'local files' _files
 }
 
+gs() {
+  git status -sb 2>/dev/null
+
+  if [ $? -ne 0 ]; then
+    (>&2 echo "not a Git repo - listing files")
+    ls
+  fi
+}
