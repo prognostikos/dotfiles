@@ -158,9 +158,3 @@
 [submodule "vim/vim.symlink/bundle/vim-beancount"]
 	path = vim/vim.symlink/bundle/vim-beancount
 	url = https://github.com/nathangrigg/vim-beancount.git
-[submodule "vim/vim.symlink/bundle/vim-sql-utilities"]
-	path = vim/vim.symlink/bundle/vim-sql-utilities
-	url = https://github.com/vim-scripts/SQLUtilities.git
-[submodule "vim/vim.symlink/bundle/vim-align"]
-	path = vim/vim.symlink/bundle/vim-align
-	url = https://github.com/vim-scripts/Align.git
