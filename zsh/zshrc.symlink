@@ -90,12 +90,6 @@ if command -v aws > /dev/null ; then
   fi
 fi
 
-# use ssh-agent
-if [ -z $SSH_AGENT_PID ]; then
-  eval $(ssh-agent)
-  ssh-add
-fi
-
 # use gpg-agent
 if ! pgrep -x -u "${USER}" gpg-agent >/dev/null 2>&1; then
   gpg-connect-agent /bye >/dev/null 2>&1
