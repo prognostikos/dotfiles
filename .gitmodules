@@ -19,9 +19,6 @@
 [submodule "vim/vim.symlink/bundle/vim-fugitive"]
 	path = vim/vim.symlink/bundle/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
-[submodule "vim/vim.symlink/bundle/vim-ruby-refactoring"]
-	path = vim/vim.symlink/bundle/vim-ruby-refactoring
-	url = https://github.com/rking/vim-ruby-refactoring.git
 [submodule "vim/vim.symlink/bundle/vim-textobj-rubyblock"]
 	path = vim/vim.symlink/bundle/vim-textobj-rubyblock
 	url = https://github.com/nelstrom/vim-textobj-rubyblock.git
@@ -43,10 +40,6 @@
 [submodule "vim/vim.symlink/bundle/vim-qargs"]
 	path = vim/vim.symlink/bundle/vim-qargs
 	url = https://github.com/nelstrom/vim-qargs.git
-[submodule "vim/vim.symlink/bundle/vimux"]
-	path = vim/vim.symlink/bundle/vimux
-	url = https://github.com/benmills/vimux.git
-	ignore = dirty
 [submodule "vim/vim.symlink/bundle/vim-bundler"]
 	path = vim/vim.symlink/bundle/vim-bundler
 	url = https://github.com/tpope/vim-bundler.git
@@ -62,9 +55,6 @@
 [submodule "vim/vim.symlink/bundle/vim-dispatch"]
 	path = vim/vim.symlink/bundle/vim-dispatch
 	url = https://github.com/tpope/vim-dispatch.git
-[submodule "vim/vim.symlink/bundle/vim-copy-as-rtf"]
-	path = vim/vim.symlink/bundle/vim-copy-as-rtf
-	url = https://github.com/zerowidth/vim-copy-as-rtf.git
 [submodule "vim/vim.symlink/bundle/vim-gist"]
 	path = vim/vim.symlink/bundle/vim-gist
 	url = https://github.com/mattn/gist-vim.git
@@ -89,9 +79,6 @@
 [submodule "vim/vim.symlink/bundle/vim-trailertrash"]
 	path = vim/vim.symlink/bundle/vim-trailertrash
 	url = https://github.com/csexton/trailertrash.vim.git
-[submodule "vim/vim.symlink/bundle/vim-ruby-xmpfilter"]
-	path = vim/vim.symlink/bundle/vim-ruby-xmpfilter
-	url = https://github.com/t9md/vim-ruby-xmpfilter.git
 [submodule "vim/vim.symlink/bundle/vim-vitality"]
 	path = vim/vim.symlink/bundle/vim-vitality
 	url = https://github.com/sjl/vitality.vim.git
@@ -119,9 +106,6 @@
 [submodule "vim/vim.symlink/bundle/vim-rails"]
 	path = vim/vim.symlink/bundle/vim-rails
 	url = https://github.com/tpope/vim-rails.git
-[submodule "vim/vim.symlink/bundle/vim-coffee-script"]
-	path = vim/vim.symlink/bundle/vim-coffee-script
-	url = https://github.com/kchmck/vim-coffee-script.git
 [submodule "vim/vim.symlink/bundle/vim-jsx"]
 	path = vim/vim.symlink/bundle/vim-jsx
 	url = https://github.com/mxw/vim-jsx.git
@@ -131,9 +115,6 @@
 [submodule "vim/vim.symlink/bundle/vim-rsi"]
 	path = vim/vim.symlink/bundle/vim-rsi
 	url = https://github.com/tpope/vim-rsi.git
-[submodule "vim/vim.symlink/bundle/vim-terraform"]
-	path = vim/vim.symlink/bundle/vim-terraform
-	url = https://github.com/markcornick/vim-terraform.git
 [submodule "vim/vim.symlink/bundle/vim-hardmode"]
 	path = vim/vim.symlink/bundle/vim-hardmode
 	url = https://github.com/wikitopian/hardmode.git
