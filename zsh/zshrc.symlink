@@ -9,6 +9,8 @@ export GIT_PS1_SHOWDIRTYSTATE=true
 export GIT_PS1_SHOWUNTRACKEDFILES=true
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
+export CDPATH=$HOME/c/bn:$HOME/c:$HOME/b:$HOME:d
+
 if command -v hdiutil > /dev/null; then
   if [ ! -d /Volumes/secrets ]; then
     hdiutil attach ~/Documents/secrets.sparseimage
