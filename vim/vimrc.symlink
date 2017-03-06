@@ -271,6 +271,17 @@ function! EchoTags()
   echo join(split(&tags, ","), "\n")
 endfunction
 
+function! InsertTabWrapper()
+  let col = col('.') - 1
+  if !col || getline('.')[col - 1] !~ '\k'
+    return "\<tab>"
+  else
+    return "\<c-p>"
+  endif
+endfunction
+inoremap <expr> <tab> InsertTabWrapper()
+inoremap <s-tab> <c-n>
+
 " Edit or view files in same directory as current file
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
 map <leader>de :edit %%<cr>
