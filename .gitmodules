@@ -142,3 +142,6 @@
 [submodule "vim/vim.symlink/bundle/vim-gutentags"]
 	path = vim/vim.symlink/bundle/vim-gutentags
 	url = https://github.com/ludovicchabant/vim-gutentags.git
+[submodule "vim/vim.symlink/bundle/vim-typescript"]
+	path = vim/vim.symlink/bundle/vim-typescript
+	url = https://github.com/leafgarland/typescript-vim.git
