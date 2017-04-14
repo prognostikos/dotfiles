@@ -121,9 +121,6 @@
 [submodule "vim/vim.symlink/bundle/vim-mustache-handlebars"]
 	path = vim/vim.symlink/bundle/vim-mustache-handlebars
 	url = https://github.com/mustache/vim-mustache-handlebars.git
-[submodule "vim/vim.symlink/bundle/vim-syntastic"]
-	path = vim/vim.symlink/bundle/vim-syntastic
-	url = https://github.com/scrooloose/syntastic.git
 [submodule "vim/vim.symlink/bundle/vim-elixir"]
 	path = vim/vim.symlink/bundle/vim-elixir
 	url = https://github.com/elixir-lang/vim-elixir.git
@@ -145,3 +142,6 @@
 [submodule "vim/vim.symlink/bundle/vim-typescript"]
 	path = vim/vim.symlink/bundle/vim-typescript
 	url = https://github.com/leafgarland/typescript-vim.git
+[submodule "vim/vim.symlink/bundle/vim-ale"]
+	path = vim/vim.symlink/bundle/vim-ale
+	url = https://github.com/w0rp/ale.git
