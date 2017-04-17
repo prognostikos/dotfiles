@@ -22,6 +22,7 @@
 	save = !git add -A && git commit -m 'SAVEPOINT'
 	wip = !git add -u && git commit -m 'WIP'
 	up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+	stash-all = stash save --include-untracked
 # some goodies from http://yanpritzker.com/git-book/
 [color]
 	diff = auto
@@ -51,6 +52,9 @@
 	templatedir = ~/.git-template
 [push]
 	default = upstream
+	followTags = true
+[status]
+	showUntrackedFiles = all
 [rerere]
 	enabled = true
 [credential]
@@ -61,3 +65,5 @@
 	gpgsign = true
 [gpg]
 	program = gpg2
+[transfer]
+	fsckobjects = true
