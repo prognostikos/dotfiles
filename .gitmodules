@@ -148,3 +148,6 @@
 [submodule "vim/vim.symlink/bundle/vim-gruvbox-colors"]
 	path = vim/vim.symlink/bundle/vim-gruvbox-colors
 	url = https://github.com/morhetz/gruvbox.git
+[submodule "vim/vim.symlink/bundle/vim-neocomplete"]
+	path = vim/vim.symlink/bundle/vim-neocomplete
+	url = https://github.com/Shougo/neocomplete.vim.git
