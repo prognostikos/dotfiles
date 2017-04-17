@@ -322,14 +322,9 @@ augroup rb
   autocmd!
   autocmd BufRead,BufNewFile Vagrantfile,Rakefile,Guardfile,Cheffile setfiletype ruby
   autocmd FileType ruby setlocal iskeyword+=!,?
-  autocmd FileType ruby setlocal makeprg=rspec
-  autocmd FileType ruby compiler rspec
-  autocmd FileType ruby nmap <buffer> <leader>rc <Plug>(seeing_is_believing-clean)
-  autocmd FileType ruby xmap <buffer> <leader>rc <Plug>(seeing_is_believing-clean)
-  autocmd FileType ruby imap <buffer> <leader>rc <Plug>(seeing_is_believing-clean)
-  autocmd FileType ruby nmap <buffer> <leader>rs <Plug>(seeing_is_believing-run)
-  autocmd FileType ruby xmap <buffer> <leader>rs <Plug>(seeing_is_believing-run)
-  autocmd FileType ruby imap <buffer> <leader>rs <Plug>(seeing_is_believing-run)
+  autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+  autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+  autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 augroup END
 
 augroup java
@@ -431,6 +426,7 @@ augroup compl
   autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
   autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+  autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 augroup END
 
 augroup cursorline
@@ -573,9 +569,24 @@ let g:omni_sql_no_default_maps = 1
 let g:syntastic_html_tidy_ignore_errors = [ "plain text isn't allowed in <head> elements" ]
 let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go', 'html'] }
+let g:syntastic_javascript_checkers = ['eslint']
 
 " vim-go
 let g:go_fmt_command = "goimports"
 
 " vim-gnupg
 let g:GPGDefaultRecipients = [ "Matt Rohrer <matt@prognostikos.com" ]
+
+" ALE
+let g:ale_lint_on_enter = 0
+
+" neocomplete
+let g:neocomplete#enable_at_startup = 1
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+if !exists('g:neocomplete#force_omni_input_patterns')
+  let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_omni_input_patterns.ruby =
+      \ '[^. *\t]\.\w*\|\h\w*::'
