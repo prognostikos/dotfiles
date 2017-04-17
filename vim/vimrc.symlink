@@ -339,11 +339,6 @@ augroup cccc
   autocmd BufRead,BufNewFile *.h,*.c set makeprg=make\ %:r
 augroup END
 
-augroup mustache
-  autocmd!
-  autocmd BufRead,BufNewFile *.html setfiletype mustache
-augroup END
-
 augroup gitconfig
   autocmd!
   autocmd BufRead,BufNewFile .gitconfig,gitconfig.symlink setlocal noexpandtab
