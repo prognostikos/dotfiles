@@ -435,6 +435,11 @@ augroup journal
   autocmd BufWinEnter */journal.md.pgp call PrependDateHeader()
 augroup END
 
+augroup javascript
+  autocmd!
+  autocmd FileType javascript.jsx runtime! ftplugin/html/sparkup.vim
+augroup END
+
 function! PrependDateHeader()
   let format = '+%Y-%m-%d %H:%M%n'
   let cmd = 'date ' . shellescape(format)
