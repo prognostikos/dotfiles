@@ -2,7 +2,7 @@
 
 if [ ! -n "$1" ]
 then
-  echo "Usage: `basename $0` /Volumes/<destination-drive>"
+  echo "Usage: $(basename "$0") /Volumes/<destination-drive>"
   exit 1
 fi
 
