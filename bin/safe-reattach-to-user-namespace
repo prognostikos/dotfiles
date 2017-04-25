@@ -2,7 +2,7 @@
 
 # If reattach-to-user-namespace is available, use it. Othewise just run the command.
 if [ -n "$(command -v reattach-to-user-namespace)" ]; then
-  reattach-to-user-namespace $@
+  reattach-to-user-namespace "$@"
 else
   exec "$@"
 fi
