@@ -424,9 +424,11 @@ augroup compl
   autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 augroup END
 
-augroup cursorline
+augroup activewindow
   autocmd!
   autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  autocmd VimEnter,WinEnter,BufWinEnter * setlocal signcolumn=yes
+  autocmd WinLeave * setlocal signcolumn=no
   autocmd WinLeave * setlocal nocursorline
 augroup END
 
