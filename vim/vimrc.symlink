@@ -17,11 +17,53 @@ if has("unix")
   endif
 endif
 
-" autoloading
-runtime bundle/vim-pathogen/autoload/pathogen.vim
-call pathogen#infect()
+" plugins
+call plug#begin('~/.vim/bundle')
 
-" fzf is installed via homebrew instead of pathogen+submodules
+Plug 'Raimondi/delimitMate'
+Plug 'Shougo/neocomplete.vim'
+Plug 'chriskempson/base16-vim'
+Plug 'csexton/trailertrash.vim'
+Plug 'elzr/vim-json'
+Plug 'fatih/vim-go'
+Plug 'godlygeek/tabular'
+Plug 'jamessan/vim-gnupg'
+Plug 'janko-m/vim-test'
+Plug 'kana/vim-textobj-user'
+Plug 'mattn/gist-vim'
+Plug 'mattn/webapi-vim'
+Plug 'michaeljsmith/vim-indent-object'
+Plug 'mustache/vim-mustache-handlebars'
+Plug 'nathangrigg/vim-beancount'
+Plug 'nelstrom/vim-qargs'
+Plug 'nelstrom/vim-textobj-rubyblock'
+Plug 'othree/html5.vim'
+Plug 'rosstimson/bats.vim'
+Plug 'sjl/vitality.vim'
+Plug 'tpope/vim-bundler'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-flagship'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-markdown'
+Plug 'tpope/vim-projectionist'
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-rake'
+Plug 'tpope/vim-rbenv'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-rsi'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-vinegar'
+Plug 'tristen/vim-sparkup'
+Plug 'vim-ruby/vim-ruby'
+Plug 'w0rp/ale'
+Plug 'wikitopian/hardmode'
+
+call plug#end()
+
+" fzf is installed via homebrew
 set rtp+=/usr/local/opt/fzf
 set rtp+=~/.fzf
 
