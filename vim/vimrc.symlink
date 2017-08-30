@@ -89,9 +89,7 @@ if has("gui_running")
   set background=light
   colorscheme solarized-light
 else
-  set background=dark
-  let g:gruvbox_contrast_dark = 'hard'
-  colorscheme gruvbox
+  colorscheme base16-summerfruit-dark
 endif
 
 " more info
