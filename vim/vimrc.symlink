@@ -360,7 +360,7 @@ augroup END
 
 augroup rb
   autocmd!
-  autocmd BufRead,BufNewFile Vagrantfile,Rakefile,Guardfile,Cheffile setfiletype ruby
+  autocmd BufRead,BufNewFile Vagrantfile,Rakefile,Guardfile,Cheffile,Brewfile setfiletype ruby
   autocmd FileType ruby setlocal iskeyword+=!,?
   autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
   autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
