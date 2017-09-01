@@ -1,9 +1,8 @@
 #!/bin/bash
 
 tmux rename-window editor
-tmux new-window -n console rails c
-tmux new-window -n db rails db
-tmux new-window -n servers forego start web
-tmux new-window -n prod
-tmux new-window -n certs cd ~/b/certs
-tmux select-window -t editor
+tmux new-window -d -n console rails c
+tmux new-window -d -n db rails db
+tmux new-window -d -n servers script/server
+tmux new-window -d -n prod
+tmux new-window -d -n payouts -c ~/b/db-payments/workspace
