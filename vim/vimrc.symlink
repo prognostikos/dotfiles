@@ -37,6 +37,7 @@ Plug 'mustache/vim-mustache-handlebars'
 Plug 'nathangrigg/vim-beancount'
 Plug 'nelstrom/vim-qargs'
 Plug 'nelstrom/vim-textobj-rubyblock'
+Plug 'nsf/gocode', { 'rtp': 'vim' }
 Plug 'othree/html5.vim'
 Plug 'rosstimson/bats.vim'
 Plug 'sjl/vitality.vim'
