@@ -329,7 +329,7 @@ map <leader>de :edit %%<cr>
 map <leader>dv :vsplit %%<cr>
 map <leader>ds :split %%<cr>
 
-map <leader>et :tabedit config/locales/pending_upload/pending.yml
+map <leader>et :tabedit config/locales/pending-upload.yml
 
 """ Autocomd/Filetype-specific settings
 
