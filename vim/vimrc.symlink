@@ -136,10 +136,10 @@ set noerrorbells
 set novisualbell
 set t_vb=
 
-" files - use version control instead
+" vim 8 (at least with my plugins) is very flakey
+set writebackup
 set nobackup
-set nowritebackup
-set noswapfile
+set swapfile
 
 "When on a buffer becomes hidden when it is abandoned.
 set hidden
