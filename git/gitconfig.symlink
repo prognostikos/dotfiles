@@ -67,3 +67,5 @@
 	program = gpg
 [transfer]
 	fsckobjects = true
+[fetch]
+	fsckobjects = false
