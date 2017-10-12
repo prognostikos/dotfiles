@@ -201,6 +201,9 @@ let g:is_bash=1
 
 set shortmess+=AIc
 
+" https://stackoverflow.com/questions/19030290/syntax-highlighting-causes-terrible-lag-in-vim/20519492#20519492
+set regexpengine=1
+
 """ Custom mappings
 
 " prefer , rather than default \
