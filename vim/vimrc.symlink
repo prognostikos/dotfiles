@@ -29,6 +29,7 @@ Plug 'godlygeek/tabular'
 Plug 'jamessan/vim-gnupg'
 Plug 'janko-m/vim-test'
 Plug 'kana/vim-textobj-user'
+Plug 'mattn/emmet-vim'
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
 Plug 'michaeljsmith/vim-indent-object'
@@ -56,7 +57,6 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
-Plug 'tristen/vim-sparkup'
 Plug 'vim-ruby/vim-ruby'
 Plug 'w0rp/ale'
 Plug 'wikitopian/hardmode'
@@ -482,7 +482,6 @@ augroup END
 
 augroup javascript
   autocmd!
-  autocmd FileType javascript.jsx runtime! ftplugin/html/sparkup.vim
 augroup END
 
 function! PrependDateHeader()
@@ -574,13 +573,6 @@ vnoremap <leader>a: :Tabularize/:\zs/l0c1<CR>
 " noremap <leader>a, :Tabularize/,\zs/l0c1<CR>
 " vnoremap <leader>a, :Tabularize/,\zs/l0c1<CR>
 
-" sparkup
-let g:sparkupDoubleQuote = 1
-let g:sparkupMappingInsertModeOnly = 1
-
-" seeing_is_believing
-let g:xmpfilter_cmd = "seeing_is_believing"
-
 " always
 let g:vitality_always_assume_iterm = 1
 
@@ -592,9 +584,6 @@ let g:test#strategy = 'dispatch'
 nmap <silent> <leader>rt :TestFile<CR>
 nmap <silent> <leader>rT :TestNearest<CR>
 nmap <silent> <leader>ra :TestSuite<CR>
-
-" vim-jsx
-let g:jsx_ext_required = 0
 
 " vim-markdown
 let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'bash=sh', 'sh']
