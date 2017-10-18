@@ -347,7 +347,6 @@ augroup textmarkdown
   autocmd BufRead,BufNewFile *.md,*.mkd,*.md.txt,*.md.gpg setfiletype markdown
   autocmd BufRead,BufNewFile *.txt setfiletype text
   autocmd FileType text,markdown setlocal wrap linebreak autoindent nolist textwidth=80 complete+=kspell
-  autocmd FileType text,markdown let b:loaded_delimitMate = 1
 augroup END
 
 augroup help
