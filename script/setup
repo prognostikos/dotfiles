@@ -17,8 +17,8 @@ do
 
   if [ -f "$dest" ] || [ -d "$dest" ]
   then
-    echo mv -fv "$dest" "${dest}.backup"
+    mv -fv "$dest" "${dest}.backup"
   fi
 
-  echo ln -svf "$source" "$dest"
+  ln -svf "$source" "$dest"
 done
