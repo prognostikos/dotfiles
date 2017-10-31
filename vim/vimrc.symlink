@@ -88,7 +88,8 @@ if has("gui_running")
   set background=light
   colorscheme solarized-light
 else
-  colorscheme base16-summerfruit-dark
+  " colorscheme base16-summerfruit-dark
+  colorscheme github256
 endif
 
 " more info
