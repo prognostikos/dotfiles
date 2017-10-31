@@ -1,6 +1,9 @@
 node_modules
 vendor/cache
 Godeps
+*.otf
+*.eot
+*.svg
 *.ttf
 *.woff
 *.woff2
