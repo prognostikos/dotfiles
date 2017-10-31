@@ -468,10 +468,10 @@ augroup END
 
 augroup activewindow
   autocmd!
-  autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  autocmd VimEnter,WinEnter,BufWinEnter * setlocal signcolumn=yes
-  autocmd WinLeave * setlocal signcolumn=no
-  autocmd WinLeave * setlocal nocursorline
+  autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline colorcolumn=80 signcolumn=yes
+  " autocmd VimEnter,WinEnter,BufWinEnter * setlocal signcolumn=yes
+  " autocmd WinLeave * setlocal signcolumn=no
+  autocmd WinLeave * setlocal nocursorline signcolumn=no colorcolumn=0
 augroup END
 
 augroup journal
@@ -606,3 +606,7 @@ let g:GPGDefaultRecipients = [ "Matt Rohrer <matt@prognostikos.com" ]
 
 " ALE
 let g:ale_lint_on_enter = 0
+
+" change cursor shape depending on mode in Terminal
+let &t_SI="\033[4 q" " start insert mode
+let &t_EI="\033[1 q" " end insert mode
