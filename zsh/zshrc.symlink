@@ -13,7 +13,9 @@ export CDPATH=$HOME/c/bn:$HOME/c:$HOME/b:$HOME:d
 
 if command -v hdiutil > /dev/null; then
   if [ ! -d /Volumes/secrets ]; then
-    hdiutil attach ~/Documents/secrets.sparseimage
+    if [ -f ~/Documents/secrets.sparseimage ]; then
+      hdiutil attach ~/Documents/secrets.sparseimage
+    fi
   fi
 fi
 
