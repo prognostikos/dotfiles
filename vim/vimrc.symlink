@@ -30,6 +30,7 @@ Plug 'godlygeek/tabular'
 Plug 'jamessan/vim-gnupg'
 Plug 'janko-m/vim-test'
 Plug 'kana/vim-textobj-user'
+Plug 'lifepillar/vim-mucomplete'
 Plug 'mattn/emmet-vim'
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
@@ -127,7 +128,7 @@ endif
 set complete-=i
 " inserts the longest common text of all matches and display menu even if
 " there's only one match
-set completeopt=longest,menuone,preview
+set completeopt=longest,menuone,preview,noinsert
 
 set history=256
 
@@ -323,8 +324,8 @@ function! InsertTabWrapper()
     return "\<c-p>"
   endif
 endfunction
-inoremap <expr> <tab> InsertTabWrapper()
-inoremap <s-tab> <c-n>
+" inoremap <expr> <tab> InsertTabWrapper()
+" inoremap <s-tab> <c-n>
 
 " Edit or view files in same directory as current file
 cnoremap %% <C-R>=expand('%:h').'/'<cr>
@@ -611,3 +612,6 @@ let g:ale_lint_on_enter = 0
 " change cursor shape depending on mode in Terminal
 let &t_SI="\033[4 q" " start insert mode
 let &t_EI="\033[1 q" " end insert mode
+
+" mucomplete
+let g:mucomplete#enable_auto_at_startup = 1
