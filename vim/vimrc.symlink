@@ -427,6 +427,11 @@ augroup tabby
   autocmd BufRead,BufNewFile *.tsv setlocal noexpandtab
 augroup END
 
+augroup emmet
+  autocmd!
+  autocmd FileType html,css,scss,eruby,html.mustache :EmmetInstall
+augroup END
+
 " Save when losing focus
 autocmd FocusLost * :silent! wall
 
@@ -574,6 +579,8 @@ vnoremap <leader>a: :Tabularize/:\zs/l0c1<CR>
 " noremap <leader>a, :Tabularize/,\zs/l0c1<CR>
 " vnoremap <leader>a, :Tabularize/,\zs/l0c1<CR>
 
+inoremap <C-e> <C-y>,
+
 " always
 let g:vitality_always_assume_iterm = 1
 
@@ -612,6 +619,9 @@ let g:ale_lint_on_enter = 0
 " change cursor shape depending on mode in Terminal
 let &t_SI="\033[4 q" " start insert mode
 let &t_EI="\033[1 q" " end insert mode
+
+" emmet.vim
+let g:user_emmet_mode = 'i'
 
 " mucomplete
 let g:mucomplete#enable_auto_at_startup = 1
