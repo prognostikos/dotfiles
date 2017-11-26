@@ -20,6 +20,7 @@ endif
 " plugins
 call plug#begin('~/.vim/bundle')
 
+Plug 'AndrewRadev/splitjoin.vim'
 Plug 'Raimondi/delimitMate'
 Plug 'chriskempson/base16-vim'
 Plug 'csexton/trailertrash.vim'
