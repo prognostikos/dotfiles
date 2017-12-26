@@ -481,10 +481,10 @@ augroup END
 
 augroup activewindow
   autocmd!
-  autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline colorcolumn=80 signcolumn=yes
+  autocmd VimEnter,WinEnter,BufWinEnter * setlocal cursorline colorcolumn=80 signcolumn=yes number relativenumber
   " autocmd VimEnter,WinEnter,BufWinEnter * setlocal signcolumn=yes
   " autocmd WinLeave * setlocal signcolumn=no
-  autocmd WinLeave * setlocal nocursorline signcolumn=no colorcolumn=0
+  autocmd WinLeave * setlocal nocursorline signcolumn=no colorcolumn=0 nonumber norelativenumber
 augroup END
 
 augroup journal
