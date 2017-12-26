@@ -41,6 +41,7 @@ Plug 'nelstrom/vim-qargs'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'nsf/gocode', { 'rtp': 'vim' }
 Plug 'othree/html5.vim'
+Plug 'robertmeta/nofrils'
 Plug 'rosstimson/bats.vim'
 Plug 'sjl/vitality.vim'
 Plug 'tpope/vim-bundler'
@@ -92,7 +93,11 @@ if has("gui_running")
   colorscheme solarized-light
 else
   " colorscheme base16-summerfruit-dark
-  colorscheme github256
+  " colorscheme github256
+  colorscheme nofrils-dark
+  let g:nofrils_heavylinenumbers=1
+  let g:nofrils_strbackgrounds=1
+  let g:nofrils_heavycomments=1
 endif
 
 " more info
