@@ -21,7 +21,3 @@ Concept and `script/bootstrap` stolen from [@holman's dotfiles](https://github.c
   get symlinked into your `$HOME`.
 - **<dir>/completion.sh**: Any files called `completion.sh` get loaded
   last so that they get loaded after we set up zsh autocomplete functions.
-
-## Submodules
-
-Vim plugins that are available in public git repositories are added as submodules.
