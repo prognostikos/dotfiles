@@ -94,10 +94,10 @@ if has("gui_running")
 else
   " colorscheme base16-summerfruit-dark
   " colorscheme github256
-  colorscheme nofrils-dark
-  let g:nofrils_heavylinenumbers=1
+  let g:nofrils_heavylinenumbers=0
   let g:nofrils_strbackgrounds=1
-  let g:nofrils_heavycomments=1
+  let g:nofrils_heavycomments=0
+  colorscheme nofrils-dark
 endif
 
 " more info
