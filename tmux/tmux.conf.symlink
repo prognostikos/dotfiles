@@ -56,4 +56,7 @@ set -g status-right ' #(netinfo) #(remaining_charge) %d-%b %H:%M '
 setw -g window-status-format " #I: #W "
 setw -g window-status-current-format " #I: #W "
 
-source-file ~/.dotfiles/tmux/16color.conf
+# coloUrs
+set -g status-bg colour10
+set -g status-fg colour7
+set -g window-status-current-fg colour3
