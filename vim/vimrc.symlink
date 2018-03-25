@@ -123,7 +123,7 @@ set smartcase
 set wrapscan
 
 " file & dir matching mode
-set wildmode=longest,list:longest
+set wildmode=list
 
 " Make tab completion for files/buffers act like bash/readline
 set wildmenu
@@ -136,7 +136,7 @@ if has('wildignorecase')
 endif
 
 " set complete-=i
-set completeopt=menuone,preview,noinsert
+set completeopt=menuone,preview,noinsert,noselect
 
 set history=256
 
@@ -633,3 +633,4 @@ let g:user_emmet_mode = 'i'
 
 " mucomplete
 let g:mucomplete#enable_auto_at_startup = 1
+let g:mucomplete#smart_enter = 1
