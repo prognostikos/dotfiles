@@ -438,6 +438,7 @@ augroup END
 augroup emmet
   autocmd!
   autocmd FileType html,css,scss,eruby,html.mustache :EmmetInstall
+  autocmd FileType html,eruby,html.mustache imap <buffer> <C-e> <C-y>,
 augroup END
 
 " Save when losing focus
@@ -586,8 +587,6 @@ noremap <leader>a: :Tabularize/:\zs/l0c1<CR>
 vnoremap <leader>a: :Tabularize/:\zs/l0c1<CR>
 " noremap <leader>a, :Tabularize/,\zs/l0c1<CR>
 " vnoremap <leader>a, :Tabularize/,\zs/l0c1<CR>
-
-inoremap <C-e> <C-y>,
 
 " always
 let g:vitality_always_assume_iterm = 1
