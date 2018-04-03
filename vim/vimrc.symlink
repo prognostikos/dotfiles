@@ -470,7 +470,6 @@ augroup resize
   autocmd!
   autocmd VimResized * :wincmd =
 augroup END
-
 " Enable omni completion.
 augroup compl
   autocmd!
@@ -543,6 +542,9 @@ noremap <leader>gg :topleft 100 :split Gemfile<cr>
 
 " needed for textobj-user & textobj-rubyblock
 runtime macros/matchit.vim
+
+" ft_sql
+let g:omni_sql_no_default_maps = 1
 
 " Vimux should only open a pane when there isn't one already
 let g:VimuxUseNearestPane = 1
@@ -633,3 +635,4 @@ let g:user_emmet_mode = 'i'
 " mucomplete
 let g:mucomplete#enable_auto_at_startup = 1
 let g:mucomplete#smart_enter = 1
+
