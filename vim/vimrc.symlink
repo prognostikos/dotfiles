@@ -356,6 +356,7 @@ augroup textmarkdown
   autocmd!
   autocmd BufRead,BufNewFile *.md,*.mkd,*.md.txt,*.md.gpg setfiletype markdown
   autocmd BufRead,BufNewFile *.txt setfiletype text
+  autocmd FileType text,markdown silent :MUcompleteAutoOff
   autocmd FileType text,markdown setlocal wrap linebreak autoindent nolist textwidth=80 complete+=kspell
 augroup END
 
@@ -418,6 +419,7 @@ augroup END
 augroup git
   autocmd!
   autocmd FileType gitcommit setlocal nospell complete+=kspell
+  autocmd FileType gitcommit silent :MUcompleteAutoOff
 augroup END
 
 augroup cukes
