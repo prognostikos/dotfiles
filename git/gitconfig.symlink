@@ -1,7 +1,7 @@
 [user]
 	name = Matt Rohrer
 	email = matt@prognostikos.com
-	signingkey = 1E3668A2A42B3FC3
+	signingkey = B3098CF843B4FC0A36B787751E3668A2A42B3FC3
 [core]
 	excludesfile = ~/.gitignore
 	precomposeunicode = true
