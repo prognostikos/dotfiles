@@ -402,7 +402,9 @@ augroup sql
   autocmd!
   autocmd BufRead,BufNewFile */psql.edit.* setfiletype sql
   autocmd BufRead,BufNewFile */psql.edit.* silent :SQLSetType postgresql
+  autocmd BufRead,BufNewFile */psql.edit.* silent :MUcompleteAutoOff
   autocmd BufRead,BufNewFile */.sql setfiletype sql
+  autocmd BufRead,BufNewFile */.sql silent :MUcompleteAutoOff
 augroup END
 
 augroup rust
