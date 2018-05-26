@@ -143,6 +143,7 @@ set history=256
 " shut up
 set noerrorbells
 set novisualbell
+set belloff=all
 set t_vb=
 
 " vim 8 (at least with my plugins) is very flakey
