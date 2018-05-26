@@ -357,7 +357,6 @@ augroup textmarkdown
   autocmd!
   autocmd BufRead,BufNewFile *.md,*.mkd,*.md.txt,*.md.gpg setfiletype markdown
   autocmd BufRead,BufNewFile *.txt setfiletype text
-  autocmd FileType text,markdown silent :MUcompleteAutoOff
   autocmd FileType text,markdown setlocal wrap linebreak autoindent nolist textwidth=80 complete+=kspell
 augroup END
 
@@ -423,7 +422,6 @@ augroup END
 augroup git
   autocmd!
   autocmd FileType gitcommit setlocal nospell complete+=kspell
-  autocmd FileType gitcommit silent :MUcompleteAutoOff
 augroup END
 
 augroup cukes
@@ -641,6 +639,15 @@ let g:user_emmet_mode = 'i'
 " mucomplete
 let g:mucomplete#enable_auto_at_startup = 1
 let g:mucomplete#smart_enter = 1
+let g:mucomplete#chains = {
+      \ 'default'    : ['omni', 'c-n', 'dict', 'uspl'],
+      \ 'vim'        : ['path', 'cmd', 'keyn'],
+      \ 'ruby'       : ['path', 'omni', 'c-n', 'keyn'],
+      \ 'javascript' : ['path', 'omni', 'c-n', 'keyn'],
+      \ 'text'       : ['keyn', 'uspl', 'dict'],
+      \ 'markdown'   : ['keyn', 'uspl', 'dict'],
+      \ 'gitcommit'  : ['keyn', 'uspl', 'dict']
+      \ }
 
 imap <Plug>MyCR <Plug>(MUcompleteCR)
 imap <cr> <Plug>MyCR
