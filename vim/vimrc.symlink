@@ -638,6 +638,7 @@ let g:user_emmet_mode = 'i'
 
 " mucomplete
 let g:mucomplete#enable_auto_at_startup = 1
+let g:mucomplete#no_mappings = 1
 let g:mucomplete#smart_enter = 1
 let g:mucomplete#chains = {
       \ 'default'    : ['omni', 'c-n', 'dict', 'uspl'],
