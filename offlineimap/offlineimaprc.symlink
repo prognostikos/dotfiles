@@ -7,8 +7,7 @@ fsync = False
 [Account personal]
 localrepository = personal-local
 remoterepository = personal-remote
-status_backend = sqlite
-postsynchook = notmuch new
+#postsynchook = notmuch new
 
 [Repository personal-local]
 type = Maildir
@@ -40,8 +39,7 @@ folderfilter = lambda folder: folder not in ['[Gmail]/Trash',
 [Account bn]
 localrepository = bn-local
 remoterepository = bn-remote
-status_backend = sqlite
-postsynchook = notmuch new
+#postsynchook = notmuch new
 
 [Repository bn-local]
 type = Maildir
