@@ -496,6 +496,7 @@ augroup END
 augroup journal
   autocmd!
   autocmd BufWinEnter */journal.md.pgp call PrependDateHeader()
+  autocmd BufRead,BufNewFile */journal.md.pgp silent :MUcompleteAutoOff
 augroup END
 
 augroup javascript
