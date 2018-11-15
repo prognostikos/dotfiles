@@ -287,8 +287,6 @@ function! Cleanup()
 endfunction
 noremap <leader>cu :silent call Cleanup()<CR>
 
-noremap <leader>cs :SyntasticCheck<CR>
-
 " move by display lines
 nnoremap k gk
 nnoremap j gj
