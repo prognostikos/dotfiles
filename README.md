@@ -1,12 +1,12 @@
 # These are my dotfiles. There are many like them but these are mine.
 
-Concept and `script/bootstrap` stolen from [@holman's dotfiles](https://github.com/holman/dotfiles)
+Concept/layout stolen from [@holman's dotfiles](https://github.com/holman/dotfiles)
 
 ## Installation
 
     $ git clone --recursive https://github.com/prognostikos/dotfiles.git ~/.dotfiles
     $ cd ~/.dotfiles
-    $ ./script/bootstrap
+    $ ./script/setup
 
 ## Layout
 
