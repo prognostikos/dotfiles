@@ -9,6 +9,5 @@ tags
 custom_plan.rb
 zeus.json
 *.pyc
-.bundle
 .envrc
 .byebug_history

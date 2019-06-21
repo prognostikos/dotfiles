@@ -657,6 +657,8 @@ let g:GPGDefaultRecipients = [ "Matt Rohrer <matt@prognostikos.com" ]
 
 " ALE
 let g:ale_lint_on_enter = 0
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
 
 " change cursor shape depending on mode in Terminal
 let &t_SI="\033[4 q" " start insert mode
