@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+
+repo_base=$(git config remote.origin.url | sed -e "s/\.git$//")
+ref=$(git rev-parse --abbrev-ref HEAD)
+
+open "$repo_base/compare/$ref"
