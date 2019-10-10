@@ -45,6 +45,7 @@
 	user = prognostikos
 [diff]
 	tool = vimdiff
+	noprefix = true
 [difftool]
 	prompt = false
 [heroku]
