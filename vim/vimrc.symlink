@@ -249,6 +249,11 @@ noremap <leader>sa zg
 " show a list of alternate spellings
 noremap <leader>s? z=
 
+hi clear SpellBad
+hi SpellBad cterm=underline
+" Set style for gVim
+hi SpellBad gui=undercurl
+
 " Toggle paste mode for current file
 noremap <leader>p :setlocal paste!<cr>
 
