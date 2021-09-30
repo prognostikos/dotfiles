@@ -404,11 +404,8 @@ augroup END
 
 augroup sql
   autocmd!
-  autocmd BufRead,BufNewFile */psql.edit.* setfiletype sql
-  autocmd BufRead,BufNewFile */psql.edit.* silent :SQLSetType postgresql
-  autocmd BufRead,BufNewFile */psql.edit.* silent :MUcompleteAutoOff
-  autocmd BufRead,BufNewFile */.sql setfiletype sql
-  autocmd BufRead,BufNewFile */.sql silent :MUcompleteAutoOff
+  autocmd BufRead,BufNewFile *.sql setfiletype sql
+  autocmd BufRead,BufNewFile *.sql silent :MUcompleteAutoOff
 augroup END
 
 augroup rust
@@ -577,20 +574,7 @@ noremap <leader>gg :topleft 100 :split Gemfile<cr>
 runtime macros/matchit.vim
 
 " ft_sql
-let g:omni_sql_no_default_maps = 1
-
-" Vimux should only open a pane when there isn't one already
-let g:VimuxUseNearestPane = 1
-
-" The keys sent to the runner pane before running a command. By default it sends
-" `q` to make sure the pane is not in scroll-mode and `C-u` to clear the line.
-let g:VimuxResetSequence = 'q clear C-u'
-
-" Prompt for a command to run
-map <Leader>rp :VimuxPromptCommand<CR>
-
-" Run last command executed by VimuxRunCommand
-map <Leader>rl :VimuxRunLastCommand<CR>
+" let g:omni_sql_no_default_maps = 1
 
 " Run makeprog (via Dispatch) in the same way as vimux
 map <Leader>rm :Dispatch<CR>
@@ -644,7 +628,8 @@ let g:fzf_action = {
 nnoremap <silent> <Leader>t :FZF<CR>
 
 " ft_sql
-let g:omni_sql_no_default_maps = 1
+" let g:loaded_sql_completion = 1
+" let g:omni_sql_no_default_maps = 1
 
 " vim-go
 let g:go_fmt_command = "goimports"
