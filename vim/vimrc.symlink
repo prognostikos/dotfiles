@@ -45,7 +45,6 @@ Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'robertmeta/nofrils'
 Plug 'rosstimson/bats.vim'
-Plug 'sjl/vitality.vim'
 Plug 'tpope/vim-bundler'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
@@ -618,9 +617,6 @@ noremap <leader>a: :Tabularize/:\zs/l0c1<CR>
 vnoremap <leader>a: :Tabularize/:\zs/l0c1<CR>
 " noremap <leader>a, :Tabularize/,\zs/l0c1<CR>
 " vnoremap <leader>a, :Tabularize/,\zs/l0c1<CR>
-
-" always
-let g:vitality_always_assume_iterm = 1
 
 " don't be crazy
 let g:vim_json_syntax_conceal = 0
