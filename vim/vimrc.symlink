@@ -674,5 +674,12 @@ let g:mucomplete#chains = {
       \ 'gitcommit'  : ['keyn', 'uspl', 'dict']
       \ }
 
-imap <Plug>MyCR <Plug>(MUcompleteCR)
-imap <cr> <Plug>MyCR
+" imap <Plug>MyCR <Plug>(MUcompleteCR)
+" imap <cr> <Plug>MyCR
+
+" splitjoin
+let g:splitjoin_split_mapping = ''
+let g:splitjoin_join_mapping = ''
+
+nmap sj :SplitjoinSplit<cr>
+nmap sk :SplitjoinJoin<cr>
