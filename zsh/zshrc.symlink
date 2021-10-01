@@ -105,3 +105,7 @@ if ! pgrep -x -u "${USER}" gpg-agent >/dev/null 2>&1; then
 fi
 
 export GPG_TTY=$(tty)
+
+if [ -f $HOME/.cacert.pem ]; then
+  export CURL_CA_BUNDLE=$HOME/.cacert.pem
+fi
