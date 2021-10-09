@@ -645,7 +645,7 @@ let g:go_auto_type_info = 1
 let g:GPGDefaultRecipients = [ "Matt Rohrer <matt@prognostikos.com" ]
 
 " ALE
-let g:ale_lint_on_enter = 0
+let g:ale_lint_on_enter = 1
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_on_insert_leave = 1
 
