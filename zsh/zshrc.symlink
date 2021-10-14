@@ -24,6 +24,7 @@ fi
 export PATH="/usr/local/sbin:$PATH"
 export PATH="$HOME/.dotfiles/bin:$HOME/.rbenv/bin:$HOME/.fzf/bin:$PATH"
 export PATH=".git/safe/../../bin:$PATH"
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
 # export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 # export PATH="/usr/local/opt/node@12/bin:$PATH"
 

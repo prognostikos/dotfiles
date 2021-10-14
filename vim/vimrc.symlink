@@ -28,6 +28,7 @@ Plug 'elzr/vim-json'
 Plug 'fatih/vim-go'
 Plug 'godlygeek/tabular'
 Plug 'jamessan/vim-gnupg'
+Plug 'junegunn/fzf'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'janko-m/vim-test'
@@ -67,8 +68,7 @@ Plug 'wikitopian/hardmode'
 call plug#end()
 
 " fzf is installed via homebrew
-set rtp+=/usr/local/opt/fzf
-set rtp+=~/.fzf
+set rtp+=/opt/homebrew/opt/fzf
 
 " Enable filetype detection
 filetype plugin indent on
