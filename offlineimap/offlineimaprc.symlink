@@ -19,7 +19,7 @@ nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
                             }.get(folder, folder)
 
 [Repository personal-remote]
-sslcacertfile = /usr/local/etc/openssl/cert.pem
+sslcacertfile = /opt/homebrew/etc/ca-certificates/cert.pem
 maxconnections = 3
 type = Gmail
 remoteuser = finitesoup@gmail.com
@@ -51,7 +51,7 @@ nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
                             }.get(folder, folder)
 
 [Repository bn-remote]
-sslcacertfile = /usr/local/etc/openssl/cert.pem
+sslcacertfile = /opt/homebrew/etc/ca-certificates/cert.pem
 maxconnections = 3
 type = Gmail
 remoteuser = mr@betternow.org

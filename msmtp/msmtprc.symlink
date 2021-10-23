@@ -6,7 +6,7 @@ auth on
 from matt@prognostikos.com
 user finitesoup@gmail.com
 tls on
-tls_trust_file /usr/local/etc/openssl/cert.pem
+tls_trust_file /opt/homebrew/etc/ca-certificates/cert.pem
 
 account betternow
 host smtp.gmail.com
@@ -16,6 +16,6 @@ auth on
 from mr@betternow.org
 user mr@betternow.org
 tls on
-tls_trust_file /usr/local/etc/openssl/cert.pem
+tls_trust_file /opt/homebrew/etc/ca-certificates/cert.pem
 
 account default: mattrohrer

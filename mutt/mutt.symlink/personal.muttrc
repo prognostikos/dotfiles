@@ -1,6 +1,6 @@
 # Sending ----------------------------------------------
 set from     = "matt@prognostikos.com"
-set sendmail = "/usr/local/bin/msmtp -a mattrohrer"
+set sendmail = "/opt/homebrew/bin/msmtp -a mattrohrer"
 set sendmail_wait = 0
 unset record
 

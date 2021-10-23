@@ -21,10 +21,11 @@ fi
 
 ### PATH manipulation
 
-export PATH="/usr/local/sbin:$PATH"
+BREW_PREFIX=$(brew --prefix)
+
 export PATH="$HOME/.dotfiles/bin:$HOME/.rbenv/bin:$HOME/.fzf/bin:$PATH"
 export PATH=".git/safe/../../bin:$PATH"
-export PATH="/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+export PATH="$BREW_PREFIX/bin:$BREW_PREFIX/sbin:$PATH"
 # export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 # export PATH="/usr/local/opt/node@12/bin:$PATH"
 
@@ -43,7 +44,7 @@ fi
 
 
 # add homebrew's completions to fpath
-fpath=(/usr/local/share/zsh/site-functions $fpath)
+fpath=($BREW_PREFIX/share/zsh/site-functions $fpath)
 
 # shortcut to this dotfiles path is $ZSH
 export ZSH=$HOME/.dotfiles
@@ -95,8 +96,8 @@ fixssh() {
 
 # the awscli completion seems to need explicit sourcing - fpath is not enough
 if command -v aws > /dev/null ; then
-  if [ -f /usr/local/share/zsh/site-functions/_aws ]; then
-    source /usr/local/share/zsh/site-functions/_aws
+  if [ -f $BREW_PREFIX/share/zsh/site-functions/_aws ]; then
+    source $BREW_PREFIX/share/zsh/site-functions/_aws
   fi
 fi
 

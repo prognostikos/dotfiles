@@ -1,6 +1,6 @@
 # Sending ----------------------------------------------
 set from     = "mr@betternow.org"
-set sendmail = "/usr/local/bin/msmtp -a betternow"
+set sendmail = "/opt/homebrew/bin/msmtp -a betternow"
 set sendmail_wait = 0
 unset record
 
