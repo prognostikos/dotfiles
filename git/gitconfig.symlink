@@ -51,6 +51,7 @@
 [heroku]
 [init]
 	templatedir = ~/.git-template
+	defaultBranch = main
 [push]
 	default = upstream
 	followTags = true
