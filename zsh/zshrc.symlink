@@ -30,8 +30,6 @@ fi
 export PATH="$HOME/.dotfiles/bin:$HOME/.rbenv/bin:$HOME/.fzf/bin:$PATH"
 export PATH=".git/safe/../../bin:$PATH"
 export PATH="$BREW_PREFIX/bin:$BREW_PREFIX/sbin:$PATH"
-# export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-# export PATH="/usr/local/opt/node@12/bin:$PATH"
 
 if command -v rbenv > /dev/null; then
   eval "$(rbenv init - zsh)"
