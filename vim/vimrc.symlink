@@ -561,11 +561,12 @@ function! ShowRoutes()
   " Delete everything
   :normal 1GdG
   " Put routes output in buffer
-  if filereadable("./run")
-    :0r! ./run rails routes
-  else
     :0r! rails routes
-  endif
+  " if filereadable("./run")
+  "   :0r! ./run rails routes
+  " else
+  "   :0r! rails routes
+  " endif
   " Size window to number of lines (1 plus rake output length)
   :exec ":normal " . line("$") . "_ "
   " Move cursor to bottom
