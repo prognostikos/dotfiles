@@ -21,7 +21,11 @@ fi
 
 ### PATH manipulation
 
-BREW_PREFIX=$(brew --prefix)
+if [ "$(uname -p)" = "arm" ]; then
+  BREW_PREFIX="/opt/homebrew"
+else
+  BREW_PREFIX="/usr/local"
+fi
 
 export PATH="$HOME/.dotfiles/bin:$HOME/.rbenv/bin:$HOME/.fzf/bin:$PATH"
 export PATH=".git/safe/../../bin:$PATH"
