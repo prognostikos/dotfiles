@@ -299,7 +299,7 @@ nnoremap k gk
 nnoremap j gj
 
 " delete all buffers
-nnoremap <leader>dd :bd *<c-a><cr>
+nnoremap <leader>dd :%bdelete<cr>
 
 " flying
 nnoremap <leader>l :ls<cr>:b<space>
