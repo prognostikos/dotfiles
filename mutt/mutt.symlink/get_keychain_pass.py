@@ -11,11 +11,10 @@ def get_keychain_pass(account=None, server=None):
     'security': '/usr/bin/security',
     'command': 'find-internet-password',
     'account': account,
-    'server': server,
-    'keychain': os.environ['HOME'] + '/Library/Keychains/login.keychain'
+    'server': server
   }
 
-  command = "sudo -u %(user)s %(security)s -v %(command)s -g -a %(account)s -s %(server)s %(keychain)s" % params
-  output = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT)
+  command = "sudo -u %(user)s %(security)s -v %(command)s -g -a %(account)s -s %(server)s" % params
+  output = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, text=True)
   outtext = [line for line in output.splitlines() if line.startswith('password: ')][0]
   return re.match(r'password: "(.*)"', outtext).group(1)
