@@ -22,9 +22,9 @@ nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
 sslcacertfile = /opt/homebrew/etc/ca-certificates/cert.pem
 maxconnections = 3
 type = Gmail
-remoteuser = finitesoup@gmail.com
+remoteuser = mr@prognostikos.com
 remotehost = imap.gmail.com
-remotepasseval = get_keychain_pass(account="finitesoup@gmail.com", server="imap.gmail.com")
+remotepasseval = get_keychain_pass(account="mr@prognostikos.com", server="imap.gmail.com")
 realdelete = no
 ssl = yes
 nametrans = lambda folder: {'[Gmail]/Drafts':    'drafts',
