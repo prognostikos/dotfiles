@@ -11,20 +11,6 @@ set spoolfile = "+personal/INBOX"
 mailboxes +personal/INBOX \
           +personal/sent \
           +personal/drafts \
-          +personal/CTO-list \
-          +personal/Nerdery\
-          +personal/Jobs\
-          +personal/BN\
-          +personal/Invoices\ and\ Receipts\
-          +personal/Banks\
-          +personal/Kids\
-          +personal/jose\
-          +personal/LinkedIn\
-          +personal/eBay\ PayPal\
-          +personal/[Mailbox].Later \
-          +personal/[Mailbox].To\ Buy \
-          +personal/[Mailbox].To\ Read \
-          +personal/[Mailbox].To\ Watch \
           +temporary/search \
 
 # Other special folders.
