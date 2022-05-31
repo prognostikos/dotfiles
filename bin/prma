@@ -3,4 +3,6 @@
 set -eo pipefail
 
 gh pr list | awk -F'\t' '{ print "gh pr merge ", $1, " -s -t \"", $2, "[ci skip]\"" }' | bash
+echo "waiting for dependabot cleanup"
+sleep 3
 bundle-deps
