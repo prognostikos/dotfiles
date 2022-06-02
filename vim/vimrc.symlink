@@ -635,8 +635,8 @@ let g:fzf_action = {
 nnoremap <silent> <Leader>t :FZF<CR>
 
 " ft_sql
-" let g:loaded_sql_completion = 1
-" let g:omni_sql_no_default_maps = 1
+let g:loaded_sql_completion = 1
+let g:omni_sql_no_default_maps = 1
 
 " vim-go
 let g:go_fmt_command = "goimports"
