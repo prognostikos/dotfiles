@@ -1,0 +1,5 @@
+#!/bin/bash
+
+export LAGO_PATH=~/c/lago
+
+docker-compose -f "$LAGO_PATH/docker-compose.dev.yml" "$@"

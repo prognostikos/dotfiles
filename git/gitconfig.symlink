@@ -71,3 +71,5 @@
 	fsckobjects = true
 [fetch]
 	fsckobjects = false
+[submodule]
+	recurse = true
