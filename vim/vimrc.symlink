@@ -385,7 +385,7 @@ augroup rb
   autocmd FileType ruby setlocal iskeyword+=!,?
   autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
   autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 0
-  autocmd FileType ruby,eruby let g:rubycomplete_rails = 0
+  autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
   autocmd FileType ruby,eruby let g:rubycomplete_use_bundler = 1
 augroup END
 
