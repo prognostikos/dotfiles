@@ -697,3 +697,6 @@ let g:splitjoin_ruby_curly_braces = 0
 
 nmap <leader>sj :SplitjoinSplit<cr>
 nmap <leader>sk :SplitjoinJoin<cr>
+
+" sneak
+let g:sneak#label = 1
