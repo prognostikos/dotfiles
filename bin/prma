@@ -2,5 +2,5 @@
 
 set -eo pipefail
 
-gh pr list | awk -F'\t' '{ print "gh pr merge ", $1, " -s -t \"", $2, "[ci skip]\"" }' | bash
+gh pr list | grep dependabot | awk -F'\t' '{ print "gh pr merge ", $1, " -s -t \"", $2, "[ci skip]\"" }' | bash
 bundle-deps
