@@ -696,6 +696,7 @@ let g:mucomplete#chains = {
 let g:splitjoin_split_mapping = ''
 let g:splitjoin_join_mapping = ''
 let g:splitjoin_ruby_curly_braces = 0
+let g:splitjoin_ruby_hanging_args = 0
 
 nmap <leader>sj :SplitjoinSplit<cr>
 nmap <leader>sk :SplitjoinJoin<cr>
