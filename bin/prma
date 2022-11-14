@@ -2,5 +2,7 @@
 
 set -eo pipefail
 
-gh pr list | grep dependabot | awk -F'\t' '{ print "gh pr merge ", $1, " --squash --subject \"", $2, "[ci skip]\"" }' | bash
+SUBSET=${1:-dependabot}
+
+gh pr list | grep "$SUBSET" | awk -F'\t' '{ print "gh pr merge ", $1, " --squash --subject \"", $2, "[ci skip]\"" }' | bash
 bundle-deps
