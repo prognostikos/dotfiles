@@ -504,6 +504,8 @@ augroup END
 
 augroup javascript
   autocmd!
+  autocmd BufRead,BufNewFile app/assets/javascripts/*.js silent :ALEDisable
+  autocmd BufRead,BufNewFile app/assets/javascripts/*.js let g:ale_fix_on_save=0
 augroup END
 
 function! PrependDateHeader()
