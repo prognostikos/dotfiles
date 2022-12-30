@@ -11,3 +11,4 @@ zeus.json
 *.pyc
 .envrc
 .byebug_history
+.kube/config
