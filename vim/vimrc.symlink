@@ -662,6 +662,8 @@ let g:ale_fix_on_save = 1
 
 let g:ale_set_highlights = 0
 
+let g:ale_virtualtext_cursor = 0
+
 let g:ruby_indent_assignment_style = 'variable'
 
 " change cursor shape depending on mode in Terminal
