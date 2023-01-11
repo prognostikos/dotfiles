@@ -687,7 +687,7 @@ let g:mucomplete#smart_enter = 1
 let g:mucomplete#chains = {
       \ 'default'    : ['omni', 'c-n', 'dict', 'uspl'],
       \ 'vim'        : ['path', 'cmd', 'keyn'],
-      \ 'ruby'       : ['path', 'omni', 'c-n', 'keyn'],
+      \ 'ruby'       : ['path', 'c-n', 'tags', 'keyn'],
       \ 'javascript' : ['path', 'omni', 'c-n', 'keyn'],
       \ 'text'       : ['keyn', 'uspl', 'dict'],
       \ 'markdown'   : ['keyn', 'uspl', 'dict'],
