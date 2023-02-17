@@ -688,6 +688,7 @@ let g:mucomplete#chains = {
       \ 'default'    : ['omni', 'c-n', 'dict', 'uspl'],
       \ 'vim'        : ['path', 'cmd', 'keyn'],
       \ 'ruby'       : ['path', 'c-n', 'tags', 'keyn'],
+      \ 'eruby'      : ['path', 'c-n', 'tags', 'keyn'],
       \ 'javascript' : ['path', 'omni', 'c-n', 'keyn'],
       \ 'text'       : ['keyn', 'uspl', 'dict'],
       \ 'markdown'   : ['keyn', 'uspl', 'dict'],
