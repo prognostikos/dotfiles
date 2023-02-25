@@ -22,8 +22,6 @@ if [ -z "$SSID" ]; then
   exit 0
 fi
 
-if [ ${#SSID} -gt 7 ]; then
-  SSID=${SSID:(-7)}
-fi
+# SSID=${SSID:(-7)}
 
 echo "$SSID $SPEED"
