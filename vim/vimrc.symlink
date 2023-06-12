@@ -387,6 +387,7 @@ augroup rb
   autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 0
   autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
   autocmd FileType ruby,eruby let g:rubycomplete_use_bundler = 1
+  autocmd FileType eruby.yaml silent :MUcompleteAutoOff
 augroup END
 
 augroup java
