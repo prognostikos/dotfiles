@@ -1,0 +1,8 @@
+#!/bin/bash
+set -euo pipefail
+
+# Grab the container name and use fzf to let us pick it
+result=$(docker container ls --format "{{.Names}}" | fzf)
+
+echo "docker exec -it --rm $result ${1:-/bin/bash}"
+docker exec -it --rm "$result" "${1:-/bin/bash}"
