@@ -40,7 +40,7 @@ set-option -g set-titles on
 set-option -g set-titles-string '#h [#S #I:#W]'
 
 # need more history
-set -g history-limit 10000
+set -g history-limit 20000
 
 # need more colors
 set -g default-terminal "screen-256color"
