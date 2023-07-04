@@ -666,7 +666,7 @@ let g:ale_fixers = {
       \ 'ruby': ['standardrb'],
       \ 'javascript': ['standard']
       \}
-let g:ale_fix_on_save = 1
+let g:ale_fix_on_save = 0
 
 let g:ale_set_highlights = 0
 
