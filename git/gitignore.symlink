@@ -12,3 +12,4 @@ zeus.json
 .envrc
 .byebug_history
 .kube/config
+tags.lock
