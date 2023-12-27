@@ -584,8 +584,6 @@ noremap <leader>gg :topleft 100 :split Gemfile<cr>
 " needed for textobj-user & textobj-rubyblock
 runtime macros/matchit.vim
 
-" ft_sql
-" let g:omni_sql_no_default_maps = 1
 
 " Run makeprog (via Dispatch) in the same way as vimux
 map <Leader>rm :Dispatch<CR>
