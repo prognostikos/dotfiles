@@ -479,6 +479,7 @@ augroup resize
   autocmd!
   autocmd VimResized * :wincmd =
 augroup END
+
 " Enable omni completion.
 augroup compl
   autocmd!
@@ -516,7 +517,6 @@ function! PrependDateHeader()
   :normal ggo
   :normal gg2o
 endfunction
-
 
 function! s:goyo_enter()
   silent !tmux set status off
