@@ -7,3 +7,4 @@ alias restore_mac='sudo ifconfig en0 ether 60:03:08:aa:9d:9a'
 alias vj='vim ~/d/journal.md.pgp'
 alias curl="gpg --batch -q -d ~/.netrc.gpg | curl --netrc-file /dev/stdin"
 alias run=./run
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
