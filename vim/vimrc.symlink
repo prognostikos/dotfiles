@@ -278,6 +278,11 @@ inoremap <c-c> <esc>
 noremap <leader>f :grep <C-R><C-W>
 
 function! Cleanup()
+  if (executable('sqlfmt') && &ft=='sql')
+    :%!sqlfmt --tab-width 2 --use-spaces
+    return
+  endif
+
   " save my current context
   let save_cursor = getpos(".")
   let old_query   = getreg('/')
