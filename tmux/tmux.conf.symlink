@@ -50,7 +50,7 @@ set -g status-left-length 50
 
 # Status bar
 set -g status-left ' #S |'
-set -g status-right ' #(netinfo) #(remaining_charge) %d-%b %H:%M '
+set -g status-right ' #(remaining_charge) %d-%b %H:%M '
 
 # Format window names in status bar
 setw -g window-status-format " #I: #W "
