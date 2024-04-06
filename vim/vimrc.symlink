@@ -35,6 +35,8 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 Plug 'kana/vim-textobj-user'
+Plug 'lervag/lists.vim'
+Plug 'lervag/wiki.vim'
 Plug 'lifepillar/vim-mucomplete'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'mattn/emmet-vim'
@@ -373,6 +375,7 @@ augroup textmarkdown
   autocmd BufRead,BufNewFile *.md,*.mkd,*.md.txt,*.md.gpg setfiletype markdown
   autocmd BufRead,BufNewFile *.txt setfiletype text
   autocmd FileType text,markdown silent :MUcompleteAutoOff
+  autocmd FileType text,markdown silent :ListsEnable
   autocmd FileType text,markdown setlocal wrap linebreak autoindent nolist textwidth=80 complete+=kspell
 augroup END
 
@@ -695,3 +698,6 @@ let g:splitjoin_ruby_hanging_args = 0
 
 nmap <leader>sj :SplitjoinSplit<cr>
 nmap <leader>sk :SplitjoinJoin<cr>
+
+" wiki.vim
+let g:wiki_root = '~/Documents/wiki'
