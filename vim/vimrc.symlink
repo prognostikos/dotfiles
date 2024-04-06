@@ -263,6 +263,10 @@ noremap <leader>p :setlocal paste!<cr>
 " visually select the last pasted hunk
 nnoremap <leader>vp `[v`]
 
+" in/out-dent last pasted hunk
+nnoremap <leader>v< `[v`]<
+nnoremap <leader>v> `[v`]>
+
 " use ctrl-n/p in normal mode to cycle through the quickfix list
 nnoremap <C-n> :cn<CR>
 nnoremap <C-p> :cp<CR>
