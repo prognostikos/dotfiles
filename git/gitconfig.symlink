@@ -31,14 +31,18 @@
 	interactive = auto
 	ui = auto
 [merge]
-	conflictstyle = diff3
+	conflictstyle = zdiff3
 	tool = vimdiff
 	summary = true
 	; ff = only
+[rebase]
+	autosquash = true
+	autostash = true
 [gc]
 	auto = 1
 [branch]
 	autosetuprebase = always
+	sort = -committerdate
 [mergetool]
 	keepBackup = false
 	prompt = false
@@ -47,6 +51,7 @@
 [diff]
 	tool = vimdiff
 	noprefix = true
+	algorithm = histogram
 [difftool]
 	prompt = false
 [heroku]
@@ -56,6 +61,7 @@
 [push]
 	default = upstream
 	followTags = true
+	autoSetupRemote = true
 [status]
 	showUntrackedFiles = all
 [rerere]
@@ -66,6 +72,7 @@
 	token = !security find-internet-password -a prognostikos -s github.com -l 'ghi token' -w
 [commit]
 	gpgsign = true
+	verbose = true
 [gpg]
 	program = gpg
 [transfer]
