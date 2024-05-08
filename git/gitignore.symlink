@@ -13,3 +13,4 @@ zeus.json
 .byebug_history
 .kube/config
 tags.lock
+.aledisable

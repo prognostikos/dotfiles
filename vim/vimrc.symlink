@@ -515,11 +515,25 @@ augroup journal
   autocmd BufRead,BufNewFile */journal.md.pgp silent :MUcompleteAutoOff
 augroup END
 
-augroup javascript
+" add .aledisable to a directory where it should be off
+augroup ale_per_buffer
   autocmd!
-  autocmd BufRead,BufNewFile app/assets/javascripts/* silent :ALEDisableBuffer
-  autocmd BufRead,BufNewFile app/assets/javascripts/* let b:ale_fix_on_save=0
+  autocmd BufRead,BufNewFile * call ToggleALEPerBuffer()
 augroup END
+
+function! ToggleALEPerBuffer()
+  " Check for the presence of .aledisable in the current buffer's directory
+  if filereadable(expand('%:p:h') . '/.aledisable')
+    let b:ale_enabled = 0
+  else
+    " Enable ALE for this buffer if it is not globally disabled
+    if exists('g:ale_enabled') && !g:ale_enabled
+      echom "ALE is globally disabled, not enabling for buffer: " . expand('%')
+    else
+      let b:ale_enabled = 1
+    endif
+  endif
+endfunction
 
 function! PrependDateHeader()
   let format = '+%Y-%m-%d %H:%M%n'
