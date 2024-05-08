@@ -5,6 +5,7 @@ alias spd="tmux split-window -p 25; tmux send-keys 'simple_prompt; clear' C-m"
 alias random_mac='sudo ifconfig en0 ether `openssl rand -hex 6 | sed "s/\(..\)/\1:/g; s/.$//"`'
 alias restore_mac='sudo ifconfig en0 ether 60:03:08:aa:9d:9a'
 alias vj='vim ~/d/journal.md.pgp'
+alias vw='vim ~/d/wiki/index.md'
 alias curl="gpg --batch -q -d ~/.netrc.gpg | curl --netrc-file /dev/stdin"
 alias run=./run
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
