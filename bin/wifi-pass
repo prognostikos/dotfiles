@@ -2,7 +2,7 @@
 # Show SSID and password for the currently connected network. Requires sudo.
 set -e
 
-ssid="$(/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport -I | sed -n "/ SSID:/s/^.\\{2,\\}: //p")"
+ssid="$(networksetup -getairportnetwork en0|awk '{print $4}')"
 if [ -n "$ssid" ]; then
   echo "$ssid"
   security find-generic-password -ga "$ssid" 2>&1 >/dev/null | cut -d\" -f2
