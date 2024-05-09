@@ -1,5 +1,0 @@
-#!/bin/sh
-
-set -e
-
-pbcopy < $HOME/.ssh/id_rsa.pub

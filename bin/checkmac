@@ -1,4 +1,0 @@
-#!/bin/sh
-
-defaults read /Applications/%browser.app%/Contents/Info LSEnvironment
-defaults read ~/.MacOSX/environment DYLD_INSERT_LIBRARIES
