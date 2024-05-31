@@ -523,16 +523,25 @@ augroup ale_per_buffer
 augroup END
 
 function! ToggleALEPerBuffer()
-  " Check for the presence of .aledisable in the current buffer's directory
-  if filereadable(expand('%:p:h') . '/.aledisable')
-    let b:ale_enabled = 0
-  else
-    " Enable ALE for this buffer if it is not globally disabled
-    if exists('g:ale_enabled') && !g:ale_enabled
-      echom "ALE is globally disabled, not enabling for buffer: " . expand('%')
-    else
-      let b:ale_enabled = 1
+  " Get the current directory of the buffer
+  let l:dir = expand('%:p:h')
+
+  " Loop through parent directories until we reach the root or find a .git directory
+  while l:dir != '/' && !isdirectory(l:dir . '/.git')
+    " Check for the presence of .aledisable in the current directory
+    if filereadable(l:dir . '/.aledisable')
+      let b:ale_enabled = 0
+      return
     endif
+    " Move up to the parent directory
+    let l:dir = fnamemodify(l:dir, ':h')
+  endwhile
+
+  " Enable ALE for this buffer if it is not globally disabled
+  if exists('g:ale_enabled') && !g:ale_enabled
+    echom "ALE is globally disabled, not enabling for buffer: " . expand('%')
+  else
+    let b:ale_enabled = 1
   endif
 endfunction
 
