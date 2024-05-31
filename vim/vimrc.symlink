@@ -360,6 +360,7 @@ map <leader>dv :vsplit %%<cr>
 map <leader>ds :split %%<cr>
 
 map <leader>et :tabedit config/locales/pending-upload.yml
+map <leader>vt :vsplit config/locales/pending-upload.yml
 
 """ Autocomd/Filetype-specific settings
 
