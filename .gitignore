@@ -5,3 +5,9 @@ mutt/mutt.symlink/temp/
 vim/vim.symlink/spell/
 .kitchen
 vim/vim.symlink/bundle/
+config.symlink/yarn/global/node_modules
+config.symlink/gh/hosts.yml
+config.symlink/github-copilot/hosts.json
+config.symlink/htop/htoprc
+config.symlink/op
+config.symlink/configstore
