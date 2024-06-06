@@ -295,6 +295,7 @@ require("lazy").setup({
 						"public/packs-test/",
 						"public/assets/",
 						"vendor/",
+						"tmp/cache/",
 					},
 				},
 			})
