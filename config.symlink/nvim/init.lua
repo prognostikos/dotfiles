@@ -287,6 +287,16 @@ require("lazy").setup({
 						require("telescope.themes").get_dropdown(),
 					},
 				},
+				defaults = {
+					file_ignore_patterns = {
+						"%.git/",
+						"node_modules/",
+						"public/packs/",
+						"public/packs-test/",
+						"public/assets/",
+						"vendor/",
+					},
+				},
 			})
 
 			-- Enable Telescope extensions if they are installed
