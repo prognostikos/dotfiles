@@ -10,3 +10,4 @@ alias curl="gpg --batch -q -d ~/.netrc.gpg | curl --netrc-file /dev/stdin"
 alias run=./run
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias vw='vim ~/Documents/wiki/index.md'
+alias n=nvim
