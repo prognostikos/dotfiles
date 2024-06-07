@@ -3,6 +3,8 @@
     "heroku-pg-extras": "^1.2.4",
     "node-gyp": "^9.0.0",
     "typescript": "^5.4.5",
-    "typescript-language-server": "^4.3.3"
+    "typescript-language-server": "^4.3.3",
+    "vscode-css-languageserver-bin": "^1.4.0",
+    "vscode-html-languageserver-bin": "^1.4.0"
   }
 }
