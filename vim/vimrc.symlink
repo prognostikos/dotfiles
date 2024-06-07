@@ -48,6 +48,9 @@ Plug 'nelstrom/vim-qargs'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/vim-lsp'
 Plug 'robertmeta/nofrils'
 Plug 'rosstimson/bats.vim'
 Plug 'tpope/vim-bundler'
@@ -702,10 +705,10 @@ let g:mucomplete#no_mappings = 1
 let g:mucomplete#smart_enter = 1
 let g:mucomplete#chains = {
       \ 'default'    : ['omni', 'c-n', 'dict', 'uspl'],
-      \ 'vim'        : ['path', 'cmd', 'keyn'],
-      \ 'ruby'       : ['path', 'c-n', 'tags', 'keyn'],
-      \ 'eruby'      : ['path', 'c-n', 'tags', 'keyn'],
-      \ 'javascript' : ['path', 'omni', 'c-n', 'keyn'],
+      \ 'vim'        : ['path', 'omni', 'tags', 'cmd', 'keyn'],
+      \ 'ruby'       : ['path', 'omni', 'tags', 'keyn'],
+      \ 'eruby'      : ['path', 'omni', 'tags', 'keyn'],
+      \ 'javascript' : ['path', 'omni', 'tags', 'keyn'],
       \ 'text'       : ['keyn', 'uspl', 'dict'],
       \ 'markdown'   : ['keyn', 'uspl', 'dict'],
       \ 'gitcommit'  : ['keyn', 'uspl', 'dict']
@@ -725,3 +728,71 @@ nmap <leader>sk :SplitjoinJoin<cr>
 
 " wiki.vim
 let g:wiki_root = '~/Documents/wiki'
+
+" vim-lsp
+let g:lsp_use_native_client = 1
+let g:lsp_inlay_hints_enabled = 0
+let g:lsp_inlay_hints_mode = {
+  \  'normal': ['curline'],
+  \}
+
+augroup lsp
+  au!
+  if executable('solargraph')
+    au User lsp_setup call lsp#register_server({
+    \ 'name': 'solargraph',
+    \ 'cmd': {server_info->['solargraph', 'stdio']},
+    \ 'whitelist': ['ruby'],
+    \ })
+  endif
+
+  if executable('standardrb')
+    au User lsp_setup call lsp#register_server({
+    \ 'name': 'standardrb',
+    \ 'cmd': {server_info->['standardrb', '--lsp']},
+    \ 'whitelist': ['ruby'],
+    \ })
+  endif
+
+  if executable('ruby-lsp')
+    au User lsp_setup call lsp#register_server({
+    \ 'name': 'ruby_lsp',
+    \ 'cmd': {server_info->['ruby-lsp', '--stdio']},
+    \ 'whitelist': ['ruby'],
+    \ })
+  endif
+
+  if executable('typescript-language-server')
+    au User lsp_setup call lsp#register_server({
+      \ 'name': 'javascript support using typescript-language-server',
+      \ 'cmd': { server_info->[&shell, &shellcmdflag, 'typescript-language-server --stdio']},
+      \ 'root_uri': { server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_directory(lsp#utils#get_buffer_path(), '.git/..'))},
+      \ 'whitelist': ['javascript', 'javascript.jsx', 'javascriptreact']
+      \ })
+  endif
+augroup END
+
+" Enable completion
+" autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
+
+function! s:on_lsp_buffer_enabled() abort
+  setlocal omnifunc=lsp#complete
+  setlocal signcolumn=yes
+  if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+  nmap <buffer> gd <plug>(lsp-definition)
+  nmap <buffer> gs <plug>(lsp-document-symbol-search)
+  nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+  nmap <buffer> gr <plug>(lsp-references)
+  nmap <buffer> gi <plug>(lsp-implementation)
+  nmap <buffer> gt <plug>(lsp-type-definition)
+  " nmap <buffer> <leader>rn <plug>(lsp-rename)
+  nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+  nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+  nmap <buffer> K <plug>(lsp-hover) nmap <buffer> <f2> <plug>(lsp-rename)
+  imap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
+endfunction
+
+augroup lsp_install
+  au!
+  autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
