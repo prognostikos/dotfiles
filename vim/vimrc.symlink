@@ -142,7 +142,7 @@ if has('wildignorecase')
 endif
 
 " set complete-=i
-set completeopt=menuone,preview,noinsert,noselect
+set completeopt=menuone,preview,longest ",noinsert,noselect
 
 set history=256
 
