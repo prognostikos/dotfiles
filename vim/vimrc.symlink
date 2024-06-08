@@ -732,10 +732,16 @@ let g:wiki_root = '~/Documents/wiki'
 
 " vim-lsp
 let g:lsp_use_native_client = 1
-let g:lsp_inlay_hints_enabled = 0
-let g:lsp_inlay_hints_mode = {
-  \  'normal': ['curline'],
-  \}
+" let g:lsp_diagnostics_virtual_text_enabled = 0
+
+highlight link LspErrorText Comment
+highlight link LspErrorVirtualText Comment
+highlight link LspHintText Comment
+highlight link LspHintVirtualText Comment
+highlight link LspInformationText comment
+highlight link LspInformationVirtualText comment
+highlight link LspWarningText Comment
+highlight link LspWarningVirtualText Comment
 
 augroup lsp
   au!
