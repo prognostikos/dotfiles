@@ -688,6 +688,7 @@ let g:ale_fix_on_save = 0
 let g:ale_set_highlights = 0
 
 let g:ale_virtualtext_cursor = 0
+let g:ale_disable_lsp = 0
 
 let g:ruby_indent_assignment_style = 'variable'
 let g:ruby_indent_hanging_elements = 0
