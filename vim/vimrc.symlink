@@ -47,6 +47,7 @@ Plug 'nelstrom/vim-qargs'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
+Plug 'prabirshrestha/asyncomplete-buffer.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/vim-lsp'
@@ -796,3 +797,13 @@ augroup lsp_install
   au!
   autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
+
+call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+  \ 'name': 'buffer',
+  \ 'allowlist': ['*'],
+  \ 'blocklist': ['go'],
+  \ 'completor': function('asyncomplete#sources#buffer#completor'),
+  \ 'config': {
+  \    'max_buffer_size': 5000000,
+  \  },
+  \ }))
