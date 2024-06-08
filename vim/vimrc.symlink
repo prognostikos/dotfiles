@@ -777,6 +777,22 @@ augroup lsp
       \ 'whitelist': ['javascript', 'javascript.jsx', 'javascriptreact']
       \ })
   endif
+
+  if executable('html-languageserver')
+    au User lsp_setup call lsp#register_server({
+      \ 'name': 'html-languageserver',
+      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'html-languageserver --stdio']},
+      \ 'whitelist': ['html'],
+      \ })
+  endif
+
+  if executable('css-languageserver')
+    au User lsp_setup call lsp#register_server({
+      \ 'name': 'css-languageserver',
+      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'css-languageserver --stdio']},
+      \ 'whitelist': ['css', 'less', 'sass'],
+      \ })
+  endif
 augroup END
 
 " Enable completion
