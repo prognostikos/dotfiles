@@ -37,7 +37,6 @@ Plug 'junegunn/limelight.vim'
 Plug 'kana/vim-textobj-user'
 Plug 'lervag/lists.vim'
 Plug 'lervag/wiki.vim'
-Plug 'lifepillar/vim-mucomplete'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'mattn/emmet-vim'
 Plug 'mattn/gist-vim'
@@ -142,7 +141,7 @@ if has('wildignorecase')
 endif
 
 " set complete-=i
-set completeopt=menuone,preview,longest ",noinsert,noselect
+set completeopt=menuone,preview,noinsert,noselect
 
 set history=256
 
@@ -378,7 +377,6 @@ augroup textmarkdown
   autocmd!
   autocmd BufRead,BufNewFile *.md,*.mkd,*.md.txt,*.md.gpg setfiletype markdown
   autocmd BufRead,BufNewFile *.txt setfiletype text
-  autocmd FileType text,markdown silent :MUcompleteAutoOff
   autocmd FileType text,markdown silent :ListsEnable
   autocmd FileType text,markdown setlocal wrap linebreak autoindent nolist textwidth=80 complete+=kspell
 augroup END
@@ -402,7 +400,6 @@ augroup rb
   autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 0
   autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
   autocmd FileType ruby,eruby let g:rubycomplete_use_bundler = 1
-  autocmd FileType eruby.yaml silent :MUcompleteAutoOff
 augroup END
 
 augroup java
@@ -425,7 +422,6 @@ augroup END
 augroup sql
   autocmd!
   autocmd BufRead,BufNewFile *.sql setfiletype sql
-  autocmd BufRead,BufNewFile *.sql silent :MUcompleteAutoOff
 augroup END
 
 augroup rust
@@ -516,7 +512,6 @@ augroup END
 augroup journal
   autocmd!
   autocmd BufWinEnter */journal.md.pgp call PrependDateHeader()
-  autocmd BufRead,BufNewFile */journal.md.pgp silent :MUcompleteAutoOff
 augroup END
 
 " add .aledisable to a directory where it should be off
@@ -699,24 +694,6 @@ let &t_EI="\033[1 q" " end insert mode
 
 " emmet.vim
 let g:user_emmet_mode = 'i'
-
-" mucomplete
-let g:mucomplete#enable_auto_at_startup = 1
-let g:mucomplete#no_mappings = 1
-let g:mucomplete#smart_enter = 1
-let g:mucomplete#chains = {
-      \ 'default'    : ['omni', 'c-n', 'dict', 'uspl'],
-      \ 'vim'        : ['path', 'omni', 'tags', 'cmd', 'keyn'],
-      \ 'ruby'       : ['path', 'omni', 'tags', 'keyn'],
-      \ 'eruby'      : ['path', 'omni', 'tags', 'keyn'],
-      \ 'javascript' : ['path', 'omni', 'tags', 'keyn'],
-      \ 'text'       : ['keyn', 'uspl', 'dict'],
-      \ 'markdown'   : ['keyn', 'uspl', 'dict'],
-      \ 'gitcommit'  : ['keyn', 'uspl', 'dict']
-      \ }
-
-" imap <Plug>MyCR <Plug>(MUcompleteCR)
-" imap <cr> <Plug>MyCR
 
 " splitjoin
 let g:splitjoin_split_mapping = ''
