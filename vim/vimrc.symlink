@@ -74,6 +74,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-vinegar'
 Plug 'vim-ruby/vim-ruby'
 Plug 'wikitopian/hardmode'
+Plug 'yami-beta/asyncomplete-omni.vim'
 
 call plug#end()
 
@@ -802,7 +803,22 @@ augroup lsp_install
   autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
-call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+let g:lsp_async_completion = 1
+
+" asyncomplete and friends
+let g:asyncomplete_min_chars = 2
+
+autocmd User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#omni#get_source_options({
+  \ 'name': 'omni',
+  \ 'allowlist': ['*'],
+  \ 'blocklist': ['c', 'cpp', 'html'],
+  \ 'completor': function('asyncomplete#sources#omni#completor'),
+  \ 'config': {
+  \   'show_source_kind': 1,
+  \ },
+  \ }))
+
+autocmd User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
   \ 'name': 'buffer',
   \ 'allowlist': ['*'],
   \ 'blocklist': ['go'],
@@ -812,7 +828,7 @@ call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options
   \  },
   \ }))
 
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#tags#get_source_options({
+autocmd User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#tags#get_source_options({
     \ 'name': 'tags',
     \ 'allowlist': ['ruby', 'javascript', 'eruby'],
     \ 'completor': function('asyncomplete#sources#tags#completor'),
