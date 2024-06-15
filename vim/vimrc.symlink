@@ -51,6 +51,7 @@ Plug 'othree/html5.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'prabirshrestha/asyncomplete-buffer.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/asyncomplete-tags.vim'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'rafamadriz/friendly-snippets'
@@ -811,6 +812,15 @@ call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options
   \  },
   \ }))
 
+au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#tags#get_source_options({
+    \ 'name': 'tags',
+    \ 'allowlist': ['ruby', 'javascript', 'eruby'],
+    \ 'completor': function('asyncomplete#sources#tags#completor'),
+    \ 'config': {
+    \    'max_file_size': 50000000,
+    \  },
+    \ }))
+
 " vim-vsnip
 " Expand
 imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
@@ -835,3 +845,6 @@ xmap        S   <Plug>(vsnip-cut-text)
 
 let g:vsnip_filetypes = {}
 let g:vsnip_filetypes.ruby = ['rails']
+
+" gutentags
+let g:gutentags_ctags_exclude = ['node_modules/*', 'vendor/*',  'public/*', 'app/assets/stylesheets/*', 'app/assets/images/*', 'config/quickpay/*', 'tmp/*', 'config/locales/*']
