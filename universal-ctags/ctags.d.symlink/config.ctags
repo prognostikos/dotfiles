@@ -1,3 +1,7 @@
 --recurse
 --tag-relative=yes
---exclude=node_modules
+--exclude=node_modules/*
+--exclude=vendor/*
+--exclude=public/*
+--exclude=tmp/*
+--languages=ruby,javascript
