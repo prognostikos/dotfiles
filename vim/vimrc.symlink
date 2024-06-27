@@ -682,7 +682,8 @@ let g:ale_linters = {
       \}
 let g:ale_fixers = {
       \ 'ruby': ['standardrb'],
-      \ 'javascript': ['standard']
+      \ 'javascript': ['standard'],
+      \ 'eruby': ['erb-formatter'],
       \}
 let g:ale_fix_on_save = 0
 
