@@ -799,12 +799,20 @@ function! s:on_lsp_buffer_enabled() abort
   nmap <buffer> [g <plug>(lsp-previous-diagnostic)
   nmap <buffer> ]g <plug>(lsp-next-diagnostic)
   nmap <buffer> K <plug>(lsp-hover) nmap <buffer> <f2> <plug>(lsp-rename)
-  imap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
+endfunction
+
+" Define a function to set up endwise mappings
+function! s:endwise_mappings() abort
+  if exists(':EndwiseEnable') && hasmapto('<Plug>Endwise', 'i')
+    execute 'imap <expr> <cr> endwise#util#InRuby() ? "\<C-r>=endwise#util#InsertMapping()\r" : "\<cr>"'
+  endif
 endfunction
 
 augroup lsp_install
   au!
   autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+  " Re-enable endwise mappings
+  autocmd User lsp_buffer_enabled call s:endwise_mappings()
 augroup END
 
 let g:lsp_async_completion = 1
