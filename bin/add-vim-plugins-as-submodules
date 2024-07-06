@@ -1,0 +1,33 @@
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+# Change to the root directory of your dotfiles repository
+cd ~/.dotfiles || exit 1
+
+# Loop through all directories in vim/vim.symlink/bundle
+for dir in vim/vim.symlink/bundle/*/; do
+  # Remove trailing slash from directory name
+  dir=${dir%*/}
+
+  # Extract the plugin name from the directory path
+  plugin_name=$(basename "$dir")
+
+  # Check if the directory is already a submodule
+  if git submodule status "$dir" &>/dev/null; then
+    echo "Submodule already exists for $plugin_name, skipping..."
+    continue
+  fi
+
+  # Get the remote URL of the plugin repository
+  remote_url=$(cd "$dir" && git config --get remote.origin.url)
+
+  # If we successfully got a remote URL, add it as a submodule
+  if [ -n "$remote_url" ]; then
+    git submodule add "$remote_url" "$dir"
+    echo "Added submodule for $plugin_name"
+  else
+    echo "Could not get remote URL for $plugin_name, skipping..."
+  fi
+done

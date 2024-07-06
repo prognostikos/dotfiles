@@ -4,7 +4,6 @@ mutt/mutt.symlink/temp/
 *.pyc
 vim/vim.symlink/spell/
 .kitchen
-vim/vim.symlink/bundle/
 config.symlink/yarn/global/node_modules
 config.symlink/gh/hosts.yml
 config.symlink/github-copilot/hosts.json
