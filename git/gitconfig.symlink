@@ -40,6 +40,8 @@
 	autostash = true
 [gc]
 	auto = 1
+	reflogexpire = never
+	reflogexpireunreachable = never
 [branch]
 	autosetuprebase = always
 	sort = -committerdate
