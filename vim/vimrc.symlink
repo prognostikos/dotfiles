@@ -779,6 +779,14 @@ augroup lsp
       \ 'whitelist': ['css', 'less', 'sass'],
       \ })
   endif
+
+  if executable('stimulus-language-server')
+    au User lsp_setup call lsp#register_server({
+      \ 'name': 'stimulus-language-server',
+      \ 'cmd': {server_info->[&shell, &shellcmdflag, 'stimulus-language-server --stdio']},
+      \ 'whitelist': ['html', 'eruby'],
+      \ })
+  endif
 augroup END
 
 " Enable completion
@@ -797,7 +805,8 @@ function! s:on_lsp_buffer_enabled() abort
   nmap <buffer> gR <plug>(lsp-rename)
   nmap <buffer> [g <plug>(lsp-previous-diagnostic)
   nmap <buffer> ]g <plug>(lsp-next-diagnostic)
-  nmap <buffer> K <plug>(lsp-hover) nmap <buffer> <f2> <plug>(lsp-rename)
+  nmap <buffer> K <plug>(lsp-hover)
+  " nmap <buffer> <f2> <plug>(lsp-rename)
 endfunction
 
 " Define a function to set up endwise mappings
