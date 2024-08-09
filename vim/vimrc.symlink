@@ -385,6 +385,7 @@ augroup textmarkdown
   autocmd BufRead,BufNewFile *.txt setfiletype text
   autocmd FileType text,markdown silent :ListsEnable
   autocmd FileType text,markdown setlocal wrap linebreak autoindent nolist textwidth=80 complete+=kspell
+  autocmd FileType text,markdown let b:asyncomplete_enable = 0
 augroup END
 
 augroup help
@@ -445,6 +446,7 @@ augroup END
 augroup git
   autocmd!
   autocmd FileType gitcommit setlocal nospell complete+=kspell
+  autocmd FileType gitcommit let b:asyncomplete_enable = 0
 augroup END
 
 augroup cukes
