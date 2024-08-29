@@ -1,7 +1,9 @@
-#!/bin/sh
+#!/bin/bash
+
 # Install all dotfiles into the home directory
 
 set -e
+set -o pipefail
 
 DOTFILES_ROOT="$(pwd)"
 
@@ -11,12 +13,11 @@ else
   DEST_ROOT="$1"
 fi
 
-for source in $(find "$DOTFILES_ROOT" -maxdepth 2 -name \*.symlink)
+find "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -print0 | while IFS= read -r -d '' source
 do
-  dest="$DEST_ROOT/.$(basename ${source%.*})"
+  dest="${DEST_ROOT}/.$(basename "${source%.*}")"
 
-  if [ -f "$dest" ] || [ -d "$dest" ]
-  then
+  if [ -e "$dest" ]; then
     mv -fv "$dest" "${dest}.backup"
   fi
 
