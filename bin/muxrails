@@ -1,7 +1,49 @@
 #!/bin/bash
 
+set -e
+set -o pipefail
+
+if [[ -z "$TMUX" ]]; then
+  if command -v tat > /dev/null; then
+    echo "tmux not running, use 'tat' to start"
+  else
+    echo "tmux not running"
+  fi
+
+  exit 1
+fi
+
 tmux rename-window editor
+tmux split-window -d -b -l 12%
+
+if command -v fzf > /dev/null; then
+  tmux send-keys -t editor 'vim -c ":FZF"' Enter
+else
+  tmux send-keys -t editor "$EDITOR" Enter
+fi
+
 tmux new-window -d -n console
 tmux new-window -d -n db
+
 tmux new-window -d -n servers
+tmux split-window -d -t servers
+
 tmux new-window -d -n prod
+tmux split-window -d -t prod
+
+tmux new-window -d
+
+if [[ -x "bin/spring" ]]; then
+  tmux new-window -d -n spring
+  tmux send-keys -t spring 'bin/spring server' Enter
+  sleep 0.5
+fi
+
+if [[ -x "bin/rails" ]]; then
+  tmux send-keys -t console 'bin/rails console' Enter
+  tmux send-keys -t db 'bin/rails db' Enter
+fi
+
+if [[ -x "script/server" ]]; then
+  tmux send-keys -t servers.0 'script/server --fast' Enter
+fi
