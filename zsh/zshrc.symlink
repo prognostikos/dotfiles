@@ -27,9 +27,9 @@ else
   BREW_PREFIX="/usr/local"
 fi
 
-export PATH="$HOME/.dotfiles/bin:$HOME/.rbenv/bin:$HOME/.fzf/bin:$PATH"
-export PATH=".git/safe/../../bin:$PATH"
-export PATH="$BREW_PREFIX/bin:$BREW_PREFIX/sbin:$PATH"
+if [ -d $BREW_PREFIX ]; then
+  export PATH="$BREW_PREFIX/bin:$BREW_PREFIX/sbin:$PATH"
+fi
 
 if command -v rbenv > /dev/null; then
   eval "$(rbenv init - zsh)"
@@ -44,6 +44,7 @@ if [ -d ~/c/go ]; then
   export PATH="$GOPATH/bin:$PATH"
 fi
 
+export PATH="$HOME/.dotfiles/bin:.git/safe/../../bin:$PATH"
 
 # add homebrew's completions to fpath
 fpath=($BREW_PREFIX/share/zsh/site-functions $fpath)
