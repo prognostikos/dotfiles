@@ -742,14 +742,6 @@ augroup lsp
     \ })
   endif
 
-  if executable('standardrb')
-    au User lsp_setup call lsp#register_server({
-    \ 'name': 'standardrb',
-    \ 'cmd': {server_info->['standardrb', '--lsp']},
-    \ 'whitelist': ['ruby'],
-    \ })
-  endif
-
   if executable('ruby-lsp')
     au User lsp_setup call lsp#register_server({
     \ 'name': 'ruby_lsp',
