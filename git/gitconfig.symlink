@@ -54,6 +54,8 @@
 	tool = vimdiff
 	noprefix = true
 	algorithm = histogram
+	colorWords = true
+	wordRegex = \\w+|.
 [difftool]
 	prompt = false
 [heroku]
