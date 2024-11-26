@@ -4,5 +4,5 @@ set -eo pipefail
 
 SUBSET=${1:-dependabot}
 
-gh pr list | grep "$SUBSET" | awk -F'\t' '{ print "gh pr merge ", $1, " --require-checks --squash --subject \"", $2, "[ci skip]\"" }' | bash
+gh pr list | grep "$SUBSET" | awk -F'\t' '{ print "gh pr merge ", $1, " --squash --subject \"", $2, "[ci skip]\"" }' | bash
 bundle-deps
