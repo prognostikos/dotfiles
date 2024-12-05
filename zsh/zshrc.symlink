@@ -44,7 +44,7 @@ if [ -d ~/c/go ]; then
   export PATH="$GOPATH/bin:$PATH"
 fi
 
-export PATH="$HOME/.dotfiles/bin:.git/safe/../../bin:$PATH"
+export PATH="$HOME/.dotfiles/bin:$PATH"
 
 # add homebrew's completions to fpath
 fpath=($BREW_PREFIX/share/zsh/site-functions $fpath)
@@ -80,6 +80,7 @@ zmodload -i zsh/complist
 # Speed up path completion
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
+zstyle ':completion:*' rehash true
 
 # Ignore some files when completing
 fignore=(.o .class .ctxt .obj)
