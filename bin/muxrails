@@ -14,7 +14,7 @@ if [[ -z "$TMUX" ]]; then
 fi
 
 tmux rename-window editor
-tmux split-window -d -b -l 12%
+tmux split-window -d -b -l 10
 
 if command -v fzf > /dev/null; then
   tmux send-keys -t editor 'vim -c ":FZF"' Enter
