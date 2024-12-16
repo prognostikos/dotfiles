@@ -745,7 +745,7 @@ augroup lsp
   if executable('ruby-lsp')
     au User lsp_setup call lsp#register_server({
     \ 'name': 'ruby_lsp',
-    \ 'cmd': {server_info->['ruby-lsp', '--stdio']},
+    \ 'cmd': {server_info->['ruby-lsp']},
     \ 'whitelist': ['ruby'],
     \ })
   endif
