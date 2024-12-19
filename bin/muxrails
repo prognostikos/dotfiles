@@ -16,11 +16,7 @@ fi
 tmux rename-window editor
 tmux split-window -d -b -l 10
 
-if command -v fzf > /dev/null; then
-  tmux send-keys -t editor 'vim -c ":FZF"' Enter
-else
-  tmux send-keys -t editor "$EDITOR" Enter
-fi
+tmux send-keys -t editor "$EDITOR" Enter
 
 tmux new-window -d -n console
 tmux new-window -d -n db
