@@ -4,7 +4,7 @@ port 587
 protocol smtp
 auth on
 from matt@prognostikos.com
-user finitesoup@gmail.com
+user mr@prognostikos.com
 tls on
 tls_trust_file /opt/homebrew/etc/ca-certificates/cert.pem
 

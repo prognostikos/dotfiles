@@ -37,7 +37,7 @@ source ~/.mutt/bn.muttrc
 folder-hook '+bn/' 'source ~/.mutt/bn.muttrc'
 
 # Alternate email addresses.
-alternates matt@prognostikos.com mr@betternow.org finitesoup@gmail.com
+alternates matt@prognostikos.com mr@betternow.org
 
 # Index View Options ---------------------------------
 set date_format = "%m/%d"

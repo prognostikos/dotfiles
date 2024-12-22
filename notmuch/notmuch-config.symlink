@@ -27,7 +27,7 @@ path=/Users/rohrer/.mail/personal
 [user]
 name=Matt Rohrer
 primary_email=matt@prognostikos.com
-other_email=finitesoup@gmail.com;mr@betternow.org
+other_email=mr@betternow.org
 
 # Configuration for "notmuch new"
 #
