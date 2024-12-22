@@ -540,7 +540,6 @@ function! PrependDateHeader()
 endfunction
 
 iabbr fundrasier fundraiser
-iabbr ayden adyen
 
 " rails.vim settings
 "
