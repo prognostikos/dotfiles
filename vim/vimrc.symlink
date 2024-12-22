@@ -619,10 +619,6 @@ nnoremap <silent> <Leader>t :FZF<CR>
 let g:loaded_sql_completion = 1
 let g:omni_sql_no_default_maps = 1
 
-" vim-go
-let g:go_fmt_command = "goimports"
-let g:go_auto_type_info = 1
-
 " vim-gnupg
 let g:GPGDefaultRecipients = [ "Matt Rohrer <matt@prognostikos.com" ]
 
