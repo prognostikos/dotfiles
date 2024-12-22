@@ -539,31 +539,6 @@ function! PrependDateHeader()
   :normal gg2o
 endfunction
 
-function! s:goyo_enter()
-  silent !tmux set status off
-  silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
-  set nonumber
-  set norelativenumber
-  set noshowmode
-  set noshowcmd
-  set colorcolumn=0
-  Limelight
-endfunction
-
-function! s:goyo_leave()
-  silent !tmux set status on
-  silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
-  set number
-  set relativenumber
-  set showmode
-  set showcmd
-  set colorcolumn=80
-  Limelight!
-endfunction
-
-autocmd! User GoyoEnter nested call <SID>goyo_enter()
-autocmd! User GoyoLeave nested call <SID>goyo_leave()
-
 iabbr fundrasier fundraiser
 iabbr ayden adyen
 
