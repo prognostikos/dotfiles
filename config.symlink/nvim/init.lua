@@ -138,7 +138,35 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
+  'AndrewRadev/splitjoin.vim',
+  'RRethy/nvim-treesitter-endwise',
+  'csexton/trailertrash.vim',
+  'jamessan/vim-gnupg',
+  'janko-m/vim-test',
+  'junegunn/fzf',
+  'lervag/lists.vim',
+  'lervag/wiki.vim',
+  'ludovicchabant/vim-gutentags',
+  'mattn/emmet-vim',
+  'mustache/vim-mustache-handlebars',
+  'tpope/vim-bundler',
+  'tpope/vim-dispatch',
+  'tpope/vim-endwise',
+  'tpope/vim-eunuch',
+  'tpope/vim-flagship',
+  'tpope/vim-fugitive',
+  'tpope/vim-rails',
+  'tpope/vim-rake',
+  'tpope/vim-rsi',
+  'tpope/vim-sleuth',
+  'tpope/vim-surround',
+  'tpope/vim-vinegar',
+
+  {
+    'windwp/nvim-autopairs',
+    event = 'InsertEnter',
+    config = true,
+  },
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
