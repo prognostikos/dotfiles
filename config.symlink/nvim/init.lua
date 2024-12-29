@@ -9,9 +9,9 @@ vim.g.have_nerd_font = false
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
--- Make line numbers default
+-- buffer defaults
+vim.opt.signcolumn = 'yes'
 vim.opt.number = true
-vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -110,6 +110,26 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
   callback = function()
     vim.highlight.on_yank()
+  end,
+})
+
+vim.api.nvim_create_augroup('activewindow', { clear = true })
+
+vim.api.nvim_create_autocmd({ 'VimEnter', 'WinEnter', 'BufWinEnter' }, {
+  group = 'activewindow',
+  callback = function()
+    vim.opt_local.cursorline = true
+    vim.opt_local.colorcolumn = '80'
+    vim.opt_local.relativenumber = true
+  end,
+})
+
+vim.api.nvim_create_autocmd('WinLeave', {
+  group = 'activewindow',
+  callback = function()
+    vim.opt_local.cursorline = false
+    vim.opt_local.colorcolumn = '0'
+    vim.opt_local.relativenumber = false
   end,
 })
 
