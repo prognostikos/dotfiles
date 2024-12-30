@@ -1,0 +1,7 @@
+font-family = SauceCodePro NFM
+font-size = 14
+theme = tokyonight
+cursor-style = block
+cursor-color = green
+cursor-style-blink = true
+shell-integration-features = no-cursor
