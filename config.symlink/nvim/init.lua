@@ -265,14 +265,12 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'AndrewRadev/splitjoin.vim',
   'RRethy/nvim-treesitter-endwise',
   'csexton/trailertrash.vim',
   'jamessan/vim-gnupg',
   'janko-m/vim-test',
   'junegunn/fzf',
   'lervag/lists.vim',
-  'lervag/wiki.vim',
   'ludovicchabant/vim-gutentags',
   'mattn/emmet-vim',
   'mustache/vim-mustache-handlebars',
@@ -293,6 +291,27 @@ require('lazy').setup({
     'windwp/nvim-autopairs',
     event = 'InsertEnter',
     config = true,
+  },
+
+  {
+    'AndrewRadev/splitjoin.vim',
+    config = function()
+      vim.g.splitjoin_split_mapping = ""
+      vim.g.splitjoin_join_mapping = ""
+      vim.g.splitjoin_ruby_curly_braces = 0
+      vim.g.splitjoin_ruby_hanging_args = 0
+
+      vim.keymap.set('n', '<leader>sj', ':SplitjoinSplit<CR>', {
+        remap = false, silent = true
+      })
+    end
+  },
+
+  {
+    'lervag/wiki.vim',
+    config = function()
+      vim.g.wiki_root = '~/Documents/wiki'
+    end
   },
 
   -- NOTE: Plugins can also be added by using a table,
