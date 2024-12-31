@@ -27,6 +27,8 @@ vim.opt.undofile = true
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+vim.opt.incsearch = true
+vim.opt.hlsearch = false
 
 -- Keep signcolumn on by default
 vim.opt.signcolumn = 'yes'
@@ -57,7 +59,6 @@ vim.opt.cursorline = true
 -- center the cursor
 vim.opt.scrolloff = 999
 
-vim.opt.hlsearch = false
 vim.opt.backspace = 'start,indent,eol'
 
 vim.opt.winwidth = 81
