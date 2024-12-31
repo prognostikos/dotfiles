@@ -9,10 +9,6 @@ vim.g.have_nerd_font = false
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
--- buffer defaults
-vim.opt.signcolumn = 'yes'
-vim.opt.number = true
-
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
 
@@ -120,6 +116,8 @@ vim.api.nvim_create_autocmd({ 'VimEnter', 'WinEnter', 'BufWinEnter' }, {
   callback = function()
     vim.opt_local.cursorline = true
     vim.opt_local.colorcolumn = '80'
+    vim.opt_local.signcolumn = 'yes'
+    vim.opt_local.number = true
     vim.opt_local.relativenumber = true
   end,
 })
@@ -129,6 +127,8 @@ vim.api.nvim_create_autocmd('WinLeave', {
   callback = function()
     vim.opt_local.cursorline = false
     vim.opt_local.colorcolumn = '0'
+    vim.opt_local.signcolumn = 'no'
+    vim.opt_local.number = false
     vim.opt_local.relativenumber = false
   end,
 })
