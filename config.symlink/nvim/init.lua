@@ -69,6 +69,9 @@ vim.opt.switchbuf = 'useopen'
 
 vim.opt.tags:append '.git/tags'
 
+-- Save on any buffer/window switch or exit
+vim.opt.autowriteall = true
+
 -- [[ Global Keymaps ]]
 
 -- Keybinds to make split navigation easier.
