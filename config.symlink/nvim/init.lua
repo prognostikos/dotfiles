@@ -62,6 +62,18 @@ vim.opt.cursorline = true
 -- center the cursor
 vim.opt.scrolloff = 999
 
+vim.opt.hlsearch = false
+vim.opt.backspace = 'start,indent,eol'
+
+vim.opt.winwidth = 81
+vim.opt.equalalways = true
+
+vim.opt.confirm = true
+
+vim.opt.switchbuf = 'useopen'
+
+vim.opt.tags:append '.git/tags'
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
