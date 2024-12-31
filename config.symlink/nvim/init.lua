@@ -81,8 +81,32 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- keep selection after visual in/out-dent
+vim.keymap.set('v', '>', '>gv')
+vim.keymap.set('v', '<', '<gv')
+
+-- Toggle paste mode for current file
+vim.keymap.set('n', '<leader>p', ':setlocal paste!<cr>', { remap = false })
+
+-- visually select the last pasted hunk
+vim.keymap.set('n', '<leader>vp', '`[v`]', { remap = false })
+
+-- use ctrl-n/p in normal mode to cycle through the quickfix list
+vim.keymap.set('n', '<C-n>', ':cn<CR>', { remap = false })
+vim.keymap.set('n', '<C-p>', ':cp<CR>', { remap = false })
+
+-- <c-c> is not exactly equivalent to <esc> - make it so
+vim.keymap.set('n', '<C-c>', '<esc>', { remap = false })
+vim.keymap.set('i', '<C-c>', '<esc>', { remap = false })
+
+-- make grep easier
+vim.keymap.set('n', '<leader>f', ':grep <C-R><C-A>', { remap = false })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
+
+-- dts inserts the current timestamp in insert mode
+vim.cmd [[iabbrev <expr> dts strftime('%Y-%m-%d %H:%M:%S %Z')]]
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
