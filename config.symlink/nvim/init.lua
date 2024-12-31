@@ -240,6 +240,12 @@ vim.api.nvim_create_autocmd('VimEnter', {
   end
 })
 
+-- Diag for viewing Diagnostics
+vim.api.nvim_create_user_command('Diag', function(opts)
+  local line = opts.args and tonumber(opts.args) or vim.fn.line('.')
+  vim.diagnostic.open_float({pos = {line - 1, 0}})
+end, { nargs = '?' })
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
