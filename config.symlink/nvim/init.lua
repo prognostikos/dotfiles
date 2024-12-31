@@ -131,11 +131,24 @@ local function cleanup()
   vim.fn.setreg('/', old_query)
 end
 
--- Map the function to leader+cu
 vim.keymap.set('n', '<leader>cu', function()
   cleanup()
 end, { silent = true, noremap = true })
 
+local function rename_file()
+  local old_name = vim.fn.expand('%')
+  local new_name = vim.fn.input('New file name: ', vim.fn.expand('%'), 'file')
+
+  if new_name ~= '' and new_name ~= old_name then
+    vim.cmd('saveas ' .. new_name)
+    vim.fn.system('rm ' .. old_name)
+    vim.cmd('redraw!')
+  end
+end
+
+vim.keymap.set('n', '<leader>rn', rename_file, 
+  { silent = true, noremap = true }
+)
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
