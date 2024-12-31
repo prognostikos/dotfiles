@@ -1,4 +1,4 @@
 #!/bin/bash
 # open all modified files in a series of splits
 
-vim -O $(git ls-files -m -o --exclude-standard|tr '\n' ' ')
+${EDITOR:-vim} -O $(git ls-files -m -o --exclude-standard|tr '\n' ' ')
