@@ -184,6 +184,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- change some settings when window is active
 vim.api.nvim_create_augroup('activewindow', { clear = true })
 
 vim.api.nvim_create_autocmd({ 'VimEnter', 'WinEnter', 'BufWinEnter' }, {
