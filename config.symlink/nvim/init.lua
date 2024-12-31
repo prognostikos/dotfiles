@@ -102,6 +102,40 @@ vim.keymap.set('i', '<C-c>', '<esc>', { remap = false })
 -- make grep easier
 vim.keymap.set('n', '<leader>f', ':grep <C-R><C-A>', { remap = false })
 
+-- cleanup the current buffer
+local function cleanup()
+  -- Handle SQL files with sqlfmt if available
+  if vim.fn.executable('sqlfmt') == 1 and vim.bo.filetype == 'sql' then
+    vim.cmd([[%!sqlfmt --tab-width 2 --use-spaces]])
+    return
+  end
+
+  -- Save current position and search register
+  local save_cursor = vim.fn.getpos('.')
+  local old_query = vim.fn.getreg('/')
+
+  -- Apply tab/space settings
+  vim.cmd('retab')
+
+  -- Reindent entire file
+  vim.cmd('normal! gg=G')
+
+  -- Strip trailing whitespace
+  vim.cmd([[%s/\s\+$//e]])
+
+  -- Remove multiple blank lines
+  vim.cmd([[%s/\n\{3,}/\r\r/e]])
+
+  -- Restore cursor position and search register
+  vim.fn.setpos('.', save_cursor)
+  vim.fn.setreg('/', old_query)
+end
+
+-- Map the function to leader+cu
+vim.keymap.set('n', '<leader>cu', function()
+  cleanup()
+end, { silent = true, noremap = true })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
