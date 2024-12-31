@@ -639,6 +639,7 @@ require('lazy').setup({
           --  For example, in C this would take you to the header.
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
+          map('K', vim.lsp.buf.hover, '[K] Hover/Diagnostics')
           -- The following code creates a keymap to toggle inlay hints in your
           -- code, if the language server you are using supports them
           --
