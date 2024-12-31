@@ -99,6 +99,11 @@ vim.keymap.set('i', '<C-c>', '<esc>', { remap = false })
 -- make grep easier
 vim.keymap.set('n', '<leader>f', ':grep <C-R><C-A>', { remap = false })
 
+-- Edit or view files in same directory as current file
+vim.keymap.set('c', '%%', "<C-R>=expand('%:h').'/'<cr>", { remap = false })
+vim.keymap.set('n', '<leader>de', ':edit %%<CR>')
+vim.keymap.set('n', '<leader>dv', ':vsplit %%<cr>')
+
 -- cleanup the current buffer
 local function cleanup()
   -- Handle SQL files with sqlfmt if available
@@ -147,23 +152,20 @@ vim.keymap.set('n', '<leader>rn', rename_file,
   { silent = true, noremap = true }
 )
 
-local function mkdir()
-  local dir = vim.fn.expand('%:p:h')
-  if vim.fn.isdirectory(dir) == 0 then
-    vim.fn.mkdir(dir, 'p')
-    print('created directory: ' .. dir)
-  end
-end
-
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
+-- create folder for file if it doesn't exist
 vim.api.nvim_create_augroup('dowhatimean', { clear = true })
 
 vim.api.nvim_create_autocmd('BufWritePre', {
   group = 'dowhatimean',
   callback = function()
-    mkdir()
+    local dir = vim.fn.expand('%:p:h')
+    if vim.fn.isdirectory(dir) == 0 then
+      vim.fn.mkdir(dir, 'p')
+      print('created directory: ' .. dir)
+    end
   end
 })
 
