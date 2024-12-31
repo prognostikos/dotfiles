@@ -219,6 +219,23 @@ vim.api.nvim_create_autocmd('BufReadPost', {
   end
 })
 
+-- make it easier to edit translation files
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function()
+    local file_path = 'config/locales/pending-upload.yml'
+
+    if vim.fn.filereadable(file_path) == 1 then
+      vim.keymap.set('n', '<leader>et', function()
+        vim.cmd('tabedit ' .. file_path)
+      end, { silent = true, noremap = true })
+
+      vim.keymap.set('n', '<leader>vt', function()
+        vim.cmd('vsplit ' .. file_path)
+      end, { silent = true, noremap = true })
+    end
+  end
+})
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
