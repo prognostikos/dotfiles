@@ -272,7 +272,6 @@ require('lazy').setup({
   'junegunn/fzf',
   'lervag/lists.vim',
   'ludovicchabant/vim-gutentags',
-  'mattn/emmet-vim',
   'mustache/vim-mustache-handlebars',
   'tpope/vim-bundler',
   'tpope/vim-dispatch',
