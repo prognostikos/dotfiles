@@ -146,11 +146,29 @@ local function rename_file()
   end
 end
 
-vim.keymap.set('n', '<leader>rn', rename_file, 
+vim.keymap.set('n', '<leader>rn', rename_file,
   { silent = true, noremap = true }
 )
+
+local function mkdir()
+  local dir = vim.fn.expand('%:p:h')
+  if vim.fn.isdirectory(dir) == 0 then
+    vim.fn.mkdir(dir, 'p')
+    print('created directory: ' .. dir)
+  end
+end
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
+
+vim.api.nvim_create_augroup('dowhatimean', { clear = true })
+
+vim.api.nvim_create_autocmd('BufWritePre', {
+  group = 'dowhatimean',
+  callback = function()
+    mkdir()
+  end
+})
 
 -- dts inserts the current timestamp in insert mode
 vim.cmd [[iabbrev <expr> dts strftime('%Y-%m-%d %H:%M:%S %Z')]]
