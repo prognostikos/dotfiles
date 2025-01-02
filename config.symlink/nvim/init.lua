@@ -299,7 +299,6 @@ require('lazy').setup({
   'csexton/trailertrash.vim',
   'junegunn/fzf',
   'lervag/lists.vim',
-  'ludovicchabant/vim-gutentags',
   'mustache/vim-mustache-handlebars',
   'tpope/vim-bundler',
   'tpope/vim-endwise',
@@ -312,6 +311,22 @@ require('lazy').setup({
   'tpope/vim-sleuth',
   'tpope/vim-surround',
   'tpope/vim-vinegar',
+
+  {
+    'ludovicchabant/vim-gutentags',
+    config = function()
+      vim.g.guentags_ctags_exclude = {
+        'node_modules/*',
+        'vendor/*',
+        'public/*',
+        'app/assets/stylesheets/*',
+        'app/assets/images/*',
+        'config/quickpay/*',
+        'tmp/*',
+        'config/locales/*',
+      }
+    end
+  },
 
   {
     'jamessan/vim-gnupg',
