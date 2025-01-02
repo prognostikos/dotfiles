@@ -274,7 +274,6 @@ require('lazy').setup({
   'RRethy/nvim-treesitter-endwise',
   'csexton/trailertrash.vim',
   'jamessan/vim-gnupg',
-  'janko-m/vim-test',
   'junegunn/fzf',
   'lervag/lists.vim',
   'ludovicchabant/vim-gutentags',
@@ -291,6 +290,19 @@ require('lazy').setup({
   'tpope/vim-sleuth',
   'tpope/vim-surround',
   'tpope/vim-vinegar',
+
+  {
+    'janko-m/vim-test',
+    config = function()
+      vim.g['test#strategy'] = 'dispatch'
+      vim.keymap.set('n', '<leader>rT', '<cmd>TestFile<cr>', {
+        silent = true,
+      })
+      vim.keymap.set('n',  '<leader>rt', '<cmd>TestFile<cr>', {
+        silent = true,
+      })
+    end
+  },
 
   {
     'windwp/nvim-autopairs',
