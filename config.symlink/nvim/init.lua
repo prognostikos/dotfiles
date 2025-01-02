@@ -297,7 +297,6 @@ require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'RRethy/nvim-treesitter-endwise',
   'csexton/trailertrash.vim',
-  'jamessan/vim-gnupg',
   'junegunn/fzf',
   'lervag/lists.vim',
   'ludovicchabant/vim-gutentags',
@@ -313,6 +312,13 @@ require('lazy').setup({
   'tpope/vim-sleuth',
   'tpope/vim-surround',
   'tpope/vim-vinegar',
+
+  {
+    'jamessan/vim-gnupg',
+    config = function()
+      vim.g.GPGDefaultRecipients = { "Matt Rohrer <matt@prognostikos.com>" }
+    end
+  },
 
   {
     'tpope/vim-dispatch',
