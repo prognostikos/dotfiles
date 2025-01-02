@@ -156,6 +156,30 @@ vim.keymap.set('n', '<leader>rn', rename_file,
   { silent = true, noremap = true }
 )
 
+-- open a window with routes for a project
+local function show_routes()
+  -- Create top split window with Routes title
+  vim.cmd('topleft 100 split __Routes__')
+
+  -- Set buffer options
+  vim.bo.buftype = 'nofile'
+
+  -- Clear buffer content
+  vim.cmd('normal! gg"_dG')
+
+  -- Execute rails routes and put output in buffer
+  vim.cmd('0r! rails routes')
+
+  -- Get number of lines and resize window
+  local line_count = vim.fn.line('$')
+  vim.cmd('normal! ' .. line_count .. '_')
+
+  -- Move cursor to top and remove empty trailing line
+  vim.cmd('normal! ggdd')
+end
+
+vim.keymap.set('n', '<leader>rr', show_routes, { silent = true })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
