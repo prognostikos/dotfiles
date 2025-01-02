@@ -279,7 +279,6 @@ require('lazy').setup({
   'ludovicchabant/vim-gutentags',
   'mustache/vim-mustache-handlebars',
   'tpope/vim-bundler',
-  'tpope/vim-dispatch',
   'tpope/vim-endwise',
   'tpope/vim-eunuch',
   'tpope/vim-flagship',
@@ -290,6 +289,15 @@ require('lazy').setup({
   'tpope/vim-sleuth',
   'tpope/vim-surround',
   'tpope/vim-vinegar',
+
+  {
+    'tpope/vim-dispatch',
+    config = function()
+      vim.keymap.set('n', '<leader>rm', '<cmd>Dispatch<cr>', {
+        silent = true
+      })
+    end
+  },
 
   {
     'janko-m/vim-test',
