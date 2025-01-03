@@ -211,6 +211,30 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 -- dts inserts the current timestamp in insert mode
 vim.cmd [[iabbrev <expr> dts strftime('%Y-%m-%d %H:%M:%S %Z')]]
 
+vim.api.nvim_create_autocmd('BufWinEnter', {
+  group = vim.api.nvim_create_augroup('journal', { clear = true }),
+  pattern = '*/journal.md.pgp',
+  callback = function()
+    -- Get formatted date string
+    local format = '%Y-%m-%d %H:%M'
+    local timestamp = os.date(format)
+
+    -- Get current buffer
+    local buf = vim.api.nvim_get_current_buf()
+
+    -- Insert the header at the top of the file
+    vim.api.nvim_buf_set_lines(buf, 0, 0, false, {
+      '## ' .. timestamp,
+      '',
+      '',
+      ''
+    })
+
+    -- Move cursor to the empty line
+    vim.api.nvim_win_set_cursor(0, {3, 0})
+  end
+})
+
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
