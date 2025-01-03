@@ -228,6 +228,10 @@ vim.api.nvim_create_augroup('activewindow', { clear = true })
 vim.api.nvim_create_autocmd({ 'VimEnter', 'WinEnter', 'BufWinEnter' }, {
   group = 'activewindow',
   callback = function()
+    if vim.bo.filetype == 'help' then
+      return
+    end
+
     vim.opt_local.cursorline = true
     vim.opt_local.colorcolumn = '80'
     vim.opt_local.signcolumn = 'yes'
