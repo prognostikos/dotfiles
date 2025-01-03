@@ -183,6 +183,17 @@ vim.keymap.set('n', '<leader>rr', show_routes, { silent = true })
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
+-- open help in a vertical split
+vim.api.nvim_create_augroup('help', { clear = true })
+
+vim.api.nvim_create_autocmd('FileType', {
+  group = 'help',
+  pattern = 'help',
+  callback = function()
+    vim.cmd('wincmd L')
+  end
+})
+
 -- create folder for file if it doesn't exist
 vim.api.nvim_create_augroup('dowhatimean', { clear = true })
 
