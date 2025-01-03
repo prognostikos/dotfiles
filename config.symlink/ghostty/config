@@ -4,4 +4,3 @@ theme = tokyonight
 cursor-style = block
 cursor-color = green
 cursor-style-blink = true
-shell-integration-features = no-cursor
