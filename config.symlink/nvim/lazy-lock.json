@@ -33,7 +33,6 @@
   "vim-dispatch": { "branch": "master", "commit": "a2ff28abdb2d89725192db5b8562977d392a4d3f" },
   "vim-endwise": { "branch": "master", "commit": "5ec72eef1a07fb32af9be5402144678f68cb1a7a" },
   "vim-eunuch": { "branch": "master", "commit": "c61533c9868ce78bb7fcbe06b308d7fa7f19e447" },
-  "vim-flagship": { "branch": "master", "commit": "56782f897db49b832a63669ca5398a1923da1371" },
   "vim-fugitive": { "branch": "master", "commit": "fcb4db52e7f65b95705aa58f0f2df1312c1f2df2" },
   "vim-gnupg": { "branch": "main", "commit": "f9b608f29003dfde6450931dc0f495a912973a88" },
   "vim-gutentags": { "branch": "master", "commit": "aa47c5e29c37c52176c44e61c780032dfacef3dd" },

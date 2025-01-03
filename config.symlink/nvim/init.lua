@@ -342,7 +342,6 @@ require('lazy').setup({
   'tpope/vim-bundler',
   'tpope/vim-endwise',
   'tpope/vim-eunuch',
-  'tpope/vim-flagship',
   'tpope/vim-fugitive',
   'tpope/vim-rails',
   'tpope/vim-rake',
@@ -1060,6 +1059,9 @@ require('lazy').setup({
       local statusline = require 'mini.statusline'
       -- set use_icons to true if you have a Nerd Font
       statusline.setup { use_icons = vim.g.have_nerd_font }
+
+      local tabline = require 'mini.tabline'
+      tabline.setup { use_icons = vim.g.have_nerd_font }
 
       -- You can configure sections in the statusline by overriding their
       -- default behavior. For example, here we set the section for
