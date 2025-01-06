@@ -73,6 +73,9 @@ vim.opt.tags:append '.git/tags'
 -- Save on any buffer/window switch or exit
 vim.opt.autowriteall = true
 
+-- deactivate mouse support
+vim.opt.mouse = ''
+
 -- [[ Global Keymaps ]]
 
 -- Keybinds to make split navigation easier.
