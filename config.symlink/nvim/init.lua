@@ -186,6 +186,16 @@ vim.keymap.set('n', '<leader>rr', show_routes, { silent = true })
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
+-- syntax highlighting for files that are in fact ruby
+vim.api.nvim_create_autocmd({'BufRead', 'BufNewFile'}, {
+  pattern = { 'Vagrantfile', 'Rakefile', 'Guardfile', 'Cheffile', 'Brewfile' },
+  group = vim.api.nvim_create_augroup('reallyruby', { clear = true }),
+  callback = function()
+    vim.bo.filetype = 'ruby'
+    -- vim.opt_local.iskeyword:append('!,?')
+  end
+})
+
 -- open help in a vertical split
 vim.api.nvim_create_augroup('help', { clear = true })
 
