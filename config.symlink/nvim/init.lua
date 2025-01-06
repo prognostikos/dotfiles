@@ -186,6 +186,24 @@ vim.keymap.set('n', '<leader>rr', show_routes, { silent = true })
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
+-- put results of :grep in quickfix window
+vim.api.nvim_create_autocmd('QuickFixCmdPost', {
+  pattern = {'grep', 'vimgrep'},
+  group = vim.api.nvim_create_augroup('qfgrep', { clear = true }),
+  callback = function()
+    vim.cmd.cwindow()
+  end
+})
+
+-- use my grepprg setup
+vim.api.nvim_create_autocmd('VimEnter', {
+  group = vim.api.nvim_create_augroup('fixrg', { clear = true }),
+  callback = function()
+    vim.opt.grepprg = 'ag --smart-case --nogroup --nocolor'
+    vim.opt.grepformat = '%f:%l:%m,%f:%l%m,%f  %l%m'
+  end
+})
+
 -- syntax highlighting for files that are in fact ruby
 vim.api.nvim_create_autocmd({'BufRead', 'BufNewFile'}, {
   pattern = { 'Vagrantfile', 'Rakefile', 'Guardfile', 'Cheffile', 'Brewfile' },
