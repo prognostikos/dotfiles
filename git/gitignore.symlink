@@ -14,3 +14,4 @@ zeus.json
 .kube/config
 tags.lock
 .aledisable
+.ignore
