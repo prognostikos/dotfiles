@@ -784,6 +784,8 @@ require('lazy').setup({
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
           map('K', vim.lsp.buf.hover, '[K] Hover/Diagnostics')
+
+          map('<leader>lf', vim.lsp.buf.format, 'Format Buffer')
           -- The following code creates a keymap to toggle inlay hints in your
           -- code, if the language server you are using supports them
           --
