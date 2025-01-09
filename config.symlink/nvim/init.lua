@@ -388,17 +388,9 @@ require('lazy').setup({
     config = function()
       vim.g.user_emmet_mode = 'i'
 
-      local emmet_group = vim.api.nvim_create_augroup('emmet', { clear = true })
-
       vim.api.nvim_create_autocmd('FileType', {
         pattern = { 'html', 'css', 'scss', 'eruby', 'html.mustache' },
-        group = emmet_group,
-        command = 'EmmetInstall'
-      })
-
-      vim.api.nvim_create_autocmd('FileType', {
-        pattern = { 'html', 'css', 'scss', 'eruby', 'html.mustache' },
-        group = emmet_group,
+        group = vim.api.nvim_create_augroup('emmet', { clear = true }),
         callback = function()
           vim.keymap.set('i', '<C-e>', '<Cmd>call emmet#expandAbbr(3,"")<CR>',
           { buffer = true, silent = true })
