@@ -111,6 +111,9 @@ vim.keymap.set('c', '%%', "<C-R>=expand('%:h').'/'<cr>", { remap = false })
 vim.keymap.set('n', '<leader>de', ':edit %%<CR>')
 vim.keymap.set('n', '<leader>dv', ':vsplit %%<cr>')
 
+-- make it easier to tweak
+vim.keymap.set('n', '<leader>ev', ':vsplit $MYVIMRC<cr>')
+
 -- cleanup the current buffer
 local function cleanup()
   -- Handle SQL files with sqlfmt if available
