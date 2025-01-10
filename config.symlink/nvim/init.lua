@@ -76,6 +76,9 @@ vim.opt.autowriteall = true
 -- deactivate mouse support
 vim.opt.mouse = ''
 
+-- configure completions
+vim.opt.completeopt = 'menuone,preview,longest'
+
 -- [[ Global Keymaps ]]
 
 -- Keybinds to make split navigation easier.
