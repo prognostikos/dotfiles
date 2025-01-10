@@ -117,6 +117,13 @@ vim.keymap.set('n', '<leader>dv', ':vsplit %%<cr>')
 -- make it easier to tweak
 vim.keymap.set('n', '<leader>ev', ':vsplit $MYVIMRC<cr>')
 
+-- move by display lines
+vim.keymap.set('n', 'k', 'gk', { remap = false })
+vim.keymap.set('n', 'j', 'gj', { remap = false })
+
+-- delete all buffers
+vim.keymap.set('n', '<leader>dd', ':%bdelete<cr>')
+
 -- cleanup the current buffer
 local function cleanup()
   -- Handle SQL files with sqlfmt if available
