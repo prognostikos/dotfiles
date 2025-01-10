@@ -209,7 +209,7 @@ v() {
   if [[ -z $@ ]]; then
     fe
   else
-    vi "$@"
+    $EDITOR "$@"
   fi
 }
 
