@@ -390,12 +390,22 @@ require('lazy').setup({
   'tpope/vim-endwise',
   'tpope/vim-eunuch',
   'tpope/vim-fugitive',
-  'tpope/vim-rails',
   'tpope/vim-rake',
   'tpope/vim-rsi',
   'tpope/vim-sleuth',
   'tpope/vim-surround',
   'tpope/vim-vinegar',
+
+  {
+    'tpope/vim-rails',
+    config = function()
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = 'eruby.yaml',
+        group = vim.api.nvim_create_augroup('rails', { clear = true }),
+        command = 'set filetype=yaml'
+      })
+    end
+  },
 
   {
     'mattn/emmet-vim',
