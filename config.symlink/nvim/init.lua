@@ -320,7 +320,8 @@ vim.api.nvim_create_autocmd('WinLeave', {
 })
 
 -- restore last cursor position
-vim.api.nvim_create_autocmd('BufReadPost', {
+vim.api.nvim_create_autocmd({'BufWinEnter','BufReadPost'}, {
+  group = vim.api.nvim_create_augroup('lastmark', { clear = true }),
   callback = function()
     local filetype = vim.bo.filetype
     if filetype == 'gitcommit' then return end
