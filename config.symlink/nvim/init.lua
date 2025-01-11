@@ -323,9 +323,6 @@ vim.api.nvim_create_autocmd('WinLeave', {
 vim.api.nvim_create_autocmd({'BufWinEnter','BufReadPost'}, {
   group = vim.api.nvim_create_augroup('lastmark', { clear = true }),
   callback = function()
-    -- if vim.bo.filetype == 'gitcommit' then
-    --   return
-    -- end
     local bufname = vim.api.nvim_buf_get_name(0)
     if bufname:match("COMMIT_EDITMSG$") or bufname:match("MERGE_MSG$") then
       return
