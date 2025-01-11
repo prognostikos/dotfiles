@@ -323,8 +323,7 @@ vim.api.nvim_create_autocmd('WinLeave', {
 vim.api.nvim_create_autocmd({'BufWinEnter','BufReadPost'}, {
   group = vim.api.nvim_create_augroup('lastmark', { clear = true }),
   callback = function()
-    local filetype = vim.bo.filetype
-    if filetype == 'gitcommit' then return end
+    if vim.bo.filetype == 'gitcommit' then return end
 
     local mark = vim.api.nvim_buf_get_mark(0, '"')
     local lcount = vim.api.nvim_buf_line_count(0)
