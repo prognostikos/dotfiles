@@ -179,6 +179,7 @@ local function show_routes()
 
   -- Set buffer options
   vim.bo.buftype = 'nofile'
+  vim.opt_local.wrap = false
 
   -- Clear buffer content
   vim.cmd('normal! gg"_dG')
