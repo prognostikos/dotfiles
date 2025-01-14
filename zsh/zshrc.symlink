@@ -1,6 +1,11 @@
 ### ENV
 
-export EDITOR=vim
+if command -v nvim > /dev/null; then
+  export EDITOR=nvim
+else
+  export EDITOR=vim
+fi
+
 export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export CLICOLOR=true
