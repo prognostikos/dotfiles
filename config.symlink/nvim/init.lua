@@ -197,6 +197,11 @@ end
 
 vim.keymap.set('n', '<leader>rr', show_routes, { silent = true })
 
+vim.diagnostic.config({
+  virtual_text = false,
+  underline = false
+})
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -398,6 +403,27 @@ require('lazy').setup({
   'tpope/vim-sleuth',
   'tpope/vim-surround',
   'tpope/vim-vinegar',
+
+  {
+    "mfussenegger/nvim-lint",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      require("lint").linters_by_ft = {
+        javascript = { "standardjs" },
+        javascriptreact = { "standardjs" },
+        sh = { "shellcheck" },
+        bash = { "shellcheck" },
+        zsh = { "shellcheck" }
+      }
+
+      -- Trigger lint on multiple events
+      vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
+        callback = function()
+          require("lint").try_lint()
+        end,
+      })
+    end
+  },
 
   {
     'tpope/vim-rails',
