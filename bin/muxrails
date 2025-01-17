@@ -16,6 +16,8 @@ fi
 tmux rename-window editor
 tmux split-window -d -b -l 10
 
+tmux set-hook -t :0.0 -g window-resized 'resize-pane -t 0.0 -y 10'
+
 tmux send-keys -t editor "$EDITOR" Enter
 
 tmux new-window -d -n console
