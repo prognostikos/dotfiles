@@ -409,6 +409,7 @@ require('lazy').setup({
     event = { "BufReadPre", "BufNewFile" },
     config = function()
       require("lint").linters_by_ft = {
+        ruby = { "standardrb" },
         javascript = { "standardjs" },
         javascriptreact = { "standardjs" },
         sh = { "shellcheck" },
@@ -864,14 +865,7 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        ruby_lsp = {
-          init_options = {
-            formatter = 'standard',
-            linters = {
-              'standard'
-            }
-          }
-        },
+        ruby_lsp = {},
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
