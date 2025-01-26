@@ -121,3 +121,7 @@ export GPG_TTY=$(tty)
 if [ -f $HOME/.cacert.pem ]; then
   export CURL_CA_BUNDLE=$HOME/.cacert.pem
 fi
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+fi
