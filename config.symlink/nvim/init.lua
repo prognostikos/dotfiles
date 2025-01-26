@@ -399,7 +399,6 @@ require('lazy').setup({
   'tpope/vim-eunuch',
   'tpope/vim-fugitive',
   'tpope/vim-rake',
-  'tpope/vim-rsi',
   'tpope/vim-sleuth',
   'tpope/vim-surround',
   'tpope/vim-vinegar',
@@ -1136,6 +1135,8 @@ require('lazy').setup({
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
+
+  'tpope/vim-rsi',
 
 }, {
     ui = {
