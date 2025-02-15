@@ -77,8 +77,7 @@ vim.opt.autowriteall = true
 vim.opt.mouse = ''
 
 -- configure completions
-vim.opt.completeopt = 'menuone,preview,longest'
-
+vim.opt.completeopt = 'menuone,popup,longest'
 -- [[ Global Keymaps ]]
 
 -- Keybinds to make split navigation easier.
