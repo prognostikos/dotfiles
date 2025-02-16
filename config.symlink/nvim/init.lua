@@ -490,7 +490,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>rT', '<cmd>TestFile<cr>', {
         silent = true,
       })
-      vim.keymap.set('n',  '<leader>rt', '<cmd>TestFile<cr>', {
+      vim.keymap.set('n',  '<leader>rt', '<cmd>TestNearest<cr>', {
         silent = true,
       })
     end
