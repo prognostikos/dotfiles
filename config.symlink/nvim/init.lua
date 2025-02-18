@@ -358,6 +358,16 @@ vim.api.nvim_create_autocmd('VimEnter', {
   end
 })
 
+-- highlight curly templates correctly
+vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
+  group = vim.api.nvim_create_augroup('curly', { clear = true }),
+  pattern = '*.curly',
+  callback = function()
+    vim.bo.filetype = 'html.mustache'
+    vim.bo.syntax = 'mustache'
+  end,
+})
+
 -- Diag for viewing Diagnostics
 vim.api.nvim_create_user_command('Diag', function(opts)
   local line = opts.args and tonumber(opts.args) or vim.fn.line('.')
