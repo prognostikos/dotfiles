@@ -368,6 +368,16 @@ vim.api.nvim_create_autocmd({ 'BufNewFile', 'BufRead' }, {
   end,
 })
 
+-- change ruby defaults
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  group = vim.api.nvim_create_augroup('rubysettings', { clear = true }),
+  pattern = { "ruby", "eruby" },
+  callback = function()
+    vim.g.ruby_indent_assignment_style = 'variable'
+    vim.g.ruby_indent_hanging_elements = 0
+  end,
+})
+
 -- Diag for viewing Diagnostics
 vim.api.nvim_create_user_command('Diag', function(opts)
   local line = opts.args and tonumber(opts.args) or vim.fn.line('.')
