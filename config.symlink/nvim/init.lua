@@ -551,6 +551,14 @@ require('lazy').setup({
     end
   },
 
+  {
+    "ggandor/leap.nvim",
+    enabled = true,
+    config = function()
+      require("leap").add_default_mappings(true)
+    end
+  },
+
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
