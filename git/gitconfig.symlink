@@ -36,8 +36,9 @@
 	summary = true
 	; ff = only
 [rebase]
-	autosquash = true
-	autostash = true
+	autoSquash = true
+	autoStash = true
+	updateRefs = true
 [gc]
 	auto = 1
 	reflogexpire = never
@@ -56,6 +57,9 @@
 	algorithm = histogram
 	colorWords = true
 	wordRegex = \\w+|.
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
 [difftool]
 	prompt = false
 [heroku]
@@ -63,13 +67,14 @@
 	templatedir = ~/.git-template
 	defaultBranch = main
 [push]
-	default = upstream
+	default = simple
 	followTags = true
 	autoSetupRemote = true
 [status]
 	showUntrackedFiles = all
 [rerere]
 	enabled = true
+	autoupdate = true
 [credential]
 	helper = osxkeychain
 [ghi]
@@ -83,5 +88,16 @@
 	fsckobjects = true
 [fetch]
 	fsckobjects = false
+	prune = true
+	pruneTags = true
+	all = true
 [submodule]
 	recurse = true
+[column]
+	ui = auto
+[tag]
+	sort = version:refname
+[help]
+	autocorrect = prompt
+[pull]
+	rebase = true
