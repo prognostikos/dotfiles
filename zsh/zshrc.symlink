@@ -125,3 +125,5 @@ fi
 if [[ "$OSTYPE" == "darwin"* ]]; then
   export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 fi
+
+export HOMEBREW_NO_ENV_HINTS=1
