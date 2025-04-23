@@ -10,3 +10,4 @@ config.symlink/github-copilot/hosts.json
 config.symlink/htop/htoprc
 config.symlink/op
 config.symlink/configstore
+config.symlink/cb/api.crunchybridge.com
