@@ -11,3 +11,4 @@ config.symlink/htop/htoprc
 config.symlink/op
 config.symlink/configstore
 config.symlink/cb/api.crunchybridge.com
+config.symlink/cb/certs
