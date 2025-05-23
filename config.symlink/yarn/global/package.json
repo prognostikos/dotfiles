@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "@anthropic-ai/claude-code": "^1.0.2",
+    "@devcontainers/cli": "^0.76.0",
     "node-gyp": "^9.0.0",
     "sass": "^1.85.1",
     "typescript": "^5.4.5",
