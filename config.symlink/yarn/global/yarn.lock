@@ -3,9 +3,9 @@
 
 
 "@anthropic-ai/claude-code@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@anthropic-ai/claude-code/-/claude-code-1.0.2.tgz#8708037720c7ffbe96c4a4b3eec458b57891a7bb"
-  integrity sha512-6p7RMXEcVfymsJ7v0GyMfA3gcD2AbFVSb9b1Py4tbxM2ensjyaSx3wVQW2QiFk+9mhoRkYc0ETVnJ1x/G0LW7g==
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@anthropic-ai/claude-code/-/claude-code-1.0.3.tgz#8bf41d5c338f66737c25c48df500088e5343c1d2"
+  integrity sha512-a4aBhcXGG7k4YtyF2aYVKt08h48BG+F12RA/G3K1vb6unl9CAvWDP/A7xudtCOzxFKxLwxctrn74pHEdpmHSPw==
   optionalDependencies:
     "@img/sharp-darwin-arm64" "^0.33.5"
     "@img/sharp-linux-arm" "^0.33.5"
