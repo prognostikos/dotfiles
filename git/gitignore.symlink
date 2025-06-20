@@ -15,3 +15,4 @@ zeus.json
 tags.lock
 .aledisable
 .ignore
+**/.claude/settings.local.json
