@@ -127,3 +127,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
 fi
 
 export HOMEBREW_NO_ENV_HINTS=1
+
+# deduplicate path entries
+typeset -U path
