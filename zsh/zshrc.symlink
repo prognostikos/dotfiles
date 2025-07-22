@@ -80,19 +80,27 @@ stty -ixon
 
 # Turn on completions (`brew install zsh-completions` for even more)
 autoload -U compinit
-compinit
-zmodload -i zsh/complist
 
-# Speed up path completion
-zstyle ':completion:*' accept-exact '*(N)'
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' rehash true
+# Only rebuild completions once a day
+if [[ -z $(find ~/.zcompdump -mtime 0 2>/dev/null) ]]; then
+  compinit
+  touch ~/.zcompdump
+else
+  compinit -C
+fi
+
+zmodload -i zsh/complist
 
 # Ignore some files when completing
 fignore=(.o .class .ctxt .obj)
 
 # pull in all custom completion.sh files
 for completion_file ($ZSH/**/completion.sh) source $completion_file
+
+# Speed up path completion
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' rehash true
 
 # run this after reattaching to a detached tmux session to update the ssh-agent forwarding config
 fixssh() {
