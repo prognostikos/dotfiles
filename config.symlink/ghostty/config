@@ -1,6 +1,6 @@
 font-family = SauceCodePro NFM
 font-size = 14
-theme = tokyonight_night
+theme = TokyoNight Night
 cursor-style = block
 cursor-color = green
 cursor-style-blink = true
