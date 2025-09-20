@@ -918,6 +918,12 @@ require('lazy').setup({
             },
           },
         },
+
+        -- vscode-langservers-extracted
+        html = {},
+        cssls = {},
+        jsonls = {},
+        eslint = {}
       }
 
       -- Setup each LSP server
