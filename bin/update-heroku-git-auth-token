@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# Work around annoying Heroku CLI issue where credentials for git.heroku.com
+# are not updated when logging into the CLI
+
+set -e
+set -u
+set -o pipefail
+
+security add-internet-password \
+  -a heroku \
+  -s git.heroku.com \
+  -w "$(heroku authorizations:create --short)" \
+  -r htps \
+  -P 443 \
+  -T /Library/Developer/CommandLineTools/usr/bin/git \
+  -T /Library/Developer/CommandLineTools/usr/libexec/git-core/git-credential-osxkeychain \
+  -T /usr/bin/git
