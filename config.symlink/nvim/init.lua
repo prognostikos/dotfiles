@@ -957,7 +957,7 @@ require('lazy').setup({
       }
 
       -- Setup each LSP server
-      local lspconfig = require('lspconfig')
+      local server_names = {}
       for server_name, server_config in pairs(servers) do
         -- Merge capabilities with server-specific config
         server_config.capabilities = vim.tbl_deep_extend(
@@ -967,9 +967,13 @@ require('lazy').setup({
           server_config.capabilities or {}
         )
 
-        -- Initialize the LSP
-        lspconfig[server_name].setup(server_config)
+        -- Configure the LSP (configs are auto-discovered from lsp/ directory)
+        vim.lsp.config(server_name, server_config)
+        table.insert(server_names, server_name)
       end
+
+      -- Enable all configured LSP servers
+      vim.lsp.enable(server_names)
     end,
   },
 
