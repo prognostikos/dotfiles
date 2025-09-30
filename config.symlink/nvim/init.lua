@@ -24,7 +24,8 @@ vim.opt.breakindent = true
 -- Save undo history
 vim.opt.undofile = true
 
--- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
+-- Case-insensitive searching UNLESS \C or one or more capital letters in the
+-- search term
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.incsearch = true
@@ -98,6 +99,7 @@ vim.opt.mouse = ''
 
 -- configure completions
 vim.opt.completeopt = 'menuone,popup,longest'
+
 -- [[ Global Keymaps ]]
 
 -- Keybinds to make split navigation easier.
