@@ -59,15 +59,21 @@ vim.opt.cursorline = true
 -- center the cursor
 vim.opt.scrolloff = 999
 
+-- Allow backspace over line breaks, indent, and insert-start
 vim.opt.backspace = 'start,indent,eol'
 
+-- Minimum width for current window
 vim.opt.winwidth = 81
+-- Keep windows equally sized when splitting
 vim.opt.equalalways = true
 
+-- Show confirmation dialog for unsaved changes
 vim.opt.confirm = true
 
+-- Jump to existing window if buffer is already open
 vim.opt.switchbuf = 'useopen'
 
+-- Look for tags file in .git directory as well
 vim.opt.tags:append '.git/tags'
 
 -- tab/indentation settings
