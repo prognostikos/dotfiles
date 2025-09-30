@@ -40,6 +40,12 @@ vim.opt.updatetime = 250
 -- Displays which-key popup sooner
 vim.opt.timeoutlen = 300
 
+-- Auto-reload files when changed externally
+vim.opt.autoread = true
+
+-- autowrap long lines
+vim.opt.textwidth = 79
+
 -- Configure how new splits should be opened
 vim.opt.splitright = true
 vim.opt.splitbelow = true
@@ -397,6 +403,14 @@ vim.api.nvim_create_user_command('Diag', function(opts)
   local line = opts.args and tonumber(opts.args) or vim.fn.line('.')
   vim.diagnostic.open_float({pos = {line - 1, 0}})
 end, { nargs = '?' })
+
+-- Poll for external file changes every 500ms.
+-- Pulls in changes to the file by external programs without focusing on the
+-- tmux pane or nvim buffer.
+local timer = vim.loop.new_timer()
+timer:start(0, 500, vim.schedule_wrap(function()
+  vim.cmd('checktime')
+end))
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
