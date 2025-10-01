@@ -477,6 +477,9 @@ require('lazy').setup({
         zsh = { "shellcheck" }
       }
 
+      -- Configure standardrb to ignore exit code 1 (which means violations found)
+      require("lint").linters.standardrb.ignore_exitcode = true
+
       -- Trigger lint on multiple events
       vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
         callback = function()
@@ -925,7 +928,11 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        ruby_lsp = {},
+        ruby_lsp = {
+          init_options = {
+            formatter = "standard",
+          },
+        },
         -- clangd = {},
         -- gopls = {},
         -- pyright = {},
