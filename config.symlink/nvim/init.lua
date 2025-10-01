@@ -401,10 +401,17 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 })
 
 -- Diag for viewing Diagnostics
-vim.api.nvim_create_user_command('Diag', function(opts)
-  local line = opts.args and tonumber(opts.args) or vim.fn.line('.')
+local function show_diagnostics(line)
+  line = line or vim.fn.line('.')
   vim.diagnostic.open_float({pos = {line - 1, 0}})
+end
+
+vim.api.nvim_create_user_command('Diag', function(opts)
+  local line = opts.args and tonumber(opts.args) or nil
+  show_diagnostics(line)
 end, { nargs = '?' })
+
+vim.keymap.set('n', '<leader>h', show_diagnostics, { desc = 'Show line diagnostics' })
 
 -- Poll for external file changes every 500ms.
 -- Pulls in changes to the file by external programs without focusing on the
