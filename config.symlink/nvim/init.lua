@@ -411,7 +411,7 @@ vim.api.nvim_create_user_command('Diag', function(opts)
   show_diagnostics(line)
 end, { nargs = '?' })
 
-vim.keymap.set('n', '<leader>h', show_diagnostics, { desc = 'Show line diagnostics' })
+vim.keymap.set('n', '<leader>d', show_diagnostics, { desc = 'Show line diagnostics' })
 
 -- Poll for external file changes every 500ms.
 -- Pulls in changes to the file by external programs without focusing on the
