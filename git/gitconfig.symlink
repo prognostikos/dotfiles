@@ -29,7 +29,7 @@
 [merge]
 	conflictstyle = zdiff3
 	tool = nvimdiff
-	; ff = only
+	ff = only
 [rebase]
 	autoSquash = true
 	autoStash = true
