@@ -61,7 +61,6 @@
 	templatedir = ~/.git-template
 	defaultBranch = main
 [push]
-	default = simple
 	followTags = true
 	autoSetupRemote = true
 [status]
