@@ -28,8 +28,7 @@
 	ui = auto
 [merge]
 	conflictstyle = zdiff3
-	tool = vimdiff
-	summary = true
+	tool = nvimdiff
 	; ff = only
 [rebase]
 	autoSquash = true
@@ -48,7 +47,7 @@
 [github]
 	user = prognostikos
 [diff]
-	tool = vimdiff
+	tool = nvimdiff
 	noprefix = true
 	algorithm = histogram
 	colorWords = true
