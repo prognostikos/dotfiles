@@ -25,10 +25,6 @@
 	stash-all = stash save --include-untracked
 # some goodies from http://yanpritzker.com/git-book/
 [color]
-	diff = auto
-	status = auto
-	branch = auto
-	interactive = auto
 	ui = auto
 [merge]
 	conflictstyle = zdiff3
