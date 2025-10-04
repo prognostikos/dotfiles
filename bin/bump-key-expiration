@@ -1,0 +1,39 @@
+#!/bin/bash
+
+set -euo pipefail
+
+usage() {
+  echo "Usage: $(basename "$0") KEY_ID [EXPIRATION]"
+  echo "  KEY_ID: GPG key ID or fingerprint"
+  echo "  EXPIRATION: Optional. Default: 1y (e.g., 2y, 6m, 0 for no expiration)"
+  exit 1
+}
+
+if [[ $# -lt 1 ]]; then
+  usage
+fi
+
+key="$1"
+expires="${2:-1y}"
+
+gpg --quick-set-expire "$key" "$expires"
+# also update subkeys
+gpg --quick-set-expire "$key" "$expires" '*'
+
+gpg --keyserver keys.openpgp.org --send-keys "$key"
+gpg --keyserver keyserver.ubuntu.com --send-keys "$key"
+
+if command -v pbcopy &> /dev/null; then
+  gpg --armor --export "$key" | pbcopy
+  echo "✓ Public key copied to clipboard"
+else
+  echo "Clipboard tool not found. Export manually with:"
+  echo "  gpg --armor --export $key"
+fi
+
+echo ""
+echo "Next steps:"
+echo "1. Go to https://github.com/settings/keys"
+echo "2. Delete the old key"
+echo "3. Add the new key"
+
