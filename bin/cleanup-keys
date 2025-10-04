@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -euo pipefail
+
+for key in $(gpg --list-keys --keyid-format LONG | grep ^pub | awk '{print $2}' |
+  cut -d'/' -f2); do
+  gpg --list-keys "$key"
+  read -p "Delete this key? [y/N] " -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    gpg --delete-key "$key"
+  fi
+done
