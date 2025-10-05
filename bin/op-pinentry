@@ -1,0 +1,31 @@
+#!/bin/bash
+#
+# From https://gist.githubusercontent.com/mrgrain/9c3519952d9af811bd7bf50bfcfaa16f
+
+set -euo pipefail
+
+COMMAND="op read $OP_GPG_PIN"
+
+echo "OK"
+while read -r cmd rest; do
+  echo "cmd=$cmd rest=$rest" >&2
+  echo "cmd=$cmd rest=$rest" >> "$LOG"
+  case "$cmd" in
+    \#*)
+      echo "OK"
+      ;;
+    GETPIN)
+      PASSPHRASE=${PASSPHRASE:-$($COMMAND)}
+      echo "D ${PASSPHRASE}"
+      echo "OK"
+      ;;
+    BYE)
+      echo "OK"
+      exit 0
+      ;;
+    *)
+      echo "OK"
+      ;;
+  esac
+done
+
