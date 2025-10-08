@@ -1,0 +1,25 @@
+#!/bin/bash
+# Retrieve password from macOS Keychain for email accounts
+
+set -euo pipefail
+
+usage() {
+  echo "Usage: $(basename "$0") <account> <server>" >&2
+  exit 1
+}
+
+if [[ $# -lt 2 ]]; then
+  usage
+fi
+
+account="$1"
+server="$2"
+
+# Fetch password from keychain
+# Output goes to stderr, so redirect and parse
+# Use printf to avoid trailing newline
+password=$(security find-internet-password -g -a "$account" -s "$server" 2>&1 | \
+  grep '^password: ' | \
+  sed 's/^password: "\(.*\)"$/\1/')
+
+printf '%s' "$password"

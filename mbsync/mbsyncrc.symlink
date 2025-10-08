@@ -1,0 +1,117 @@
+IMAPAccount personal
+Host imap.gmail.com
+User mr@prognostikos.com
+PassCmd "~/.dotfiles/bin/get-keychain-pass mr@prognostikos.com imap.gmail.com"
+AuthMechs LOGIN
+TLSType IMAPS
+CertificateFile /opt/homebrew/etc/ca-certificates/cert.pem
+
+IMAPStore personal-remote
+Account personal
+
+MaildirStore personal-local
+Path ~/.mail/personal/
+Inbox ~/.mail/personal/INBOX
+SubFolders Verbatim
+
+# Main channel - sync INBOX and regular folders, excluding Gmail special folders
+Channel personal-main
+Far :personal-remote:
+Near :personal-local:
+Patterns INBOX * ![Gmail]*
+Create Both
+Expunge Both
+SyncState *
+
+# Special Gmail folders with custom names
+Channel personal-archive
+Far :personal-remote:"[Gmail]/All Mail"
+Near :personal-local:archive
+Create Both
+Expunge Both
+
+Channel personal-sent
+Far :personal-remote:"[Gmail]/Sent Mail"
+Near :personal-local:sent
+Create Both
+Expunge Both
+
+Channel personal-drafts
+Far :personal-remote:"[Gmail]/Drafts"
+Near :personal-local:drafts
+Create Both
+Expunge Both
+
+Channel personal-starred
+Far :personal-remote:"[Gmail]/Starred"
+Near :personal-local:starred
+Create Both
+Expunge Both
+
+# Group all personal channels
+Group personal
+Channel personal-main
+Channel personal-archive
+Channel personal-sent
+Channel personal-drafts
+Channel personal-starred
+
+##############################
+
+IMAPAccount bn
+Host imap.gmail.com
+User mr@betternow.org
+PassCmd "~/.dotfiles/bin/get-keychain-pass mr@betternow.org imap.gmail.com"
+AuthMechs LOGIN
+TLSType IMAPS
+CertificateFile /opt/homebrew/etc/ca-certificates/cert.pem
+
+IMAPStore bn-remote
+Account bn
+
+MaildirStore bn-local
+Path ~/.mail/bn/
+Inbox ~/.mail/bn/INBOX
+SubFolders Verbatim
+
+# Main channel - sync INBOX and regular folders, excluding Gmail special folders
+Channel bn-main
+Far :bn-remote:
+Near :bn-local:
+Patterns INBOX * ![Gmail]*
+Create Both
+Expunge Both
+SyncState *
+
+# Special Gmail folders with custom names
+Channel bn-archive
+Far :bn-remote:"[Gmail]/All Mail"
+Near :bn-local:archive
+Create Both
+Expunge Both
+
+Channel bn-sent
+Far :bn-remote:"[Gmail]/Sent Mail"
+Near :bn-local:sent
+Create Both
+Expunge Both
+
+Channel bn-drafts
+Far :bn-remote:"[Gmail]/Drafts"
+Near :bn-local:drafts
+Create Both
+Expunge Both
+
+Channel bn-starred
+Far :bn-remote:"[Gmail]/Starred"
+Near :bn-local:starred
+Create Both
+Expunge Both
+
+# Group all bn channels
+Group bn
+Channel bn-main
+Channel bn-archive
+Channel bn-sent
+Channel bn-drafts
+Channel bn-starred
