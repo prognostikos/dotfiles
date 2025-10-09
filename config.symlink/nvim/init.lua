@@ -365,6 +365,7 @@ vim.api.nvim_create_autocmd({'BufWinEnter','BufReadPost'}, {
 
 -- make it easier to edit translation files
 vim.api.nvim_create_autocmd('VimEnter', {
+  group = vim.api.nvim_create_augroup('translation_keys', { clear = true }),
   callback = function()
     local file_path = 'config/locales/pending-upload.yml'
 
@@ -491,6 +492,7 @@ require('lazy').setup({
 
       -- Trigger lint on multiple events
       vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
+        group = vim.api.nvim_create_augroup('nvim_lint', { clear = true }),
         callback = function()
           require("lint").try_lint()
         end,
