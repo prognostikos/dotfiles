@@ -138,6 +138,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 fi
 
+if [[ -f ~/.config/op/plugins.sh ]]; then
+  source ~/.config/op/plugins.sh
+fi
+
 export HOMEBREW_NO_ENV_HINTS=1
 
 # deduplicate path entries
