@@ -129,7 +129,7 @@ bind compose p postpone-message
 bind compose P pgp-menu
 
 # Colors ----------------------------------------------
-source ~/.mutt/boring.muttrc
+source ~/.mutt/tokyonight-night.muttrc
 
 # PGP ----------------------------------------------
 set pgp_sign_as = 0xA42B3FC3

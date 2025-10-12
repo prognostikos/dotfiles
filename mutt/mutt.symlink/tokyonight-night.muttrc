@@ -1,0 +1,81 @@
+# TokyoNight Night color scheme for mutt/neomutt
+#
+# Based on the TokyoNight Night theme by Folke
+# https://github.com/folke/tokyonight.nvim
+#
+# This color scheme requires a terminal emulator that supports 256 colors.
+# You can enable it by calling mutt as "TERM=xterm-256color mutt" or by
+# adding "set term=xterm-256color" to your shell configuration.
+#
+# TokyoNight Night palette:
+# background:  #1a1b26
+# foreground:  #c0caf5
+# black:       #15161e
+# red:         #f7768e
+# green:       #9ece6a
+# yellow:      #e0af68
+# blue:        #7aa2f7
+# magenta:     #bb9af7
+# cyan:        #7dcfff
+# white:       #a9b1d6
+# bright_gray: #414868
+
+# general interface elements
+color normal     color153 color234  # foreground (#c0caf5) on background (#1a1b26)
+color error      color204 color233  # red (#f7768e) on darker background
+color markers    color179 color238  # yellow (#e0af68) on gray (wrapped line markers)
+color tilde      color117 color234  # cyan (#7dcfff) on background (empty lines)
+color status     color153 color236  # foreground on slightly lighter background (status bar)
+
+# index view (mail list)
+color indicator  color153 color237  # foreground on dark blue selection (#283457)
+color tree       color141 color234  # purple (#bb9af7) on background (thread tree)
+color index      color153 color234 ~A  # all messages
+color index      color111 color234 ~N  # new messages (blue #7aa2f7)
+color index      color146 color234 ~O  # old messages (muted)
+color index      color204 color234 ~F  # flagged messages (red #f7768e)
+color index      color204 color234 ~D  # deleted messages (red #f7768e)
+
+# message headers
+color hdrdefault color146 color234  # muted gray-blue on background
+color header     color111 color234 "^Subject"  # blue (#7aa2f7) for subject
+color header     color141 color234 "^From"     # purple (#bb9af7) for from
+color header     color117 color234 "^To"       # cyan (#7dcfff) for to
+color header     color179 color234 "^Date"     # yellow (#e0af68) for date
+
+# gpg/pgp signatures
+color body       color149 color234 "^gpg: Good signature.*"  # green (#9ece6a)
+color body       color204 color234 "^gpg: BAD signature.*"   # red (#f7768e)
+color body       color179 color234 "^gpg: Can't check signature.*"  # yellow (#e0af68)
+color body       color141 color234 "^-----BEGIN PGP SIGNED MESSAGE-----"  # purple
+color body       color141 color234 "^-----BEGIN PGP SIGNATURE-----"
+color body       color141 color234 "^-----END PGP SIGNED MESSAGE-----"
+color body       color141 color234 "^-----END PGP SIGNATURE-----"
+color body       color141 color234 "^Version: GnuPG.*"
+color body       color141 color234 "^Comment: .*"
+
+# url, email and web stuff
+color body       color117 color234 "(finger|ftp|http|https|news|telnet)://[^ >]*"
+color body       color117 color234 "<URL:[^ ]*>"
+color body       color117 color234 "www\\.[-.a-z0-9]+\\.[a-z][a-z][a-z]?([-_./~a-z0-9]+)?"
+color body       color117 color234 "mailto: *[^ ]+\(\\i?subject=[^ ]+\)?"
+color body       color117 color234 "[-a-z_0-9.%$]+@[-a-z_0-9.]+\\.[-a-z][-a-z]+"
+
+# misc body elements
+color attachment color179 color234  # yellow on background (attachments)
+color signature  color146 color234  # blue-gray on background
+
+# quote levels (cycling through blue, purple, cyan)
+color quoted     color111 color234  # blue (#7aa2f7)
+color quoted1    color141 color234  # purple (#bb9af7)
+color quoted2    color117 color234  # cyan (#7dcfff)
+color quoted3    color075 color234  # lighter blue
+color quoted4    color183 color234  # lighter purple
+color quoted5    color153 color234  # light blue-white
+color quoted6    color111 color234  # blue (repeat)
+color quoted7    color141 color234  # purple (repeat)
+color quoted8    color117 color234  # cyan (repeat)
+color quoted9    color075 color234  # lighter blue (repeat)
+
+# search highlighting
+color search     color234 color179  # dark background on yellow
