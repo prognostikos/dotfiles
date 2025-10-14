@@ -84,8 +84,6 @@
 	prune = true
 	pruneTags = true
 	all = true
-[submodule]
-	recurse = true
 [column]
 	ui = auto
 [tag]
