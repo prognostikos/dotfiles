@@ -4,7 +4,13 @@ export FZF_DEFAULT_COMMAND='ag -l -g ""'
 # To apply the command to CTRL-T as well
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-source <(fzf --zsh)
+if fzf --zsh > /dev/null 2>&1; then
+  source <(fzf --zsh)
+else
+  # should be downloaded from github by script/setup
+  source ~/.dotfiles/fzf/key-bindings.zsh
+  source ~/.dotfiles/fzf/commands.zsh
+fi
 
 # fe [FUZZY PATTERN] - Open the selected file with the default editor
 #   - Bypass fuzzy finder if there's only one match (--select-1)

@@ -23,3 +23,13 @@ do
 
   ln -svf "$source" "$dest"
 done
+
+if ! fzf --zsh > /dev/null 2>&1; then
+  fzf_version=$(fzf --version | cut -d " " -f 1)
+  url_prefix="https://raw.githubusercontent.com/junegunn/fzf/refs/tags/$fzf_version/shell/"
+
+  echo "Installing zsh files for fzf version $fzf_version"
+
+  curl -fsSL "$url_prefix/key-bindings.zsh" -o fzf/key-bindings.zsh
+  curl -fsSL "$url_prefix/commands.zsh" -o fzf/commands.zsh
+fi
