@@ -6,3 +6,5 @@ alias dcu=docker-cleanup
 alias dcui=docker-cleanupi
 alias dm="docker machine"
 alias dc="docker compose"
+
+alias devc="devcontainer --workspace-folder . "
