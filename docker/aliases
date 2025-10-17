@@ -8,3 +8,4 @@ alias dm="docker machine"
 alias dc="docker compose"
 
 alias devc="devcontainer --workspace-folder . "
+alias deve="devcontainer exec --workspace-folder . "
