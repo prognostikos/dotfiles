@@ -31,5 +31,5 @@ if ! fzf --zsh > /dev/null 2>&1; then
   echo "Installing zsh files for fzf version $fzf_version"
 
   curl -fsSL "$url_prefix/key-bindings.zsh" -o fzf/key-bindings.zsh
-  curl -fsSL "$url_prefix/commands.zsh" -o fzf/commands.zsh
+  curl -fsSL "$url_prefix/completion.zsh" -o fzf/completion.zsh
 fi

@@ -9,7 +9,7 @@ if fzf --zsh > /dev/null 2>&1; then
 else
   # should be downloaded from github by script/setup
   source ~/.dotfiles/fzf/key-bindings.zsh
-  source ~/.dotfiles/fzf/commands.zsh
+  source ~/.dotfiles/fzf/completion.zsh
 fi
 
 # fe [FUZZY PATTERN] - Open the selected file with the default editor
