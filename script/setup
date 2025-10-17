@@ -33,3 +33,8 @@ if ! fzf --zsh > /dev/null 2>&1; then
   curl -fsSL "$url_prefix/key-bindings.zsh" -o fzf/key-bindings.zsh
   curl -fsSL "$url_prefix/completion.zsh" -o fzf/completion.zsh
 fi
+
+if command -v nvim > /dev/null 2>&1; then
+  echo "Installing nvim plugins from lockfile"
+  nvim --headless "+Lazy! restore" +qa
+fi
