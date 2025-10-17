@@ -603,6 +603,7 @@ require('lazy').setup({
   {
     'lervag/wiki.vim',
     config = function()
+      vim.g.wiki_global_load = 0
       vim.g.wiki_root = '~/Documents/wiki'
     end
   },
