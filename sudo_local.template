@@ -1,0 +1,12 @@
+# sudo_local: local config file which survives system update and is included for sudo
+#
+# Enable TouchID for sudo, that also works with Tmux:
+#
+# First install pam_reattach if it's not already:
+#   `brew install pam-reattach`
+# Then copy this file to /etc/pam.d/sudo_local
+#
+# More info about pam_reattach: https://github.com/fabianishere/pam_reattach/blob/master/README.md
+#
+auth       optional       /opt/homebrew/lib/pam/pam_reattach.so
+auth       sufficient     pam_tid.so
