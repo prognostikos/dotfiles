@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -euo pipefail
+
+DEVCONTAINER_USER=${DEVCONTAINER_USER:-bndev}
+
+devcontainer up \
+  --workspace-folder . \
+  --remove-existing-container \
+  --dotfiles-repository https://github.com/prognostikos/dotfiles \
+  --dotfiles-install-command script/setup \
+  --dotfiles-target-path "/home/$DEVCONTAINER_USER/.dotfiles"
