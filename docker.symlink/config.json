@@ -1,0 +1,8 @@
+{
+	"auths": {
+		"357932486739.dkr.ecr.eu-west-1.amazonaws.com": {}
+	},
+	"credsStore": "osxkeychain",
+	"currentContext": "orbstack",
+	"detachKeys": "ctrl-q,ctrl-q"
+}
