@@ -15,26 +15,38 @@ export GIT_PS1_SHOWDIRTYSTATE=true
 export GIT_PS1_SHOWUNTRACKEDFILES=true
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
-export CDPATH=$HOME/c/bn:$HOME/c:$HOME/b:$HOME:d
+### Mac / homebrew specific settings
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  export CDPATH=$HOME/c/bn:$HOME/c:$HOME/b:$HOME:$HOME/d
 
-if command -v hdiutil > /dev/null; then
-  if [ ! -d /Volumes/secrets ]; then
-    if [ -f ~/Documents/secrets.sparseimage ]; then
-      hdiutil attach ~/Documents/secrets.sparseimage
+  if command -v hdiutil > /dev/null && [ ! -d /Volumes/secrets ] && [ -f ~/Documents/secrets.sparseimage ]; then
+    hdiutil attach ~/Documents/secrets.sparseimage
+  fi
+
+  if [ "$(uname -p)" = "arm" ]; then
+    BREW_PREFIX="/opt/homebrew"
+  else
+    BREW_PREFIX="/usr/local"
+  fi
+
+  if [ -d "$BREW_PREFIX" ]; then
+    export PATH="$BREW_PREFIX/bin:$BREW_PREFIX/sbin:$PATH"
+  fi
+
+  # the awscli completion seems to need explicit sourcing - fpath is not enough
+  if command -v aws > /dev/null ; then
+    if [ -f "$BREW_PREFIX/share/zsh/site-functions/_aws" ]; then
+      source "$BREW_PREFIX/share/zsh/site-functions/_aws"
     fi
   fi
-fi
 
-### PATH manipulation
+  export HOMEBREW_NO_ENV_HINTS=1
 
-if [ "$(uname -p)" = "arm" ]; then
-  BREW_PREFIX="/opt/homebrew"
-else
-  BREW_PREFIX="/usr/local"
-fi
+  # add homebrew's completions to fpath
+  fpath=("$BREW_PREFIX/share/zsh/site-functions" $fpath)
 
-if [ -d $BREW_PREFIX ]; then
-  export PATH="$BREW_PREFIX/bin:$BREW_PREFIX/sbin:$PATH"
+  # allow spring and others to work in newer macos
+  export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 fi
 
 if command -v rbenv > /dev/null; then
@@ -56,8 +68,8 @@ fi
 
 export PATH="$HOME/.dotfiles/bin:$PATH"
 
-# add homebrew's completions to fpath
-fpath=($BREW_PREFIX/share/zsh/site-functions $fpath)
+# deduplicate path entries
+typeset -U path
 
 # shortcut to this dotfiles path is $ZSH
 export ZSH=$HOME/.dotfiles
@@ -116,33 +128,20 @@ fixssh() {
   done
 }
 
-# the awscli completion seems to need explicit sourcing - fpath is not enough
-if command -v aws > /dev/null ; then
-  if [ -f $BREW_PREFIX/share/zsh/site-functions/_aws ]; then
-    source $BREW_PREFIX/share/zsh/site-functions/_aws
+if [ -f "$HOME/.cacert.pem" ]; then
+  export CURL_CA_BUNDLE="$HOME/.cacert.pem"
+fi
+
+### Skip GPG and 1Password in devcontainers
+if [ -z "$RUNNING_IN_DEVCONTAINER" ]; then
+  # use gpg-agent
+  if ! pgrep -x -u "${USER}" gpg-agent >/dev/null 2>&1; then
+    gpg-connect-agent /bye >/dev/null 2>&1
+  fi
+
+  export GPG_TTY=$(tty)
+
+  if [[ -f ~/.config/op/plugins.sh ]]; then
+    source ~/.config/op/plugins.sh
   fi
 fi
-
-# use gpg-agent
-if ! pgrep -x -u "${USER}" gpg-agent >/dev/null 2>&1; then
-  gpg-connect-agent /bye >/dev/null 2>&1
-fi
-
-export GPG_TTY=$(tty)
-
-if [ -f $HOME/.cacert.pem ]; then
-  export CURL_CA_BUNDLE=$HOME/.cacert.pem
-fi
-
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-fi
-
-if [[ -f ~/.config/op/plugins.sh ]]; then
-  source ~/.config/op/plugins.sh
-fi
-
-export HOMEBREW_NO_ENV_HINTS=1
-
-# deduplicate path entries
-typeset -U path
