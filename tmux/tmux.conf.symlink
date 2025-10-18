@@ -11,8 +11,11 @@ setw -g mode-keys vi
 
 # Setup 'v' to begin selection as in Vim
 bind-key -T copy-mode-vi v send -X begin-selection
-if-shell "uname | grep -q Darwin" \
-  "bind-key -T copy-mode-vi y send -X copy-pipe-and-cancel pbcopy \\; send -X clear-selection \\; display-message 'copied to system clipboard'"
+
+# see bin/pbcopy
+bind-key -T copy-mode-vi y send -X copy-pipe-and-cancel \
+  pbcopy \; \
+  display-message "copied to system clipboard"
 
 # vim-command-t -like shortcuts for new panes
 bind C-v split-window -h
