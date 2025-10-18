@@ -1,27 +1,27 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Universal clipboard copy script
 # Uses pbcopy on macOS if available, otherwise uses OSC 52 escape sequence
 
 copy_to_clipboard() {
-    if [ -x "/usr/bin/pbcopy" ]; then
-        # macOS pbcopy is available
-        /usr/bin/pbcopy
-    else
-        # Fall back to OSC 52 escape sequence
-        printf "\033]52;c;%s\007" "$(base64 | tr -d '\n')"
-    fi
+  if [ -x "/usr/bin/pbcopy" ]; then
+    # macos pbcopy is available
+    /usr/bin/pbcopy
+  else
+    # fall back to osc 52 escape sequence
+    printf "\033]52;c;%s\007" "$(base64 | tr -d '\n')"
+  fi
 }
 
 # Check if input is coming from stdin or as arguments
 if [ -t 0 ]; then
-    # No stdin, use arguments
-    if [ $# -eq 0 ]; then
-        echo "Usage: $0 [text] or echo 'text' | $0"
-        exit 1
-    fi
-    echo "$*" | copy_to_clipboard
+  # No stdin, use arguments
+  if [ $# -eq 0 ]; then
+    echo "Usage: $0 [text] or echo 'text' | $0" >&2
+    exit 1
+  fi
+  echo "$*" | copy_to_clipboard
 else
-    # Read from stdin
-    copy_to_clipboard
+  # Read from stdin
+  copy_to_clipboard
 fi
