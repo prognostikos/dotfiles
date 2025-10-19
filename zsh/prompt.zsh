@@ -13,7 +13,7 @@ zstyle ':vcs_info:*' check-for-changes true
 
 zstyle ':vcs_info:*' stagedstr '%F{green}A%f'
 zstyle ':vcs_info:*' unstagedstr '%F{red}M%f'
-zstyle ':vcs_info:git*+set-message:*' hooks git-untracked git-status-bracket
+zstyle ':vcs_info:git*+set-message:*' hooks git-untracked git-unpushed git-status-bracket
 
 # Format strings:
 # - When in normal mode: [branch][status] (status only shown if present)
@@ -30,8 +30,17 @@ zstyle ':vcs_info:git:*' actionformats '[%b+%a]%m'
   fi
 }
 
+# Hook function to check for unpushed commits
++vi-git-unpushed() {
+  local ahead
+  ahead=$(git rev-list --count @{upstream}..HEAD 2>/dev/null)
+  if [[ -n $ahead ]] && [[ $ahead -gt 0 ]]; then
+    hook_com[unstaged]+='%F{magenta}↑%f'
+  fi
+}
+
 # Hook function to wrap status in brackets if any status exists
-# Order: staged (A), unstaged (M), untracked (??) - matching gs output
+# Order: staged (A), unstaged (M), untracked (??), unpushed (↑) - matching gs output
 +vi-git-status-bracket() {
   if [[ -n ${hook_com[unstaged]} ]] || [[ -n ${hook_com[staged]} ]]; then
     hook_com[misc]="[${hook_com[staged]}${hook_com[unstaged]}]"
