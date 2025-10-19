@@ -133,9 +133,7 @@ if [ -f "$HOME/.cacert.pem" ]; then
   export CURL_CA_BUNDLE="$HOME/.cacert.pem"
 fi
 
-### Skip GPG and 1Password in devcontainers
 if [ -z "$RUNNING_IN_DEVCONTAINER" ]; then
-  # use gpg-agent
   if ! pgrep -x -u "${USER}" gpg-agent >/dev/null 2>&1; then
     gpg-connect-agent /bye >/dev/null 2>&1
   fi
@@ -145,4 +143,6 @@ if [ -z "$RUNNING_IN_DEVCONTAINER" ]; then
   if [[ -f ~/.config/op/plugins.sh ]]; then
     source ~/.config/op/plugins.sh
   fi
+else
+  export CDPATH=/workspaces
 fi
