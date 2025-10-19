@@ -1,4 +1,9 @@
-alias ls="ls -F"
+if ls --color=auto &> /dev/null; then
+  alias ls="ls -F --color=auto"
+else
+  alias ls="ls -F"
+fi
+
 alias vdiff="git diff|vimdiff -R -"
 alias spr="tmux split-window -h -p 25; tmux send-keys 'simple_prompt; clear' C-m"
 alias spd="tmux split-window -p 25; tmux send-keys 'simple_prompt; clear' C-m"
