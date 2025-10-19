@@ -1,12 +1,5 @@
 ### ENV
 
-if command -v nvim > /dev/null; then
-  export EDITOR=nvim
-  alias vi=nvim
-else
-  export EDITOR=vim
-fi
-
 export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export CLICOLOR=true
@@ -70,6 +63,14 @@ export PATH="$HOME/.dotfiles/bin:$PATH"
 
 # deduplicate path entries
 typeset -U path
+
+# setup EDITOR
+if command -v nvim > /dev/null; then
+  export EDITOR=nvim
+  alias vi=nvim
+else
+  export EDITOR=vim
+fi
 
 # shortcut to this dotfiles path is $ZSH
 export ZSH=$HOME/.dotfiles
