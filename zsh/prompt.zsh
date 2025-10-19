@@ -4,10 +4,47 @@ local username=''
 [ -z $SSH_TTY ] && hostname=''
 [ "$USER" != rohrer ] && username="%n@"
 
-PROMPT='%{$fg[magenta]%}${username}${hostname}%{$fg[blue]%}%.%{$fg[cyan]%}$(git-cwd-info)%{$reset_color%}%# '
+# Configure vcs_info for git prompt
+autoload -Uz vcs_info
+setopt prompt_subst
+
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:*' check-for-changes true
+
+zstyle ':vcs_info:*' stagedstr '%F{green}A%f'
+zstyle ':vcs_info:*' unstagedstr '%F{red}M%f'
+zstyle ':vcs_info:git*+set-message:*' hooks git-untracked git-status-bracket
+
+# Format strings:
+# - When in normal mode: [branch][status] (status only shown if present)
+# - When in action mode: [branch+action][status]
+# %u = unstaged, %c = staged, %m = misc (untracked via hook)
+zstyle ':vcs_info:git:*' formats '[%b]%m'
+zstyle ':vcs_info:git:*' actionformats '[%b+%a]%m'
+
+# Hook function to check for untracked files
++vi-git-untracked() {
+  if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
+     git status --porcelain | grep -q '^?? ' 2> /dev/null ; then
+    hook_com[unstaged]+='%F{blue}??%f'
+  fi
+}
+
+# Hook function to wrap status in brackets if any status exists
+# Order: staged (A), unstaged (M), untracked (??) - matching gs output
++vi-git-status-bracket() {
+  if [[ -n ${hook_com[unstaged]} ]] || [[ -n ${hook_com[staged]} ]]; then
+    hook_com[misc]="[${hook_com[staged]}${hook_com[unstaged]}]"
+  fi
+}
+
+# Run vcs_info before each prompt
+precmd() { vcs_info }
+
+PROMPT='%{$fg[magenta]%}${username}${hostname}%{$fg[blue]%}%.%{$fg[cyan]%}${vcs_info_msg_0_}%{$reset_color%}%# '
 
 local fancy_left=$PROMPT
 local fancy_right=$RPROMPT
 
 fancy_prompt(){ export PROMPT=$fancy_left; export RPROMPT=$fancy_right }
-simple_prompt(){ export PROMPT='$ '; export RPROMPT='' }
+simple_prompt(){ export PROMPT='%# '; export RPROMPT='' }
