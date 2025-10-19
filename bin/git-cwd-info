@@ -24,7 +24,7 @@ if [[ $GIT_REPO_PATH != '' && $GIT_REPO_PATH != '~' && $GIT_REPO_PATH != "$HOME/
   fi
 
   GIT_DIRTY=""
-  if [[ "$GIT_REPO_PATH" != '.' && `git ls-files -m` != "" ]]; then
+  if [[ "$GIT_REPO_PATH" != '.' && `git status --porcelain` != "" ]]; then
     GIT_DIRTY="‼"
   fi
 
