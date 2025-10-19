@@ -47,7 +47,9 @@ set-option -g focus-events on
 set -g history-limit 20000
 
 # need more colors
-set -g default-terminal "screen-256color"
+set -g default-terminal "tmux-256color"
+set -ag terminal-overrides ",*:RGB"
+set -ag terminal-overrides ",*:Tc"
 
 # Allow lengthy session names
 set -g status-left-length 50
