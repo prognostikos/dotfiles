@@ -239,8 +239,13 @@ vim.api.nvim_create_autocmd('QuickFixCmdPost', {
 vim.api.nvim_create_autocmd('VimEnter', {
   group = vim.api.nvim_create_augroup('fixrg', { clear = true }),
   callback = function()
-    vim.opt.grepprg = 'ag --smart-case --nogroup --nocolor'
-    vim.opt.grepformat = '%f:%l:%m,%f:%l%m,%f  %l%m'
+    if vim.fn.executable('rg') == 1 then
+      vim.opt.grepprg = 'rg --vimgrep --smart-case --hidden'
+      vim.opt.grepformat = '%f:%l:%c:%m,%f:%l:%m'
+    else
+      vim.opt.grepprg = 'ag --smart-case --nogroup --nocolor'
+      vim.opt.grepformat = '%f:%l:%m,%f:%l%m,%f  %l%m'
+    end
   end
 })
 

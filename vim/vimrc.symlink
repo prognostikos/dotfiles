@@ -160,8 +160,14 @@ set nofoldenable
 set winwidth=81
 set equalalways
 
-" use ag instead of grep
-set grepprg=ag\ --smart-case\ --nogroup\ --nocolor
+" use rg instead of grep (fallback to ag if rg not available)
+if executable('rg')
+  set grepprg=rg\ --vimgrep\ --smart-case\ --hidden
+  set grepformat=%f:%l:%c:%m,%f:%l:%m
+else
+  set grepprg=ag\ --smart-case\ --nogroup\ --nocolor
+  set grepformat=%f:%l:%m,%f:%l%m,%f\ \ %l%m
+endif
 
 " eliminate clearing of terminal when suspending/quiting
 " http://www.shallowsky.com/linux/noaltscreen.html

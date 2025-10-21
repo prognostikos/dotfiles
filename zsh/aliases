@@ -15,3 +15,9 @@ alias run=./run
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias n=nvim
 alias cal="cal -3Nw"
+
+ag() {
+  echo "Use rg instead!" >&2
+  sleep 0.5
+  command ag "$@"
+}
