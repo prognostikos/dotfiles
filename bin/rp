@@ -19,7 +19,7 @@ fi
 pane_count=$(tmux display-message -p "#{window_panes}")
 
 if [ "$pane_count" -eq 1 ]; then
-  tmux split-window -h -p "${size%\%}"
+  tmux split-window -h -l "$size"
 else
   tmux resize-pane -t right -x "$size"
 fi
