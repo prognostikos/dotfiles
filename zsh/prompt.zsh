@@ -50,7 +50,7 @@ zstyle ':vcs_info:git:*' actionformats '[%b+%a]%m'
 # Run vcs_info before each prompt
 precmd() { vcs_info }
 
-PROMPT='%{$fg[magenta]%}${username}${hostname}%{$fg[blue]%}%.%{$fg[cyan]%}${vcs_info_msg_0_}%{$reset_color%}%# '
+PROMPT='%F{magenta}${username}${hostname}%F{blue}%.%F{cyan}${vcs_info_msg_0_}%f%# '
 
 local fancy_left=$PROMPT
 local fancy_right=$RPROMPT
