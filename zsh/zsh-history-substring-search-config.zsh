@@ -16,3 +16,6 @@ for keycode in '[' '0'; do
   bindkey "^[${keycode}B" history-substring-search-down
 done
 unset keycode
+
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='bg=magenta,fg=black,bold'
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND='bg=red,fg=black,bold'
