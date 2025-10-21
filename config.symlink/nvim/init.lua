@@ -953,6 +953,11 @@ require('lazy').setup({
         ruby_lsp = {
           init_options = {
             formatter = "standard",
+            addonSettings = {
+              ["Ruby LSP Rails"] = {
+                enablePendingMigrationsPrompt = false,
+              },
+            },
           },
         },
         -- clangd = {},
