@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -euo pipefail
+
+if [ -z "${TMUX:-}" ]; then
+  echo "Not in a tmux session" >&2
+  exit 1
+fi
+
+window_width=$(tmux display-message -p "#{window_width}")
+
+# Determine size based on screen (assume > 200 columns = external monitor)
+if [ "$window_width" -gt 200 ]; then
+  size=25%
+else
+  size=50%
+fi
+
+pane_count=$(tmux display-message -p "#{window_panes}")
+
+if [ "$pane_count" -eq 1 ]; then
+  tmux split-window -h -p "${size%\%}"
+else
+  tmux resize-pane -t right -x "$size"
+fi
