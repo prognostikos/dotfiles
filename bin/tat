@@ -3,6 +3,11 @@
 # Attach or create tmux session named the same as current directory.
 
 path_name="$(basename "$PWD" | tr . -)"
+
+if [ -n "$RUNNING_IN_DEVCONTAINER" ]; then
+  path_name="DC:$path_name"
+fi
+
 session_name=${1-$path_name}
 
 not_in_tmux() {
