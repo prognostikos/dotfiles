@@ -14,34 +14,49 @@ if [[ -z "$TMUX" ]]; then
 fi
 
 tmux rename-window editor
-tmux split-window -d -b -l 10
+tmux split-window -d -h -l 80
 
-tmux set-hook -t :0.0 -g window-resized 'resize-pane -t 0.0 -y 10'
+if [ -z "$RUNNING_IN_DEVCONTAINER" ]; then
+  tmux split-window -d -b -l 10
+  tmux set-hook -t :0.0 -g window-resized 'resize-pane -t 0.0 -y 10'
+
+  tmux set-hook -t :0.2 -g window-resized 'resize-pane -t 0.2 -x 80'
+else
+  tmux set-hook -t :0.1 -g window-resized 'resize-pane -t 0.1 -x 80'
+fi
 
 tmux send-keys -t editor "$EDITOR" Enter
 
-tmux new-window -d -n console
-tmux new-window -d -n db
+if [ -n "$RUNNING_IN_DEVCONTAINER" ]; then
+  tmux new-window -d -n console
+  tmux new-window -d -n db
 
-tmux new-window -d -n servers
-tmux split-window -d -t servers
+  tmux new-window -d -n servers
+  tmux split-window -d -t servers
+fi
 
-tmux new-window -d -n prod
-tmux split-window -d -t prod
+if [ -z "$RUNNING_IN_DEVCONTAINER" ]; then
+  tmux new-window -d -n prod
+  tmux split-window -d -t prod
+  tmux send-keys -t prod.0 'production pg:psql ORANGE'
+  tmux send-keys -t prod.1 'prodc'
+fi 
 
 tmux new-window -d
 
-if [[ -x "bin/spring" ]]; then
-  tmux new-window -d -n spring
-  tmux send-keys -t spring 'bin/spring server' Enter
-  sleep 0.5
-fi
+if [ -n "$RUNNING_IN_DEVCONTAINER" ]; then
+  if [[ -x "bin/spring" ]]; then
+    tmux new-window -d -n spring
+    tmux send-keys -t spring 'bin/spring server' Enter
+    sleep 0.5
+  fi
 
-if [[ -x "bin/rails" ]]; then
-  tmux send-keys -t console 'bin/rails console' Enter
-  tmux send-keys -t db 'bin/rails db' Enter
-fi
+  if [[ -x "bin/rails" ]]; then
+    tmux send-keys -t console 'bin/rails console' Enter
+    tmux send-keys -t db 'bin/rails db' Enter
+  fi
 
-if [[ -x "script/server" ]]; then
-  tmux send-keys -t servers.0 'script/server --fast' Enter
+  if [[ -x "script/server" ]]; then
+    tmux send-keys -t servers.0 'script/server --fast' Enter
+  fi
 fi
