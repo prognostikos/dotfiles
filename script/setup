@@ -17,8 +17,8 @@ find "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -print0 | while IFS= read -r
 do
   dest="${DEST_ROOT}/.$(basename "${source%.*}")"
 
-  if [ "$(basename "${source%.*}")" = "claude" ] && [ -n "$RUNNING_IN_DEVCONTAINER" ] && [ -e "$dest" ]; then
-    echo "Skipping .claude symlink in devcontainer (already exists at $dest)"
+  if [ "$(basename "${source%.*}")" = "claude" ] && [ -n "$RUNNING_IN_DEVCONTAINER" ]; then
+    echo "Skipping .claude symlink in devcontainer"
     continue
   fi
 
