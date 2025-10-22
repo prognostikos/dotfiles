@@ -26,6 +26,10 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     export PATH="$BREW_PREFIX/bin:$BREW_PREFIX/sbin:$PATH"
   fi
 
+  if [ -d "$BREW_PREFIX/opt/postgresql@16/bin" ]; then
+    export PATH="$BREW_PREFIX/opt/postgresql@16/bin:$PATH"
+  fi
+
   # the awscli completion seems to need explicit sourcing - fpath is not enough
   if command -v aws > /dev/null ; then
     if [ -f "$BREW_PREFIX/share/zsh/site-functions/_aws" ]; then
