@@ -9,4 +9,5 @@ devcontainer up \
   --remove-existing-container \
   --dotfiles-repository https://github.com/prognostikos/dotfiles \
   --dotfiles-install-command script/setup \
-  --dotfiles-target-path "/home/$DEVCONTAINER_USER/.dotfiles"
+  --dotfiles-target-path "/home/$DEVCONTAINER_USER/.dotfiles" \
+  --mount "type=bind,source=${HOME}/.claude,target=/home/${DEVCONTAINER_USER}/.claude"
