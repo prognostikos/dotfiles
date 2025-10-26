@@ -415,6 +415,17 @@ vim.api.nvim_create_autocmd('FileType', {
   end
 })
 
+-- Auto-continue lists in markdown, text, and gitcommit files
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'markdown', 'text', 'gitcommit' },
+  group = vim.api.nvim_create_augroup('auto_lists', { clear = true
+  }),
+  callback = function()
+    vim.opt_local.formatoptions:append('o')
+    vim.opt_local.comments = 'b:- [ ],b:- [x],b:- [X],b:-,b:*'
+  end
+})
+
 -- Diag for viewing Diagnostics
 local function show_diagnostics(line)
   line = line or vim.fn.line('.')
