@@ -27,8 +27,8 @@
 [color]
 	ui = auto
 [merge]
-	conflictstyle = zdiff3
-	tool = nvimdiff
+	; conflictstyle = zdiff3
+	tool = nvim
 	ff = only
 [rebase]
 	autoSquash = true
@@ -44,10 +44,12 @@
 [mergetool]
 	keepBackup = false
 	prompt = false
+[mergetool "nvim"]
+	cmd = nvim -d $LOCAL $MERGED $REMOTE
 [github]
 	user = prognostikos
 [diff]
-	tool = nvimdiff
+	tool = nvim
 	noprefix = true
 	algorithm = histogram
 	colorWords = true
