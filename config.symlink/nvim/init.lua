@@ -609,7 +609,12 @@ require('lazy').setup({
     'lervag/wiki.vim',
     config = function()
       vim.g.wiki_global_load = 0
-      vim.g.wiki_root = '~/Documents/wiki'
+
+      local wiki_path = vim.env.VIM_WIKI_ROOT or '~/Documents/wiki'
+      local wiki_dir = vim.fn.expand(wiki_path)
+      if vim.fn.isdirectory(wiki_dir) == 1 then
+        vim.g.wiki_root = wiki_path
+      end
     end
   },
 
