@@ -8,8 +8,12 @@ prompt: enabled
 pager:
 # Aliases allow you to create nicknames for gh commands
 aliases:
+    autom: pr merge --squash --delete-branch --auto
     co: pr checkout
+    depb: pr ls --app dependabot
+    mine: pr ls --author "@me"
     runs: run list
+    sq: pr merge --squash --delete-branch
 # The path to a unix socket through which send HTTP connections. If blank, HTTP traffic will be handled by net/http.DefaultTransport.
 http_unix_socket:
 # What web browser gh should use when opening URLs. If blank, will refer to environment.
