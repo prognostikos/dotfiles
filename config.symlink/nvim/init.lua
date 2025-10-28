@@ -621,10 +621,10 @@ require('lazy').setup({
       end
 
       vim.g['test#strategy'] = 'dispatch'
-      vim.keymap.set('n', '<leader>rT', '<cmd>TestFile<cr>', {
+      vim.keymap.set('n', '<leader>rt', '<cmd>TestFile<cr>', {
         silent = true,
       })
-      vim.keymap.set('n',  '<leader>rt', '<cmd>TestNearest<cr>', {
+      vim.keymap.set('n',  '<leader>rT', '<cmd>TestNearest<cr>', {
         silent = true,
       })
     end
