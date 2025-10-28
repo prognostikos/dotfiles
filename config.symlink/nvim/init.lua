@@ -447,6 +447,34 @@ timer:start(0, 500, vim.schedule_wrap(function()
   vim.cmd('checktime')
 end))
 
+-- [[ Devcontainer Helper ]]
+-- Wrap LSP commands to run in devcontainer when on host
+local function wrap_lsp_cmd(server_name, original_config)
+  if vim.env.RUNNING_IN_DEVCONTAINER == "1" then
+    return nil
+  end
+
+  local default_cmd = original_config.cmd
+
+  -- If no cmd provided, try to get it from the nvim-lspconfig server file
+  if not default_cmd then
+    local ok, server_config = pcall(require, 'lspconfig.configs.' .. server_name)
+    if ok and server_config and server_config.default_config then
+      default_cmd = server_config.default_config.cmd
+    end
+  end
+
+  if not default_cmd then
+    return nil
+  end
+
+  local wrapped = { vim.fn.expand('~/.dotfiles/bin/deve') }
+  for _, part in ipairs(default_cmd) do
+    table.insert(wrapped, part)
+  end
+  return wrapped
+end
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -569,6 +597,16 @@ require('lazy').setup({
   {
     'tpope/vim-dispatch',
     config = function()
+      if vim.env.RUNNING_IN_DEVCONTAINER ~= "1" then
+        vim.api.nvim_create_autocmd('FileType', {
+          pattern = 'ruby',
+          group = vim.api.nvim_create_augroup('dispatch_devcontainer', { clear = true }),
+          callback = function()
+            vim.bo.makeprg = vim.fn.expand('~/.dotfiles/bin/deve') .. ' bin/rails'
+          end
+        })
+      end
+
       vim.keymap.set('n', '<leader>rm', '<cmd>Dispatch<cr>', {
         silent = true
       })
@@ -578,6 +616,10 @@ require('lazy').setup({
   {
     'janko-m/vim-test',
     config = function()
+      if vim.env.RUNNING_IN_DEVCONTAINER ~= "1" then
+        vim.g['test#ruby#rspec#executable'] = vim.fn.expand('~/.dotfiles/bin/deve') .. ' bin/rspec'
+      end
+
       vim.g['test#strategy'] = 'dispatch'
       vim.keymap.set('n', '<leader>rT', '<cmd>TestFile<cr>', {
         silent = true,
@@ -965,6 +1007,17 @@ require('lazy').setup({
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+
+      -- Servers that should run in devcontainer
+      local devcontainer_servers = {
+        'ruby_lsp',
+        'ts_ls',
+        'html',
+        'cssls',
+        'jsonls',
+        'eslint',
+      }
+
       local servers = {
         ruby_lsp = {
           init_options = {
@@ -1024,7 +1077,15 @@ require('lazy').setup({
           server_config.capabilities or {}
         )
 
-        -- Configure the LSP (configs are auto-discovered from lsp/ directory)
+        -- Wrap command with devcontainer exec if needed
+        if vim.tbl_contains(devcontainer_servers, server_name) then
+          local wrapped_cmd = wrap_lsp_cmd(server_name, server_config)
+          if wrapped_cmd then
+            server_config.cmd = wrapped_cmd
+          end
+        end
+
+        -- Configure the LSP
         vim.lsp.config(server_name, server_config)
         table.insert(server_names, server_name)
       end
