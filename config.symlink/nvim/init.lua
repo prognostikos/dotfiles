@@ -447,33 +447,13 @@ timer:start(0, 500, vim.schedule_wrap(function()
   vim.cmd('checktime')
 end))
 
--- [[ Devcontainer Helper ]]
--- Wrap LSP commands to run in devcontainer when on host
-local function wrap_lsp_cmd(server_name, original_config)
-  if vim.env.RUNNING_IN_DEVCONTAINER == "1" then
-    return nil
-  end
-
-  local default_cmd = original_config.cmd
-
-  -- If no cmd provided, try to get it from the nvim-lspconfig server file
-  if not default_cmd then
-    local ok, server_config = pcall(require, 'lspconfig.configs.' .. server_name)
-    if ok and server_config and server_config.default_config then
-      default_cmd = server_config.default_config.cmd
-    end
-  end
-
-  if not default_cmd then
-    return nil
-  end
-
-  local wrapped = { vim.fn.expand('~/.dotfiles/bin/deve') }
-  for _, part in ipairs(default_cmd) do
-    table.insert(wrapped, part)
-  end
-  return wrapped
-end
+-- [[ Devcontainer Helpers ]]
+-- Setup devcontainer LSP support (only if not already in container and .devcontainer exists)
+-- Automatically reads workspaceFolder from .devcontainer/devcontainer.json
+local devcontainer_helpers = require('devcontainer_helpers')
+local devcontainer_enabled = devcontainer_helpers.setup({
+  wrapper_command = 'deve'
+})
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -597,12 +577,12 @@ require('lazy').setup({
   {
     'tpope/vim-dispatch',
     config = function()
-      if vim.env.RUNNING_IN_DEVCONTAINER ~= "1" then
+      if devcontainer_enabled then
         vim.api.nvim_create_autocmd('FileType', {
           pattern = 'ruby',
           group = vim.api.nvim_create_augroup('dispatch_devcontainer', { clear = true }),
           callback = function()
-            vim.bo.makeprg = vim.fn.expand('~/.dotfiles/bin/deve') .. ' bin/rails'
+            vim.bo.makeprg = devcontainer_helpers.wrap_command('bin/rails')
           end
         })
       end
@@ -616,8 +596,8 @@ require('lazy').setup({
   {
     'janko-m/vim-test',
     config = function()
-      if vim.env.RUNNING_IN_DEVCONTAINER ~= "1" then
-        vim.g['test#ruby#rspec#executable'] = vim.fn.expand('~/.dotfiles/bin/deve') .. ' bin/rspec'
+      if devcontainer_enabled then
+        vim.g['test#ruby#rspec#executable'] = devcontainer_helpers.wrap_command('bin/rspec')
       end
 
       vim.g['test#strategy'] = 'dispatch'
@@ -1020,6 +1000,7 @@ require('lazy').setup({
 
       local servers = {
         ruby_lsp = {
+          filetypes = { "ruby", "eruby" },
           init_options = {
             formatter = "standard",
             addonSettings = {
@@ -1060,10 +1041,18 @@ require('lazy').setup({
         },
 
         -- vscode-langservers-extracted
-        html = {},
-        cssls = {},
-        jsonls = {},
-        eslint = {}
+        html = {
+          filetypes = { "html", "eruby" },
+        },
+        cssls = {
+          filetypes = { "css", "scss", "less" },
+        },
+        jsonls = {
+          filetypes = { "json", "jsonc" },
+        },
+        eslint = {
+          filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+        }
       }
 
       -- Setup each LSP server
@@ -1078,10 +1067,12 @@ require('lazy').setup({
         )
 
         -- Wrap command with devcontainer exec if needed
-        if vim.tbl_contains(devcontainer_servers, server_name) then
-          local wrapped_cmd = wrap_lsp_cmd(server_name, server_config)
+        if devcontainer_enabled and vim.tbl_contains(devcontainer_servers, server_name) then
+          local wrapped_cmd = devcontainer_helpers.wrap_lsp_cmd(server_name, server_config)
           if wrapped_cmd then
             server_config.cmd = wrapped_cmd
+            -- Add before_init to translate initialization paths
+            server_config.before_init = devcontainer_helpers.create_before_init(server_config.before_init)
           end
         end
 
