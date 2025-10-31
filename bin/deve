@@ -6,4 +6,4 @@ if [ $# -eq 0 ]; then
   set -- zsh
 fi
 
-devcontainer exec --workspace-folder . "$@"
+devcontainer exec --workspace-folder . env "$@"
