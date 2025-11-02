@@ -4,10 +4,27 @@ set -euo pipefail
 
 DEVCONTAINER_USER=${DEVCONTAINER_USER:-bndev}
 
+# Get current directory name
+PROJECT_DIR=$(basename "$PWD")
+
+# Check for parallel worktrees directory
+PARENT_DIR=$(dirname "$PWD")
+WORKTREES_DIR="$PARENT_DIR/${PROJECT_DIR}-worktrees"
+
+# Build mount arguments
+MOUNT_ARGS=(
+  --mount "type=bind,source=${HOME}/.claude,target=/home/${DEVCONTAINER_USER}/.claude"
+)
+
+# Add worktrees mount if directory exists
+if [ -d "$WORKTREES_DIR" ]; then
+  MOUNT_ARGS+=(--mount "type=bind,source=${WORKTREES_DIR},target=/workspaces/${PROJECT_DIR}-worktrees")
+fi
+
 devcontainer up \
   --workspace-folder . \
   --remove-existing-container \
   --dotfiles-repository https://github.com/prognostikos/dotfiles \
   --dotfiles-install-command script/setup \
   --dotfiles-target-path "/home/$DEVCONTAINER_USER/.dotfiles" \
-  --mount "type=bind,source=${HOME}/.claude,target=/home/${DEVCONTAINER_USER}/.claude"
+  "${MOUNT_ARGS[@]}"
