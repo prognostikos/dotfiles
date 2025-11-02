@@ -21,3 +21,11 @@ ag() {
   sleep 0.5
   command ag "$@"
 }
+
+yolo() {
+  if [ -z "$RUNNING_IN_DEVCONTAINER" ]; then
+    echo "Nope. Run me in a devcontainer." >&2
+  else
+    claude --dangerously-skip-permissions
+  fi
+}
