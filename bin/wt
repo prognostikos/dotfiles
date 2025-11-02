@@ -6,7 +6,6 @@ set -euo pipefail
 usage() {
   echo "Usage: wt <branch-name>"
   echo "  Create a git worktree in a parallel -worktrees directory"
-  echo "  and start tmux with claude in a split pane"
   exit 1
 }
 
@@ -46,23 +45,3 @@ if [ -d "$PWD/.claude" ]; then
   echo "Linking .claude directory"
   ln -sf "$PWD/.claude" "$WORKTREE_PATH/.claude"
 fi
-
-# Create tmux session name
-SESSION_NAME="${PROJECT_DIR}-${BRANCH_NAME}"
-
-# Change to worktree directory
-cd "$WORKTREE_PATH"
-
-# Start or attach to tmux session
-if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
-  echo "Attaching to existing tmux session: $SESSION_NAME"
-  tmux attach-session -t "$SESSION_NAME"
-else
-  echo "Creating tmux session: $SESSION_NAME"
-  tmux new-session -d -s "$SESSION_NAME"
-  tmux split-window -h -t "$SESSION_NAME"
-  tmux send-keys -t "$SESSION_NAME:0.1" "claude" C-m
-  tmux select-pane -t "$SESSION_NAME:0.0"
-  tmux attach-session -t "$SESSION_NAME"
-fi
-
