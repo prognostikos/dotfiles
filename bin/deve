@@ -6,4 +6,55 @@ if [ $# -eq 0 ]; then
   set -- zsh
 fi
 
-devcontainer exec --workspace-folder . env "$@"
+# Try to get git info, but handle broken worktrees
+if git rev-parse --git-common-dir &>/dev/null; then
+  # Git commands work - we can use them
+  GIT_COMMON_DIR="$(git rev-parse --git-common-dir)"
+  MAIN_REPO="$(cd "$GIT_COMMON_DIR/.." && pwd)"
+  CURRENT_DIR="$(git rev-parse --show-toplevel)"
+else
+  # Git commands fail - we're in a broken worktree
+  # Use directory structure to find main repo
+  CURRENT_DIR="$(pwd)"
+
+  if [ -f .git ]; then
+    # We're in a worktree - deduce main repo from directory name
+    PARENT_DIR="$(dirname "$CURRENT_DIR")"
+    PARENT_NAME="$(basename "$PARENT_DIR")"
+
+    # Parent should be something like "project-worktrees"
+    # Main repo is sibling without "-worktrees"
+    REPO_NAME="${PARENT_NAME%-worktrees}"
+    GRANDPARENT_DIR="$(dirname "$PARENT_DIR")"
+    MAIN_REPO="$GRANDPARENT_DIR/$REPO_NAME"
+
+    if [ ! -d "$MAIN_REPO/.git" ]; then
+      echo "Error: Could not find main repo at $MAIN_REPO"
+      exit 1
+    fi
+  else
+    # Assume we're in main repo
+    MAIN_REPO="$(pwd)"
+    CURRENT_DIR="$MAIN_REPO"
+  fi
+fi
+
+# Check if we're in a separate worktree (not the main repo)
+if [ "$CURRENT_DIR" != "$MAIN_REPO" ]; then
+  # We're in a worktree, translate the path for the container
+
+  # Get the parent directory (where both main and worktrees directories live)
+  PARENT_DIR=$(dirname "$MAIN_REPO")
+
+  # Get the relative path from parent directory
+  RELATIVE_PATH=${CURRENT_DIR#$PARENT_DIR/}
+
+  # Build the container path
+  CONTAINER_PATH="/workspaces/$RELATIVE_PATH"
+
+  # Execute in main worktree's devcontainer but cd to the worktree path first
+  devcontainer exec --workspace-folder "$MAIN_REPO" bash -c "cd '$CONTAINER_PATH' && exec env \"\$@\"" -- "$@"
+else
+  # We're in the main repo, use normal behavior
+  devcontainer exec --workspace-folder . env "$@"
+fi
