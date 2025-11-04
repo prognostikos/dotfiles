@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # Detect environment
-if [ -n "$RUNNING_IN_DEVCONTAINER" ]; then
+if [ -n "${RUNNING_IN_DEVCONTAINER:-}" ]; then
   ENV="container"
 else
   ENV="host"
