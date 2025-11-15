@@ -18,7 +18,7 @@ SubFolders Verbatim
 Channel personal-main
 Far :personal-remote:
 Near :personal-local:
-Patterns INBOX * ![Gmail]*
+Patterns INBOX * ![Gmail]* !archive !sent !drafts !starred
 Create Both
 Expunge Both
 SyncState *
@@ -28,7 +28,7 @@ CopyArrivalDate yes
 Channel personal-archive
 Far :personal-remote:"[Gmail]/All Mail"
 Near :personal-local:archive
-Create Both
+Create Near
 Expunge Both
 SyncState *
 CopyArrivalDate yes
@@ -36,7 +36,7 @@ CopyArrivalDate yes
 Channel personal-sent
 Far :personal-remote:"[Gmail]/Sent Mail"
 Near :personal-local:sent
-Create Both
+Create Near
 Expunge Both
 SyncState *
 CopyArrivalDate yes
@@ -44,7 +44,7 @@ CopyArrivalDate yes
 Channel personal-drafts
 Far :personal-remote:"[Gmail]/Drafts"
 Near :personal-local:drafts
-Create Both
+Create Near
 Expunge Both
 SyncState *
 CopyArrivalDate yes
@@ -52,7 +52,7 @@ CopyArrivalDate yes
 Channel personal-starred
 Far :personal-remote:"[Gmail]/Starred"
 Near :personal-local:starred
-Create Both
+Create Near
 Expunge Both
 SyncState *
 CopyArrivalDate yes
@@ -87,7 +87,7 @@ SubFolders Verbatim
 Channel bn-main
 Far :bn-remote:
 Near :bn-local:
-Patterns INBOX * ![Gmail]*
+Patterns INBOX * ![Gmail]* !archive !sent !drafts !starred
 Create Both
 Expunge Both
 SyncState *
@@ -97,7 +97,7 @@ CopyArrivalDate yes
 Channel bn-archive
 Far :bn-remote:"[Gmail]/All Mail"
 Near :bn-local:archive
-Create Both
+Create Near
 Expunge Both
 SyncState *
 CopyArrivalDate yes
@@ -105,7 +105,7 @@ CopyArrivalDate yes
 Channel bn-sent
 Far :bn-remote:"[Gmail]/Sent Mail"
 Near :bn-local:sent
-Create Both
+Create Near
 Expunge Both
 SyncState *
 CopyArrivalDate yes
@@ -113,7 +113,7 @@ CopyArrivalDate yes
 Channel bn-drafts
 Far :bn-remote:"[Gmail]/Drafts"
 Near :bn-local:drafts
-Create Both
+Create Near
 Expunge Both
 SyncState *
 CopyArrivalDate yes
@@ -121,7 +121,7 @@ CopyArrivalDate yes
 Channel bn-starred
 Far :bn-remote:"[Gmail]/Starred"
 Near :bn-local:starred
-Create Both
+Create Near
 Expunge Both
 SyncState *
 CopyArrivalDate yes
