@@ -1,4 +1,4 @@
--- devcontainer_lsp.lua
+-- devcontainer_helpers.lua
 --
 -- Enables LSP servers and development tools to run inside a devcontainer while nvim runs on the host.
 -- Translates file paths between host and container so LSPs can find files correctly.
@@ -10,18 +10,18 @@
 -- - Provides utilities to wrap any command to run in devcontainer
 --
 -- Setup:
---   local devcontainer_lsp = require('devcontainer_lsp')
---   local enabled = devcontainer_lsp.setup({
+--   local devcontainer_helpers = require('devcontainer_helpers')
+--   local enabled = devcontainer_helpers.setup({
 --     wrapper_command = 'deve'  -- Command that wraps devcontainer exec (e.g., 'devcontainer exec')
 --   })
 --
 -- API:
---   devcontainer_lsp.is_enabled()                     -- Check if devcontainer mode is active
---   devcontainer_lsp.get_wrapper_command()            -- Get the wrapper command name
---   devcontainer_lsp.wrap_command('bin/rails')        -- Returns: 'deve bin/rails'
---   devcontainer_lsp.wrap_command_array({'bin/rspec'}) -- Returns: {'deve', 'bin/rspec'}
---   devcontainer_lsp.wrap_lsp_cmd(name, config)       -- Wrap LSP command for server
---   devcontainer_lsp.create_before_init(fn)           -- Create before_init hook with path translation
+--   devcontainer_helpers.is_enabled()                     -- Check if devcontainer mode is active
+--   devcontainer_helpers.get_wrapper_command()            -- Get the wrapper command name
+--   devcontainer_helpers.wrap_command('bin/rails')        -- Returns: 'deve bin/rails'
+--   devcontainer_helpers.wrap_command_array({'bin/rspec'}) -- Returns: {'deve', 'bin/rspec'}
+--   devcontainer_helpers.wrap_lsp_cmd(name, config)       -- Wrap LSP command for server
+--   devcontainer_helpers.create_before_init(fn)           -- Create before_init hook with path translation
 
 local M = {}
 
@@ -251,7 +251,7 @@ function M.get_wrapper_command()
 end
 
 -- Wrap a command to run in the devcontainer
--- Usage: devcontainer_lsp.wrap_command('bin/rails test')
+-- Usage: devcontainer_helpers.wrap_command('bin/rails test')
 -- Returns: 'deve bin/rails test'
 function M.wrap_command(cmd)
   if not should_enable() then
@@ -262,7 +262,7 @@ function M.wrap_command(cmd)
 end
 
 -- Wrap a command array to run in the devcontainer
--- Usage: devcontainer_lsp.wrap_command_array({'bin/rspec', 'spec/models'})
+-- Usage: devcontainer_helpers.wrap_command_array({'bin/rspec', 'spec/models'})
 -- Returns: {'deve', 'bin/rspec', 'spec/models'}
 function M.wrap_command_array(cmd_array)
   if not should_enable() then

@@ -1,5 +1,9 @@
 # UNSOLVED: vscode-langservers-extracted LSPs Crash in Devcontainer Setup
 
+## Status: INVESTIGATION INCOMPLETE - CHANGES REVERTED
+
+The fixes described in this document were attempted but **NOT COMMITTED** because they caused other problems or did not solve the underlying issue. The code in `init.lua` represents the original, stable version without these experimental changes.
+
 ## Problem Statement
 
 HTML, CSS, JSON, and ESLint LSPs from vscode-langservers-extracted crash with exit code 1 after ~4 seconds when:
@@ -10,41 +14,47 @@ HTML, CSS, JSON, and ESLint LSPs from vscode-langservers-extracted crash with ex
 
 **Key Observation**: Both ruby_lsp and html LSP are configured for "eruby" filetype and BOTH can handle the same file simultaneously - this is intentional and should work.
 
-## What I Discovered
+## What Was Discovered (Attempted Fixes - All Reverted)
 
-### 1. RPC Params Mutation (FIXED ✅)
+**NOTE**: All changes described below were tested but ultimately reverted. They are documented here for future reference, but the current codebase does NOT include these modifications.
+
+### 1. RPC Params Mutation (ATTEMPTED - REVERTED ⏪)
 **Problem**: `setup_client_wrapping()` was mutating params objects in place
-**Fix**: Added `vim.deepcopy(params)` before modifying in notify/request wrappers
-**Location**: Lines 140, 154 in devcontainer_helpers/init.lua
-**Status**: This fix prevents CSS LSP from crashing (verified)
+**Attempted Fix**: Added `vim.deepcopy(params)` before modifying in notify/request wrappers
+**Location**: Would have been lines 140, 154 in devcontainer_helpers/init.lua
+**Result**: This prevented CSS LSP from crashing initially, but caused other issues
+**Status**: REVERTED - Not in current code
 
-### 2. Config Merging Issue (FIXED ✅)
+### 2. Config Merging Issue (ATTEMPTED - REVERTED ⏪)
 **Problem**: User's partial LSP configs weren't being merged with lspconfig defaults
-**Fix**: Load `lspconfig.configs.<server>.default_config` first, then merge user config
-**Location**: init.lua lines ~997-1016
-**Status**: Config now shows correct filetypes, cmd, root_dir
+**Attempted Fix**: Load `lspconfig.configs.<server>.default_config` first, then merge user config
+**Location**: Would have been in init.lua lines ~997-1016
+**Result**: Config showed correct filetypes, cmd, root_dir, but introduced side effects
+**Status**: REVERTED - Not in current code
 
-### 3. vim.lsp.enable() Not Working (FIXED ✅)
+### 3. vim.lsp.enable() Not Working (ATTEMPTED - REVERTED ⏪)
 **Problem**: `vim.lsp.enable(server_names)` doesn't work reliably in nvim 0.11
-**Fix**: Replaced with FileType autocmds that call `vim.lsp.start()` explicitly
-**Location**: init.lua lines ~1033-1065
-**Status**: LSPs now start on FileType events
+**Attempted Fix**: Replaced with FileType autocmds that call `vim.lsp.start()` explicitly
+**Location**: Would have been in init.lua lines ~1033-1065
+**Result**: LSPs started on FileType events, but other problems emerged
+**Status**: REVERTED - Not in current code
 
-### 4. Funcref Error (FIXED ✅)
+### 4. Funcref Error (ATTEMPTED - REVERTED ⏪)
 **Problem**: `E729: Using a Funcref as a String` when calling root_dir function
-**Fix**: Call `root_dir` function before passing to vim.lsp.start(), don't use tbl_extend
-**Location**: init.lua lines 1043-1046
-**Status**: No more Funcref errors
+**Attempted Fix**: Call `root_dir` function before passing to vim.lsp.start(), don't use tbl_extend
+**Location**: Would have been in init.lua lines 1043-1046
+**Result**: Fixed Funcref errors but part of larger problematic changeset
+**Status**: REVERTED - Not in current code
 
-### 5. Response Handler Mutation (ATTEMPTED ❌)
+### 5. Response Handler Mutation (ATTEMPTED - FAILED ❌)
 **Problem**: `translate_response()` mutates response tables in place
-**Attempt 1**: Added `vim.deepcopy(value)` inside recursive function (lines 101-110)
+**Attempt 1**: Added `vim.deepcopy(value)` inside recursive function
   - Result: Massive performance issue - copies of copies of copies
   - HTML LSP still crashes
-**Attempt 2**: Moved `vim.deepcopy(result)` to top level only (line 119)
+**Attempt 2**: Moved `vim.deepcopy(result)` to top level only
   - Result: More efficient but HTML LSP still crashes
-**Location**: devcontainer_helpers/init.lua lines 98-125
-**Status**: STILL CRASHING - This is not the root cause
+**Location**: Would have been in devcontainer_helpers/init.lua lines 98-125
+**Status**: REVERTED - This did not solve the root cause
 
 ## Current Status
 
@@ -181,11 +191,13 @@ Run with:
 nvim --headless -u ~/.config/nvim/init.lua -S tmp/test_root_dir.lua 2>&1
 ```
 
-## Files Modified
+## Files Modified (NOT IN CURRENT CODE - FOR REFERENCE ONLY)
 
-### ~/.config/nvim/lua/devcontainer_helpers/init.lua
+**IMPORTANT**: The changes shown below were tested but reverted. They are documented here as a record of what was tried, but they are NOT present in the current codebase.
 
-**Lines 137-161: RPC wrapping with deepcopy**
+### ~/.config/nvim/lua/devcontainer_helpers/init.lua (REVERTED)
+
+**Lines 137-161: RPC wrapping with deepcopy (NOT IN CURRENT CODE)**
 ```lua
 -- Wrap the underlying RPC notify method
 client.rpc.notify = function(method, params)
@@ -200,7 +212,7 @@ client.rpc.notify = function(method, params)
 end
 ```
 
-**Lines 98-125: Response handler with deepcopy**
+**Lines 98-125: Response handler with deepcopy (NOT IN CURRENT CODE)**
 ```lua
 local function setup_response_handlers()
   local function translate_response(value)
@@ -228,9 +240,9 @@ local function setup_response_handlers()
 end
 ```
 
-### ~/.config/nvim/init.lua
+### ~/.config/nvim/init.lua (REVERTED)
 
-**Lines ~997-1016: Config merging with lspconfig defaults**
+**Lines ~997-1016: Config merging with lspconfig defaults (NOT IN CURRENT CODE)**
 ```lua
 -- Setup each LSP server
 local server_names = {}
@@ -249,7 +261,7 @@ for server_name, server_config in pairs(servers) do
 end
 ```
 
-**Lines ~1033-1065: FileType autocmds instead of vim.lsp.enable()**
+**Lines ~1033-1065: FileType autocmds instead of vim.lsp.enable() (NOT IN CURRENT CODE)**
 ```lua
 -- Enable all configured LSP servers using FileType autocmds
 for _, server_name in ipairs(server_names) do
@@ -285,14 +297,17 @@ for _, server_name in ipairs(server_names) do
 end
 ```
 
-## Patch File
+## Patch File (REVERTED - DO NOT APPLY)
 
-Complete diff saved to: `/Users/rohrer/c/bn/mrclean/tmp/nvim_config_changes.patch`
+Complete diff of the attempted changes was saved to: `/Users/rohrer/c/bn/mrclean/tmp/nvim_config_changes.patch`
 
-Apply with:
+**DO NOT APPLY** - These changes were reverted because they caused problems or didn't solve the issue.
+
+This patch is kept for reference only:
 ```bash
-cd ~/.config/nvim
-git apply /Users/rohrer/c/bn/mrclean/tmp/nvim_config_changes.patch
+# DO NOT RUN - FOR REFERENCE ONLY
+# cd ~/.config/nvim
+# git apply /Users/rohrer/c/bn/mrclean/tmp/nvim_config_changes.patch
 ```
 
 ## Theories for Next Session
@@ -345,11 +360,14 @@ Maybe responses arrive while we're still processing previous ones, causing race 
 5. **Check for upstream issues**: Search vscode-langservers-extracted GitHub for similar problems
 6. **Minimal reproduction**: Create smallest possible config that reproduces the issue
 
-## Commands to Revert
+## Commands to Revert (NOT NEEDED - ALREADY REVERTED)
+
+The changes have already been reverted. The current codebase is in its stable, original state:
 
 ```bash
-cd ~/.config/nvim
-git restore init.lua lua/devcontainer_helpers/init.lua
+# NOT NEEDED - Changes already reverted
+# cd ~/.config/nvim
+# git restore init.lua lua/devcontainer_helpers/init.lua
 ```
 
 ## Debug Log Level
@@ -359,13 +377,30 @@ Note: I set log level to DEBUG which causes performance issues. Revert with:
 vim.lsp.set_log_level('WARN')  -- or 'INFO'
 ```
 
-## Key Insight for Future
+## Key Insights and Why Changes Were Reverted
+
+### Why These Changes Were Reverted
+
+While some of the attempted fixes seemed to work initially (e.g., deepcopy preventing CSS LSP crashes), they ultimately caused other problems:
+
+1. **Performance Issues**: Deep copying responses recursively was too expensive
+2. **Side Effects**: Config merging and FileType autocmds introduced unexpected behaviors
+3. **Didn't Solve Root Cause**: HTML LSP still crashed despite all the fixes
+4. **Complexity**: The changes made the codebase more complex without delivering a solution
+
+### Key Insight for Future Investigation
 
 The fact that:
 - Ruby LSP works perfectly
 - HTML LSP crashes after working briefly
 - No error messages
 
-Strongly suggests the issue is in **how we're handling responses**, not in startup/config. The response handler modification is the smoking gun, but my deep copy approach isn't solving it correctly.
+Strongly suggests the issue is in **how we're handling responses**, not in startup/config. The response handler modification is the smoking gun, but the deep copy approach didn't solve it correctly.
 
-The next person should focus on making response translation more surgical - only touch what needs to be translated, don't wrap everything globally.
+### Recommendations for Next Attempt
+
+The next person should focus on making response translation more surgical:
+1. **Don't wrap everything globally** - Only wrap handlers for devcontainer LSPs
+2. **Only translate if needed** - Don't deep copy unless response contains URIs
+3. **Add detailed logging** - Capture what responses look like before/after translation
+4. **Test incrementally** - Apply one change at a time and verify it doesn't break other LSPs
