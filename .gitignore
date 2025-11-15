@@ -12,3 +12,4 @@ config.symlink/op
 config.symlink/configstore
 config.symlink/cb/api.crunchybridge.com
 config.symlink/cb/certs
+config.symlink/btop/btop.conf
