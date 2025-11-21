@@ -1,5 +1,7 @@
 {
   "includeCoAuthoredBy": false,
   "alwaysThinkingEnabled": true,
-  "includeCoAuthoredBy": false
+  "enabledPlugins": {
+    "superpowers@superpowers-marketplace": true
+  }
 }
