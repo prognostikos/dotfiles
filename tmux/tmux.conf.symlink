@@ -33,6 +33,8 @@ bind -r J resize-pane -D 5
 bind -r K resize-pane -U 5
 bind -r L resize-pane -R 5
 
+bind u display-popup -EE -w 80% -h 80%
+
 # reduce default delay
 set -s escape-time 1
 

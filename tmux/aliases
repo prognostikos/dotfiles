@@ -1,2 +1,3 @@
 alias spr="tmux split-window -h -p 25; tmux send-keys 'simple_prompt; clear' C-m"
 alias spd="tmux split-window -p 25; tmux send-keys 'simple_prompt; clear' C-m"
+alias pu="tmux display-popup -EE -w 80% -h 80%"
