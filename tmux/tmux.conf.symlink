@@ -66,3 +66,7 @@ setw -g window-status-current-format " #I: #W "
 set -g status-bg colour8
 set -g status-fg colour7
 set -g window-status-current-style fg=colour1
+
+# Pane styling - active vs inactive
+set -g window-style 'bg=#292e42'
+set -g window-active-style 'bg=#1a1b26'
