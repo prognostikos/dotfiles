@@ -364,7 +364,7 @@ vim.api.nvim_create_autocmd({ 'FocusGained', 'VimEnter' }, {
 vim.api.nvim_create_autocmd('FocusLost', {
   group = 'focuswindow',
   callback = function()
-    vim.cmd('highlight Normal guibg=#292e42')
+    vim.cmd('highlight Normal guibg=#21222d')
   end,
 })
 
