@@ -47,13 +47,42 @@ zstyle ':vcs_info:git:*' actionformats '[%b+%a]%m'
   fi
 }
 
-# Run vcs_info before each prompt
-precmd() { vcs_info }
+# Fancy precmd: all git checks (staged, unstaged, untracked, unpushed)
+precmd_fancy() {
+  zstyle ':vcs_info:*' check-for-changes true
+  zstyle ':vcs_info:git*+set-message:*' hooks git-untracked git-unpushed git-status-bracket
+  vcs_info
+}
+
+# Minimal precmd: only branch + unpushed commits (fast for large/mounted repos)
+precmd_minimal() {
+  zstyle ':vcs_info:*' check-for-changes false
+  zstyle ':vcs_info:git*+set-message:*' hooks git-unpushed git-status-bracket
+  vcs_info
+}
 
 PROMPT='%F{magenta}${username}${hostname}%F{blue}%.%F{cyan}${vcs_info_msg_0_}%f%# '
 
 local fancy_left=$PROMPT
 local fancy_right=$RPROMPT
 
-fancy_prompt(){ export PROMPT=$fancy_left; export RPROMPT=$fancy_right }
-simple_prompt(){ export PROMPT='%# '; export RPROMPT='' }
+fancy_prompt() {
+  precmd_functions=(precmd_fancy)
+  export PROMPT=$fancy_left
+  export RPROMPT=$fancy_right
+}
+
+minimal_prompt() {
+  precmd_functions=(precmd_minimal)
+  export PROMPT=$fancy_left
+  export RPROMPT=$fancy_right
+}
+
+simple_prompt() {
+  precmd_functions=()
+  export PROMPT='%# '
+  export RPROMPT=''
+}
+
+# Start with fancy prompt by default
+precmd_functions=(precmd_fancy)
