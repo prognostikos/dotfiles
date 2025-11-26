@@ -2,8 +2,8 @@ alias dps="docker ps"
 alias di="docker images"
 alias dr="docker run"
 alias drt="docker run --rm -i -t"
-alias dcu=docker cleanup
-alias dcui=docker cleanupi
+alias dcu=docker-cleanup
+alias dcui=docker-cleanupi
 alias dm="docker machine"
 alias dc="docker compose"
 
