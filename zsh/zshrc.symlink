@@ -118,6 +118,9 @@ fignore=(.o .class .ctxt .obj)
 # pull in all custom completion.sh files
 for completion_file ($ZSH/**/completion.sh) source $completion_file
 
+# bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
 # Speed up path completion
 zstyle ':completion:*' accept-exact '*(N)'
 zstyle ':completion:*' use-cache on
