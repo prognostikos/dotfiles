@@ -1,7 +1,7 @@
 {
   "includeCoAuthoredBy": false,
-  "alwaysThinkingEnabled": true,
   "enabledPlugins": {
     "superpowers@superpowers-marketplace": true
-  }
+  },
+  "alwaysThinkingEnabled": false
 }
