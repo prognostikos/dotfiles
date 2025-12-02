@@ -1,7 +1,8 @@
 {
   "includeCoAuthoredBy": false,
   "enabledPlugins": {
-    "superpowers@superpowers-marketplace": true
+    "superpowers@superpowers-marketplace": true,
+    "feature-dev@claude-code-plugins": true
   },
   "alwaysThinkingEnabled": false
 }
