@@ -63,6 +63,10 @@ if [ -d ~/c/go ]; then
   export PATH="$GOPATH/bin:$PATH"
 fi
 
+if [ -d ~/.bun/bin ]; then
+  export PATH="~/.bun/bin:$PATH"
+fi
+
 export PATH="$HOME/.dotfiles/bin:$PATH"
 
 # deduplicate path entries
