@@ -46,8 +46,24 @@ local function get_container_root()
     return nil
   end
 
-  local json_str = table.concat(content, "\n")
-  local parsed = vim.json.decode(json_str)
+  -- Strip comments and trailing commas (devcontainer.json is JSONC format)
+  local cleaned_lines = {}
+  for _, line in ipairs(content) do
+    -- Remove single-line comments
+    line = line:gsub("//.*$", "")
+    table.insert(cleaned_lines, line)
+  end
+
+  local json_str = table.concat(cleaned_lines, "\n")
+  -- Remove trailing commas before closing braces/brackets (handles newlines)
+  json_str = json_str:gsub(",%s*([}%]])", "%1")
+
+  -- Try to parse, return nil on failure
+  local ok_parse, parsed = pcall(vim.json.decode, json_str)
+  if not ok_parse then
+    vim.notify("devcontainer_helpers: Failed to parse devcontainer.json: " .. tostring(parsed), vim.log.levels.WARN)
+    return nil
+  end
 
   if not parsed then
     return nil
