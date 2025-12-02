@@ -4,8 +4,9 @@ set -euo pipefail
 
 # Usage message
 usage() {
-  echo "Usage: wt <branch-name>"
+  echo "Usage: wt <branch-name> [base-branch]"
   echo "  Create a git worktree in a parallel -worktrees directory"
+  echo "  base-branch defaults to 'master'"
   exit 1
 }
 
@@ -15,6 +16,7 @@ if [ $# -eq 0 ]; then
 fi
 
 BRANCH_NAME="$1"
+BASE_BRANCH="${2:-master}"
 
 # Get current directory name (project name)
 PROJECT_DIR=$(basename "$PWD")
@@ -32,7 +34,7 @@ fi
 # Create git worktree
 WORKTREE_PATH="$WORKTREES_DIR/$BRANCH_NAME"
 echo "Creating git worktree: $WORKTREE_PATH"
-git worktree add -b "$BRANCH_NAME" "$WORKTREE_PATH"
+git worktree add -b "$BRANCH_NAME" "$WORKTREE_PATH" "$BASE_BRANCH"
 
 # Link .env file if it exists
 if [ -f "$PWD/.env" ]; then
