@@ -18,11 +18,12 @@ fi
 BRANCH_NAME="$1"
 BASE_BRANCH="${2:-master}"
 
-# Get current directory name (project name)
-PROJECT_DIR=$(basename "$PWD")
+# Find the main worktree (works from main checkout or any worktree)
+MAIN_WORKTREE=$(git worktree list --porcelain | grep -A2 "^worktree " | head -1 | sed 's/^worktree //')
+PROJECT_DIR=$(basename "$MAIN_WORKTREE")
+PARENT_DIR=$(dirname "$MAIN_WORKTREE")
 
-# Construct worktrees directory path (parallel to current directory)
-PARENT_DIR=$(dirname "$PWD")
+# Construct worktrees directory path (parallel to main worktree)
 WORKTREES_DIR="$PARENT_DIR/${PROJECT_DIR}-worktrees"
 
 # Create worktrees directory if it doesn't exist
@@ -36,14 +37,14 @@ WORKTREE_PATH="$WORKTREES_DIR/$BRANCH_NAME"
 echo "Creating git worktree: $WORKTREE_PATH"
 git worktree add -b "$BRANCH_NAME" "$WORKTREE_PATH" "$BASE_BRANCH"
 
-# Link .env file if it exists
-if [ -f "$PWD/.env" ]; then
+# Link .env file if it exists in main worktree
+if [ -f "$MAIN_WORKTREE/.env" ]; then
   echo "Linking .env file"
-  ln -sf "$PWD/.env" "$WORKTREE_PATH/.env"
+  ln -sf "$MAIN_WORKTREE/.env" "$WORKTREE_PATH/.env"
 fi
 
-# Link .claude directory if it exists
-if [ -d "$PWD/.claude" ]; then
+# Link .claude directory if it exists in main worktree
+if [ -d "$MAIN_WORKTREE/.claude" ]; then
   echo "Linking .claude directory"
-  ln -sf "$PWD/.claude" "$WORKTREE_PATH/.claude"
+  ln -sf "$MAIN_WORKTREE/.claude" "$WORKTREE_PATH/.claude"
 fi
