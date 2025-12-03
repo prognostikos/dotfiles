@@ -7,11 +7,14 @@ fi
 alias vj="${EDITOR:-vim} ~/d/journal.md.pgp"
 alias vw="${EDITOR:-vim} ~/d/wiki/index.md"
 alias wj="${EDITOR:-vim} -c :WikiJournal"
-alias curl="gpg --batch -q -d ~/.netrc.gpg | curl --netrc-file /dev/stdin"
 
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias n=nvim
 alias cal="cal -3Nw"
+
+if [ -f ~/.netrc.gpg ]; then
+  alias curl="gpg --batch -q -d ~/.netrc.gpg | curl --netrc-file /dev/stdin"
+fi
 
 ag() {
   echo "Use rg instead!" >&2
