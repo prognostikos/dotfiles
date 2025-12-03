@@ -223,6 +223,15 @@ vim.diagnostic.config({
   underline = false
 })
 
+vim.filetype.add({
+  filename = {
+    ["aliases"] = "zsh",
+  },
+  pattern = {
+    [".*/aliases"] = "zsh",
+  },
+})
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
