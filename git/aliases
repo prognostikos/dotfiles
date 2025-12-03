@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 alias ga='git add '
 alias gaa='git add --update'
 alias gA='git add --all'

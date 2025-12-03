@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 alias dps="docker ps"
 alias di="docker images"
 alias dr="docker run"

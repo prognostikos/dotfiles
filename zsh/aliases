@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 if ls --color=auto &> /dev/null; then
   alias ls="ls -F --color=auto"
 else
