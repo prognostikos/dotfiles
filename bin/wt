@@ -35,7 +35,15 @@ fi
 # Create git worktree
 WORKTREE_PATH="$WORKTREES_DIR/$BRANCH_NAME"
 echo "Creating git worktree: $WORKTREE_PATH"
-git worktree add -b "$BRANCH_NAME" "$WORKTREE_PATH" "$BASE_BRANCH"
+
+# Check if branch already exists
+if git show-ref --verify --quiet "refs/heads/$BRANCH_NAME"; then
+  echo "Branch '$BRANCH_NAME' already exists, using existing branch"
+  git worktree add "$WORKTREE_PATH" "$BRANCH_NAME"
+else
+  echo "Creating new branch '$BRANCH_NAME' from '$BASE_BRANCH'"
+  git worktree add -b "$BRANCH_NAME" "$WORKTREE_PATH" "$BASE_BRANCH"
+fi
 
 # Link .env file if it exists in main worktree
 if [ -f "$MAIN_WORKTREE/.env" ]; then
