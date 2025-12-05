@@ -1,5 +1,16 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-for i in {0..255}; do
-  printf '\x1b[38;5;%dmcolour%d\x1b[0m\n' $i $i
+total_colors=256
+rows=$(tput lines)
+cols=$(( (total_colors + rows - 1) / rows ))
+
+for row in $(seq 0 $((rows - 1))); do
+  for col in $(seq 0 $((cols - 1))); do
+    color_index=$((col * rows + row))
+    if [[ $color_index -lt $total_colors ]]; then
+      printf '\x1b[38;5;%dmcolour%-3d\x1b[0m  ' "$color_index" "$color_index"
+    fi
+  done
+  printf '\n'
 done
