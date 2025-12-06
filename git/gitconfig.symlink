@@ -6,6 +6,7 @@
 	excludesfile = ~/.gitignore
 	precomposeunicode = true
 	autocrlf = input
+	pager = delta
 [alias]
 	co = checkout
 	ci = commit
@@ -30,6 +31,7 @@
 	; conflictstyle = zdiff3
 	tool = nvim
 	ff = only
+	conflictStyle = zdiff3
 [rebase]
 	autoSquash = true
 	autoStash = true
@@ -94,3 +96,7 @@
 	autocorrect = prompt
 [pull]
 	rebase = true
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
