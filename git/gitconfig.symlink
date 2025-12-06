@@ -6,7 +6,7 @@
 	excludesfile = ~/.gitignore
 	precomposeunicode = true
 	autocrlf = input
-	pager = delta
+	pager = delta --side-by-side
 [alias]
 	co = checkout
 	ci = commit
