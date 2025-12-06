@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# Get list of sessions sorted by activity (most recent first), excluding current session
+sessions=$(tmux list-sessions -F '#{session_activity} #{session_name} #{session_attached}' 2>/dev/null | \
+  grep ' 0$' | \
+  sort -rn | \
+  cut -d ' ' -f 2)
+
+# If no sessions exist, create one with tat
+if [ -z "$sessions" ]; then
+  exec tat
+fi
+
+# Let user select a session
+session_name=$(echo "$sessions" | fzf --reverse --header "Switch to Session" --preview 'tmux capture-pane -pt {}')
+
+# If user cancels fzf, create session with tat
+if [ -z "$session_name" ]; then
+  exec tat
+fi
+
+# Switch to or attach the selected session
+if [ -z "${TMUX:-}" ]; then
+  tmux new-session -As "$session_name"
+else
+  tmux switch-client -t "$session_name"
+fi
