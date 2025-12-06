@@ -44,9 +44,6 @@ vim.opt.timeoutlen = 300
 -- Auto-reload files when changed externally
 vim.opt.autoread = true
 
--- autowrap long lines
-vim.opt.textwidth = 79
-
 -- Configure how new splits should be opened
 vim.opt.splitright = true
 vim.opt.splitbelow = true
