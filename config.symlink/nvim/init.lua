@@ -490,7 +490,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
-
 -- vim.diagnostic.config({
 --   virtual_lines = { current_line = true }
 -- })
@@ -688,15 +687,24 @@ require('lazy').setup({
   -- See `:help gitsigns` to understand what the configuration keys do
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
-    opts = {
-      signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-      },
-    },
+    config = function()
+      require('gitsigns').setup(
+        {
+          signs = {
+            add = { text = '+' },
+            change = { text = '~' },
+            delete = { text = '_' },
+            topdelete = { text = '‾' },
+            changedelete = { text = '~' },
+          },
+          linehl = true
+        }
+      )
+
+      vim.keymap.set('n', '<leader>gp', ':Gitsigns preview_hunk<cr>', {})
+      vim.keymap.set('n', '<leader>gb', ':Gitsigns toggle_current_line_blame<cr>', {})
+      vim.keymap.set('n', '<leader>gb', ':Gitsigns toggle_linehl<cr>', {})
+    end
   },
 
   -- NOTE: Plugins can specify dependencies.
