@@ -144,6 +144,10 @@ if [ -f "$HOME/.cacert.pem" ]; then
   export CURL_CA_BUNDLE="$HOME/.cacert.pem"
 fi
 
+if [ -f "$HOME/.config/lazygit/config.yml" ]; then
+  export LG_CONFIG_FILE="$HOME/.config/lazygit/config.yml"
+fi
+
 if [ -z "$RUNNING_IN_DEVCONTAINER" ]; then
   if ! pgrep -x -u "${USER}" gpg-agent >/dev/null 2>&1; then
     gpg-connect-agent /bye >/dev/null 2>&1
