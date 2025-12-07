@@ -85,7 +85,7 @@ status_str="${staged}${unstaged}${untracked}${unpushed}"
 
 # Format output
 if [[ -n "$status_str" ]]; then
-  echo "#[fg=#9ece6a]${branch}${action}#[fg=#7aa2f7] ${status_str}"
+  echo "#[fg=colour36,bold]${branch}${action}#[fg=#7aa2f7] ${status_str}"
 else
-  echo "#[fg=#9ece6a]${branch}${action}#[fg=#7aa2f7]"
+  echo "#[fg=colour36,bold]${branch}${action}#[fg=#7aa2f7]"
 fi
