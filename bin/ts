@@ -22,7 +22,7 @@ if [ -z "$sessions" ]; then
 fi
 
 # Let user select a session
-session_name=$(echo "$sessions" | fzf --reverse --header "Switch to Session" --preview 'tmux capture-pane -pt {}')
+session_name=$(echo "$sessions" | fzf --reverse --bind=j:down,k:up --header "Switch to Session" --preview 'tmux capture-pane -pt {}')
 
 # If user cancels fzf, create session with tat
 if [ -z "$session_name" ]; then
