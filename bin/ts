@@ -2,15 +2,23 @@
 
 set -euo pipefail
 
+set +e
+
 # Get list of sessions sorted by activity (most recent first), excluding current session
 sessions=$(tmux list-sessions -F '#{session_activity} #{session_name} #{session_attached}' 2>/dev/null | \
   grep ' 0$' | \
   sort -rn | \
   cut -d ' ' -f 2)
 
-# If no sessions exist, create one with tat
+set -e
+
 if [ -z "$sessions" ]; then
-  exec tat
+  if [ -z "${TMUX:-}" ]; then
+    exec tat
+  else
+    tmux display-message -d 750 'No other sessions to switch to'
+    exit
+  fi
 fi
 
 # Let user select a session
