@@ -1,0 +1,91 @@
+#!/bin/bash
+set -euo pipefail
+
+# Exit early if not in a git repo
+if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+  exit 0
+fi
+
+# Get branch name and action state
+branch=$(git symbolic-ref --short HEAD 2>/dev/null || git describe --tags --exact-match 2>/dev/null || git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+action=""
+
+# Check for ongoing git actions
+git_dir=$(git rev-parse --git-dir 2>/dev/null)
+if [ -n "$git_dir" ]; then
+  if [ -f "$git_dir/rebase-merge/interactive" ]; then
+    action="+rebase-i"
+  elif [ -d "$git_dir/rebase-merge" ]; then
+    action="+rebase-m"
+  elif [ -d "$git_dir/rebase-apply" ]; then
+    if [ -f "$git_dir/rebase-apply/rebasing" ]; then
+      action="+rebase"
+    elif [ -f "$git_dir/rebase-apply/applying" ]; then
+      action="+am"
+    else
+      action="+am/rebase"
+    fi
+  elif [ -f "$git_dir/MERGE_HEAD" ]; then
+    action="+merge"
+  elif [ -f "$git_dir/CHERRY_PICK_HEAD" ]; then
+    action="+cherry-pick"
+  elif [ -f "$git_dir/REVERT_HEAD" ]; then
+    action="+revert"
+  elif [ -f "$git_dir/BISECT_LOG" ]; then
+    action="+bisect"
+  fi
+fi
+
+# Initialize status indicators
+staged=""
+unstaged=""
+untracked=""
+unpushed=""
+
+# Get status information
+while IFS= read -r line; do
+  status="${line:0:2}"
+
+  # Check for staged changes (first character)
+  case "${status:0:1}" in
+    M|A|D|R|C)
+      if [[ ! "$staged" =~ A ]]; then
+        staged="#[fg=#9ece6a,bold]A#[nobold]"
+      fi
+      ;;
+  esac
+
+  # Check for unstaged changes (second character)
+  case "${status:1:2}" in
+    M|D)
+      if [[ ! "$unstaged" =~ M ]]; then
+        unstaged="#[fg=#f7768e,bold]M#[nobold]"
+      fi
+      ;;
+  esac
+
+  # Check for untracked files
+  if [[ "$status" == "??" ]]; then
+    if [[ ! "$untracked" =~ "??" ]]; then
+      untracked="#[fg=#7aa2f7,bold]??#[nobold]"
+    fi
+  fi
+done < <(git status --porcelain 2>/dev/null)
+
+# Check for unpushed commits
+if git rev-parse --abbrev-ref '@{upstream}' &>/dev/null; then
+  ahead=$(git rev-list --count '@{upstream}..HEAD' 2>/dev/null || echo "0")
+  if [[ "$ahead" -gt 0 ]]; then
+    unpushed="#[fg=#bb9af7,bold]↑#[nobold]"
+  fi
+fi
+
+# Build status string
+status_str="${staged}${unstaged}${untracked}${unpushed}"
+
+# Format output
+if [[ -n "$status_str" ]]; then
+  echo "#[fg=#9ece6a]${branch}${action}#[fg=#7aa2f7] ${status_str}"
+else
+  echo "#[fg=#9ece6a]${branch}${action}#[fg=#7aa2f7]"
+fi

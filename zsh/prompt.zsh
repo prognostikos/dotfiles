@@ -61,10 +61,17 @@ precmd_minimal() {
   vcs_info
 }
 
+# Tmux precmd: no git info needed (tmux status bar shows full git status)
+precmd_tmux() {
+  # No vcs_info needed - git status is in tmux status bar
+  :
+}
+
 PROMPT='%F{magenta}${username}${hostname}%F{blue}%.%F{cyan}${vcs_info_msg_0_}%f%# '
 
 local fancy_left=$PROMPT
 local fancy_right=$RPROMPT
+local tmux_left='%F{magenta}${username}${hostname}%F{blue}%.%f%# '
 
 fancy_prompt() {
   precmd_functions=(precmd_fancy)
@@ -84,5 +91,11 @@ simple_prompt() {
   export RPROMPT=''
 }
 
-# Start with fancy prompt by default
-precmd_functions=(precmd_fancy)
+# Start with fancy prompt by default, or simplified prompt if in tmux
+if [[ -n "$TMUX" ]]; then
+  precmd_functions=(precmd_tmux)
+  export PROMPT=$tmux_left
+  export RPROMPT=$fancy_right
+else
+  precmd_functions=(precmd_fancy)
+fi
