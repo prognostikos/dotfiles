@@ -56,3 +56,19 @@ if [ -d "$MAIN_WORKTREE/.claude" ]; then
   echo "Linking .claude directory"
   ln -sf "$MAIN_WORKTREE/.claude" "$WORKTREE_PATH/.claude"
 fi
+
+if [ -f "$WORKTREE_PATH/.envrc" ]; then
+  read -r -p "Do you trust the .envrc in the worktree? [y/N]: " response
+  case "$response" in
+    [yY][eE][sS]|[yY])
+      direnv allow "$WORKTREE_PATH"
+      ;;
+    *)
+      false
+      ;;
+  esac
+fi
+
+cd "$WORKTREE_PATH"
+
+tat
