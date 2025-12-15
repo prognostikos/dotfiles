@@ -524,23 +524,34 @@ require('lazy').setup({
     "mfussenegger/nvim-lint",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
-      require("lint").linters_by_ft = {
-        ruby = { "standardrb" },
-        javascript = { "standardjs" },
-        javascriptreact = { "standardjs" },
-        sh = { "shellcheck" },
-        bash = { "shellcheck" },
-        zsh = { "shellcheck" }
-      }
+      local lint = require("lint")
+
+      -- Helper to check if linter is available
+      local function add_linter_if_available(ft, linter_name)
+        if vim.fn.executable(linter_name) == 1 then
+          lint.linters_by_ft[ft] = lint.linters_by_ft[ft] or {}
+          table.insert(lint.linters_by_ft[ft], linter_name)
+        end
+      end
+
+      -- Only configure linters that are actually installed
+      add_linter_if_available("ruby", "standardrb")
+      add_linter_if_available("javascript", "standardjs")
+      add_linter_if_available("javascriptreact", "standardjs")
+      add_linter_if_available("sh", "shellcheck")
+      add_linter_if_available("bash", "shellcheck")
+      add_linter_if_available("zsh", "shellcheck")
 
       -- Configure standardrb to ignore exit code 1 (which means violations found)
-      require("lint").linters.standardrb.ignore_exitcode = true
+      if vim.fn.executable("standardrb") == 1 then
+        lint.linters.standardrb.ignore_exitcode = true
+      end
 
       -- Trigger lint on multiple events
       vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
         group = vim.api.nvim_create_augroup('nvim_lint', { clear = true }),
         callback = function()
-          require("lint").try_lint()
+          lint.try_lint()
         end,
       })
     end
