@@ -1,0 +1,12 @@
+{
+  "name": "dotfiles",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "remoteUser": "dev",
+  "workspaceFolder": "/workspaces/dotfiles",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/dotfiles,type=bind",
+  "remoteEnv": {
+    "PATH": "/home/dev/.bun/bin:${containerEnv:PATH}"
+  }
+}
