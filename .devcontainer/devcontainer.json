@@ -7,6 +7,6 @@
   "workspaceFolder": "/workspaces/dotfiles",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/dotfiles,type=bind",
   "remoteEnv": {
-    "PATH": "/home/dev/.bun/bin:${containerEnv:PATH}"
+    "PATH": "/home/dev/.local/bin:/home/dev/.bun/bin:${containerEnv:PATH}"
   }
 }
