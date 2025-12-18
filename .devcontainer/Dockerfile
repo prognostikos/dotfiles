@@ -1,6 +1,6 @@
 ARG BUN_VERSION="1.3.4"
 ARG GO_VERSION="1.25.4"
-ARG RUBY_VERSION="3.4.7"
+ARG RUBY_VERSION="3.4.8"
 
 FROM golang:$GO_VERSION AS gobuilder
 RUN go install github.com/jackc/sqlfmt/cmd/sqlfmt@latest
