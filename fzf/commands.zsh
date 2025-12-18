@@ -10,9 +10,7 @@ fi
 [[ -n "$FZF_DEFAULT_COMMAND" ]] && export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # colors
-export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
-  --highlight-line \
-  --info=inline-right \
+FZF_DEFAULT_OPTS="--info=inline-right \
   --ansi \
   --layout=reverse \
   --border=none \
@@ -31,8 +29,13 @@ export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
   --color=query:#c0caf5:regular \
   --color=scrollbar:#27a1b9 \
   --color=separator:#ff9e64 \
-  --color=spinner:#ff007c \
-"
+  --color=spinner:#ff007c"
+
+if fzf --help | grep -q 'highlight-line'; then
+  FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS --highlight-line"
+fi
+
+export FZF_DEFAULT_OPTS
 
 if fzf --zsh > /dev/null 2>&1; then
   source <(fzf --zsh)
