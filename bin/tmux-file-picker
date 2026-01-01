@@ -1,0 +1,30 @@
+#!/bin/bash
+# a simplified version of https://github.com/raine/tmux-file-picker
+
+set -euo pipefail
+
+# Find files using fd if available, otherwise find
+if command -v fd > /dev/null 2>&1; then
+  files=$(fd --type f --hidden --follow --exclude .git)
+elif command -v fdfind > /dev/null 2>&1; then
+  files=$(fdfind --type f --hidden --follow --exclude .git)
+else
+  files=$(find . -type f -not -path '*/.git/*' | sed 's|^\./||')
+fi
+
+# Determine preview command
+if command -v bat > /dev/null 2>&1; then
+  preview_cmd='bat --color=always --style=numbers --line-range=:500 {}'
+elif command -v batcat > /dev/null 2>&1; then
+  preview_cmd='batcat --color=always --style=numbers --line-range=:500 {}'
+else
+  preview_cmd='cat {}'
+fi
+
+# Use fzf for selection (multi-select with tab)
+selected=$(echo "$files" | fzf --multi --preview "$preview_cmd" --preview-window=right:50%:wrap) || exit 0
+
+# Send each selected file to tmux pane with @ prefix
+while IFS= read -r file; do
+  tmux send-keys "@$file "
+done <<< "$selected"
