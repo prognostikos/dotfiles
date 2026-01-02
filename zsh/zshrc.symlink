@@ -3,6 +3,7 @@
 export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export CLICOLOR=true
+export COLORTERM=truecolor
 
 export GIT_PS1_SHOWDIRTYSTATE=true
 export GIT_PS1_SHOWUNTRACKEDFILES=true
