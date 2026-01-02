@@ -60,6 +60,10 @@ set -g default-terminal "tmux-256color"
 set -ag terminal-overrides ",*:RGB"
 set -ag terminal-overrides ",*:Tc"
 
+# allow OSC 52 clipboard to pass through to terminal
+set -g set-clipboard on
+set -g allow-passthrough on
+
 ## Tokyo Night
 set -g mode-style "fg=#7aa2f7,bg=#3b4261"
 
