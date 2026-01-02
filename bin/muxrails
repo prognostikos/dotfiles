@@ -15,11 +15,9 @@ fi
 
 tmux rename-window editor
 tmux split-window -d -h -l 80
-
 tmux split-window -d -b -l 10
-tmux set-hook -t :0.0 -g window-resized 'resize-pane -t 0.0 -y 10'
 
-tmux set-hook -t :0.2 -g window-resized 'resize-pane -t 0.2 -x 80'
+tmux set-hook -w -t editor window-resized 'resize-pane -t 0 -y 10 ; resize-pane -t 2 -x 80'
 
 tmux send-keys -t editor "$EDITOR" Enter
 
