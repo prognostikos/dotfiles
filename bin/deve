@@ -52,7 +52,7 @@ if [ "$CURRENT_DIR" != "$MAIN_REPO" ]; then
   PARENT_DIR=$(dirname "$MAIN_REPO")
 
   # Get the relative path from parent directory
-  RELATIVE_PATH=${CURRENT_DIR#$PARENT_DIR/}
+  RELATIVE_PATH=${CURRENT_DIR#"$PARENT_DIR"/}
 
   # Build the container path
   CONTAINER_PATH="/workspaces/$RELATIVE_PATH"
