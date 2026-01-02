@@ -2,6 +2,11 @@
 
 set -euo pipefail
 
+if [ -n "${RUNNING_IN_DEVCONTAINER:-}" ]; then
+  echo "Already inside a devcontainer" >&2
+  exit 1
+fi
+
 if [ $# -eq 0 ]; then
   set -- zsh
 fi
