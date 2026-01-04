@@ -2,7 +2,13 @@
 # print the remaining charge on a macbook
 
 if command -v pmset > /dev/null; then
-  pmset -g 'batt' | tr '\n' ';' | awk '{print $8}' | tr -d ';'
+  batt_info=$(pmset -g 'batt')
+  percent=$(echo "$batt_info" | tr '\n' ';' | awk '{print $8}' | tr -d ';')
+  if echo "$batt_info" | grep -q 'discharging'; then
+    echo "$percent"
+  else
+    echo "⚡${percent}"
+  fi
 else
   echo '!'
 fi
