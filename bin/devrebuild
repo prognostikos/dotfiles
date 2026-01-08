@@ -2,10 +2,79 @@
 
 set -euo pipefail
 
+usage() {
+  echo "Usage: devrebuild [--nuke]"
+  echo ""
+  echo "Rebuild the devcontainer for the current directory."
+  echo ""
+  echo "Options:"
+  echo "  --nuke    Completely remove the devcontainer including volumes before rebuilding"
+  exit 1
+}
+
 DEVCONTAINER_USER=${DEVCONTAINER_USER:-bndev}
+NUKE=false
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --nuke)
+      NUKE=true
+      shift
+      ;;
+    -h|--help)
+      usage
+      ;;
+    *)
+      echo "Unknown option: $1"
+      usage
+      ;;
+  esac
+done
 
 # Get current directory name
 PROJECT_DIR=$(basename "$PWD")
+
+# Nuke existing devcontainer if requested
+if [ "$NUKE" = true ]; then
+  echo "Nuking devcontainer for $PROJECT_DIR..."
+
+  # Check if using docker-compose
+  COMPOSE_FILE=""
+  if [ -f ".devcontainer/compose.yml" ]; then
+    COMPOSE_FILE=".devcontainer/compose.yml"
+  elif [ -f ".devcontainer/docker-compose.yml" ]; then
+    COMPOSE_FILE=".devcontainer/docker-compose.yml"
+  fi
+
+  if [ -n "$COMPOSE_FILE" ]; then
+    echo "Removing containers and volumes via docker compose..."
+    docker compose -f "$COMPOSE_FILE" down -v --remove-orphans
+  else
+    # Fallback for non-compose devcontainers
+    CONTAINER_FILTER="label=devcontainer.local_folder=$PWD"
+    CONTAINER_IDS=$(docker ps -aq --filter "$CONTAINER_FILTER" 2>/dev/null || true)
+    if [ -n "$CONTAINER_IDS" ]; then
+      echo "Removing containers..."
+      # shellcheck disable=SC2086
+      docker rm -f $CONTAINER_IDS
+    else
+      echo "No containers found matching filter: $CONTAINER_FILTER"
+    fi
+
+    VOLUME_FILTER="name=vsc-${PROJECT_DIR}-"
+    VOLUMES=$(docker volume ls -q --filter "$VOLUME_FILTER" 2>/dev/null || true)
+    if [ -n "$VOLUMES" ]; then
+      echo "Removing volumes..."
+      # shellcheck disable=SC2086
+      docker volume rm $VOLUMES
+    else
+      echo "No volumes found matching filter: $VOLUME_FILTER"
+    fi
+  fi
+
+  echo "Nuke complete."
+fi
 
 # Check for parallel worktrees directory
 PARENT_DIR=$(dirname "$PWD")
