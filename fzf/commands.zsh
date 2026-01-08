@@ -37,13 +37,7 @@ fi
 
 export FZF_DEFAULT_OPTS
 
-if fzf --zsh > /dev/null 2>&1; then
-  source <(fzf --zsh)
-else
-  # should be downloaded from github by script/setup
-  source ~/.dotfiles/fzf/key-bindings.zsh
-  source ~/.dotfiles/fzf/completion.zsh
-fi
+# fzf shell integration is sourced in completion.sh (must run after compinit)
 
 # fe [FUZZY PATTERN] - Open the selected file with the default editor
 #   - Bypass fuzzy finder if there's only one match (--select-1)
