@@ -47,17 +47,17 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
 fi
 
-if command -v rbenv > /dev/null; then
-  eval "$(rbenv init - zsh)"
-fi
+# if command -v rbenv > /dev/null; then
+#   eval "$(rbenv init - zsh)"
+# fi
 
 if command -v direnv > /dev/null; then
   eval "$(direnv hook zsh)"
 fi
 
-if command -v mise > /dev/null; then
-  eval "$(mise activate zsh)"
-fi
+# if command -v mise > /dev/null; then
+#   eval "$(mise activate zsh)"
+# fi
 
 if [ -d ~/c/go ]; then
   export GOPATH=~/c/go
