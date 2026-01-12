@@ -9,14 +9,24 @@ alias gd='git diff '
 alias gdc='git diff --cached '
 alias gcb='git checkout -b'
 alias gco='git checkout '
-alias gl="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --since='7 days ago'"
-alias gll="git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%aD) %C(bold blue)<%an>%Creset' --abbrev-commit "
 alias got='git '
 alias get='git '
 alias gcm='git commit -m '
 alias gp='git push '
 alias ged='git edit'
 alias gpf='git push --force-with-lease --force-if-includes'
+
+_git_log_format='%Cred%h%Creset%C(yellow)%d%Creset %s %C(blue)%al%Creset'
+
+gl() {
+  local lines=$(($(tput lines) - 6))
+  local n=$((lines > 20 ? lines : 20))
+  git log --color --pretty=format:"$_git_log_format" --abbrev-commit -n "$n" "$@"
+}
+
+gll() {
+  git log --color --pretty=format:"${_git_log_format} %C(cyan)%cr (%cs)%Creset" --abbrev-commit "$@"
+}
 
 gfx() {
   local default_branch
