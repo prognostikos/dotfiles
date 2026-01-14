@@ -1245,6 +1245,17 @@ require('lazy').setup({
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
 
+  {
+    'hat0uma/csvview.nvim',
+    opts = {
+      parser = {
+        delimiter = {
+          ft = {}
+        }
+      }
+    }
+  },
+
   'tpope/vim-rsi',
 
 }, {
