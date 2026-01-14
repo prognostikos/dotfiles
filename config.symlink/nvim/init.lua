@@ -449,6 +449,15 @@ vim.api.nvim_create_autocmd('FileType', {
   end
 })
 
+-- Enable CsvView for CSV files
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'csv',
+  group = vim.api.nvim_create_augroup('csvview_auto', { clear = true }),
+  callback = function()
+    vim.cmd('CsvViewEnable')
+  end
+})
+
 -- Diag for viewing Diagnostics
 local function show_diagnostics(line)
   line = line or vim.fn.line('.')
