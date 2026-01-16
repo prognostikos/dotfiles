@@ -1,10 +1,10 @@
-ARG BUN_VERSION="1.3.4"
+ARG BUN_VERSION="1.3.6"
 ARG GO_VERSION="1.25.4"
-ARG RUBY_VERSION="3.4.8"
+ARG RUBY_VERSION="4.0.1"
+ARG RUBY_ABI_VERSION="4.0.0"
 
 FROM golang:$GO_VERSION AS gobuilder
 RUN go install github.com/jackc/sqlfmt/cmd/sqlfmt@latest
-RUN go install github.com/steveyegge/beads/cmd/bd@latest
 
 FROM oven/bun:$BUN_VERSION AS bunbuilder
 
@@ -13,23 +13,20 @@ FROM ruby:$RUBY_VERSION-slim-bookworm AS rubybuilder
 FROM heroku/heroku:24-build
 LABEL maintainer="Matt Rohrer <matt@prognostikos.com>"
 
-COPY --from=gobuilder /go/bin/sqlfmt /usr/local/bin/sqlfmt
-COPY --from=gobuilder /go/bin/bd /usr/local/bin/bd
-COPY --from=bunbuilder /usr/local/bin/bun /usr/local/bin/bun
-COPY --from=rubybuilder /usr/local/bin/ruby /usr/local/bin/
-COPY --from=rubybuilder /usr/local/bin/erb /usr/local/bin/
-COPY --from=rubybuilder /usr/local/bin/gem /usr/local/bin/
-COPY --from=rubybuilder /usr/local/bin/irb /usr/local/bin/
-COPY --from=rubybuilder /usr/local/bin/racc /usr/local/bin/
-COPY --from=rubybuilder /usr/local/bin/rdoc /usr/local/bin/
-COPY --from=rubybuilder /usr/local/bin/ri /usr/local/bin/
-COPY --from=rubybuilder /usr/local/lib/libruby.so* /usr/local/lib/
-COPY --from=rubybuilder /usr/local/lib/ruby /usr/local/lib/ruby
+ARG RUBY_ABI_VERSION
 
-ARG BUNDLER_VERSION="2.7.2"
+COPY --from=gobuilder /go/bin/sqlfmt /usr/local/bin/sqlfmt
+COPY --from=bunbuilder /usr/local/bin/bun /usr/local/bin/bun
+COPY --from=rubybuilder /usr/local/bin/ruby /usr/local/bin/ruby
+COPY --from=rubybuilder /usr/local/bin/gem /usr/local/bin/gem
+COPY --from=rubybuilder /usr/local/bin/irb /usr/local/bin/irb
+COPY --from=rubybuilder /usr/local/bin/bundle* /usr/local/bin/
+COPY --from=rubybuilder /usr/local/lib/ruby /usr/local/lib/ruby
+COPY --from=rubybuilder /usr/local/lib/libruby* /usr/local/lib/
+COPY --from=rubybuilder /usr/local/include/ruby-${RUBY_ABI_VERSION} /usr/local/include/ruby-${RUBY_ABI_VERSION}
+
 ARG NEOVIM_VERSION="0.11.5"
 ARG NODE_MAJOR_VERSION="22"
-ARG PHRASE_VERSION="2.49.0"
 
 ARG USERNAME=dev
 ARG USER_UID=2000
@@ -39,8 +36,7 @@ ARG USER_GID=2000
 ARG TARGETPLATFORM
 
 ENV DEBIAN_FRONTEND=noninteractive \
-    NODE_MAJOR_VERSION=${NODE_MAJOR_VERSION} \
-    PHRASE_VERSION=${PHRASE_VERSION}
+    NODE_MAJOR_VERSION=${NODE_MAJOR_VERSION}
 
 USER root
 
@@ -54,7 +50,6 @@ RUN ln /usr/local/bin/bun /usr/local/bin/bunx
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
   bat \
-  bubblewrap \
   ca-certificates \
   cargo \
   dnsutils \
@@ -145,13 +140,12 @@ ENV LD_PRELOAD="/usr/lib/libjemalloc.so.2" \
     LANG=en_US.UTF-8
 
 # Install Ruby gems
-RUN gem install bundler:$BUNDLER_VERSION ruby-lsp ruby-lsp-rails ruby-lsp-rspec
+RUN gem update --system
+RUN gem install bundler ruby-lsp ruby-lsp-rails ruby-lsp-rspec
 
 # add developer user
 RUN groupadd --gid $USER_GID $USERNAME \
   && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
-  && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-  && chmod 0440 /etc/sudoers.d/$USERNAME \
   && chsh -s /usr/bin/zsh $USERNAME
 
 RUN mkdir /workspaces && chown $USERNAME:$USERNAME /workspaces
@@ -166,6 +160,8 @@ RUN echo "postgres:5432:*:postgres:postgres" > ~/.pgpass && chmod 600 ~/.pgpass
 # Install "global" js tools
 RUN bun install --global \
   @anthropic-ai/claude-code \
+  @google/gemini-cli \
+  @openai/codex \
   typescript \
   typescript-language-server \
   vscode-langservers-extracted
