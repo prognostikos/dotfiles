@@ -167,4 +167,8 @@ if [ -z "$RUNNING_IN_DEVCONTAINER" ]; then
   fi
 else
   export CDPATH=/workspaces
+
+  if command -v direnv > /dev/null; then
+    eval "$(direnv export zsh)"
+  fi
 fi
