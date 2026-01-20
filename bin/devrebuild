@@ -12,7 +12,24 @@ usage() {
   exit 1
 }
 
-DEVCONTAINER_USER=${DEVCONTAINER_USER:-bndev}
+# Get remoteUser from devcontainer.json
+get_remote_user() {
+  local devcontainer_json=""
+  if [ -f ".devcontainer/devcontainer.json" ]; then
+    devcontainer_json=".devcontainer/devcontainer.json"
+  elif [ -f ".devcontainer.json" ]; then
+    devcontainer_json=".devcontainer.json"
+  fi
+
+  if [ -n "$devcontainer_json" ]; then
+    jq -r '.remoteUser // empty' "$devcontainer_json"
+  fi
+}
+
+# Priority: DEVCONTAINER_USER env var > devcontainer.json remoteUser > default
+DEVCONTAINER_USER=${DEVCONTAINER_USER:-$(get_remote_user)}
+DEVCONTAINER_USER=${DEVCONTAINER_USER:-vscode}
+
 NUKE=false
 
 # Parse arguments
