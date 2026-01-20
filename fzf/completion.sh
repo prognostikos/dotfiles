@@ -8,4 +8,5 @@ if command -v fzf > /dev/null 2>&1; then
     source ~/.dotfiles/fzf/key-bindings.zsh
     source ~/.dotfiles/fzf/completion.zsh
   fi
+  bindkey '^P' fzf-history-widget
 fi
