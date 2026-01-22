@@ -4,9 +4,9 @@ set -euo pipefail
 
 # Usage message
 usage() {
-  echo "Usage: wt <branch-name> [base-branch]"
-  echo "  Create a git worktree in a parallel -worktrees directory"
-  echo "  base-branch defaults to 'master'"
+  echo "Usage: wt <branch-name> [base-branch]" >&2
+  echo "  Create a git worktree in a parallel -worktrees directory" >&2
+  echo "  base-branch defaults to 'master'" >&2
   exit 1
 }
 
@@ -32,8 +32,23 @@ if [ ! -d "$WORKTREES_DIR" ]; then
   mkdir -p "$WORKTREES_DIR"
 fi
 
-# Create git worktree
 WORKTREE_PATH="$WORKTREES_DIR/$BRANCH_NAME"
+
+# If worktree already exists, just attach to it
+if [ -d "$WORKTREE_PATH" ]; then
+  if git worktree list --porcelain | grep -q "^worktree $WORKTREE_PATH$"; then
+    echo "Worktree already exists: $WORKTREE_PATH"
+    cd "$WORKTREE_PATH"
+    tat
+    exit 0
+  else
+    echo "Error: Directory exists but is not a valid worktree: $WORKTREE_PATH" >&2
+    echo "Remove it manually or use 'git worktree prune' if it's stale" >&2
+    exit 1
+  fi
+fi
+
+# Create git worktree
 echo "Creating git worktree: $WORKTREE_PATH"
 
 # Check if branch already exists
