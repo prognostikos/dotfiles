@@ -1,4 +1,5 @@
 [install]
 # Only install package versions published at least 3 days ago
 minimumReleaseAge = 259200
-minimumReleaseAgeExcludes = ["@anthropic-ai/claude-code"]
+# Except these, which we assume have rigorous security pipelines (?)
+minimumReleaseAgeExcludes = ["@anthropic-ai/claude-code", "@google/gemini-cli", "@openai/codex"]
