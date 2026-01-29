@@ -20,6 +20,8 @@ pane_count=$(tmux display-message -p "#{window_panes}")
 
 if [ "$pane_count" -eq 1 ]; then
   tmux split-window -h -l "$size"
+  script_path=$(realpath "$0")
+  tmux set-hook -w client-resized "run-shell '$script_path'"
 else
   tmux resize-pane -t right -x "$size"
 fi
