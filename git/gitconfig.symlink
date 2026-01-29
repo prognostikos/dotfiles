@@ -24,6 +24,7 @@
 	wip = !git add -u && git commit -m 'WIP'
 	up = !git pull --rebase --prune $@ && git submodule update --init --recursive
 	stash-all = stash save --include-untracked
+	sign-branch = "!f() { base=\"${1:-$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')}\"; git rebase --exec 'git commit --amend -S --no-edit' \"${base:-main}\"; }; f"
 # some goodies from http://yanpritzker.com/git-book/
 [color]
 	ui = auto
