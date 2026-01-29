@@ -1,6 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
+# Prevent lock conflicts with other git operations (rebase, merge, etc.)
+# This tells git to skip optional operations that require index.lock
+export GIT_OPTIONAL_LOCKS=0
+
 # Exit early if not in a git repo
 if ! git rev-parse --is-inside-work-tree &>/dev/null; then
   exit 0
