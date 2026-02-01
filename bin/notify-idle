@@ -1,0 +1,20 @@
+#!/bin/bash
+set -euo pipefail
+
+INPUT=$(cat)
+CWD=$(echo "$INPUT" | jq -r '.cwd')
+
+# Get git branch
+BRANCH=$(cd "$CWD" && git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
+
+# Get tmux session (if in tmux)
+TMUX_SESSION=$(tmux display-message -p '#S' 2>/dev/null || echo "")
+
+# Build message
+if [[ -n "$TMUX_SESSION" ]]; then
+  MSG="$TMUX_SESSION [$BRANCH]"
+else
+  MSG="$BRANCH"
+fi
+
+printf '\033]777;notify;Claude Code;%s ready\007' "$MSG"

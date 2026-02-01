@@ -5,5 +5,18 @@
     "feature-dev@claude-code-plugins": true,
     "frontend-design@claude-code-plugins": true
   },
-  "alwaysThinkingEnabled": true
+  "alwaysThinkingEnabled": true,
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "idle_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-idle"
+          }
+        ]
+      }
+    ]
+  }
 }
