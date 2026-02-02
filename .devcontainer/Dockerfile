@@ -1,4 +1,4 @@
-ARG BUN_VERSION="1.3.6"
+ARG BUN_VERSION="1.3.8"
 ARG GO_VERSION="1.25.4"
 ARG RUBY_VERSION="4.0.1"
 ARG RUBY_ABI_VERSION="4.0.0"
@@ -161,10 +161,7 @@ RUN echo "postgres:5432:*:postgres:postgres" > ~/.pgpass && chmod 600 ~/.pgpass
 RUN bun install --global \
   @anthropic-ai/claude-code \
   @google/gemini-cli \
-  @openai/codex \
-  typescript \
-  typescript-language-server \
-  vscode-langservers-extracted
+  @openai/codex
 
 WORKDIR /workspaces
 
