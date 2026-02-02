@@ -358,21 +358,21 @@ vim.api.nvim_create_autocmd('WinLeave', {
 })
 
 -- change background when switching tmux panes (focus events)
-vim.api.nvim_create_augroup('focuswindow', { clear = true })
-
-vim.api.nvim_create_autocmd({ 'FocusGained', 'VimEnter' }, {
-  group = 'focuswindow',
-  callback = function()
-    vim.cmd('highlight Normal guibg=#1a1b26')
-  end,
-})
-
-vim.api.nvim_create_autocmd('FocusLost', {
-  group = 'focuswindow',
-  callback = function()
-    vim.cmd('highlight Normal guibg=#21222d')
-  end,
-})
+-- vim.api.nvim_create_augroup('focuswindow', { clear = true })
+--
+-- vim.api.nvim_create_autocmd({ 'FocusGained', 'VimEnter' }, {
+--   group = 'focuswindow',
+--   callback = function()
+--     vim.cmd('highlight Normal guibg=#1a1b26')
+--   end,
+-- })
+--
+-- vim.api.nvim_create_autocmd('FocusLost', {
+--   group = 'focuswindow',
+--   callback = function()
+--     vim.cmd('highlight Normal guibg=#21222d')
+--   end,
+-- })
 
 -- restore last cursor position
 vim.api.nvim_create_autocmd({'BufWinEnter','BufReadPost'}, {
