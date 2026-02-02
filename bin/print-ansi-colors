@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# ANSI 16 color names
+names=(
+  "black"
+  "red"
+  "green"
+  "yellow"
+  "blue"
+  "magenta"
+  "cyan"
+  "white"
+  "brightblack"
+  "brightred"
+  "brightgreen"
+  "brightyellow"
+  "brightblue"
+  "brightmagenta"
+  "brightcyan"
+  "brightwhite"
+)
+
+printf "%-14s  %-8s  %s\n" "NAME" "TMUX" "SAMPLE"
+printf "%s\n" "--------------------------------------"
+
+for i in {0..15}; do
+  if [[ $i -eq 0 ]]; then
+    # Print black text in white so it's visible
+    printf '\x1b[38;5;15m%-14s  colour%-2d  \x1b[48;5;0m        \x1b[0m\n' "${names[$i]}" "$i"
+  else
+    printf '\x1b[38;5;%dm%-14s  colour%-2d  ████████\x1b[0m\n' "$i" "${names[$i]}" "$i"
+  fi
+done
