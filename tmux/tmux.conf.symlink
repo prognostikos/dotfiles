@@ -64,6 +64,9 @@ set -ag terminal-overrides ",*:Tc"
 set -g set-clipboard on
 set -g allow-passthrough on
 
+# stay in tmux if there are other sessions
+set-option -g detach-on-destroy no-detached
+
 ## Tokyo Night
 set -g mode-style "fg=#7aa2f7,bg=#3b4261"
 
