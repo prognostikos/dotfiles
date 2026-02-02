@@ -1,6 +1,8 @@
 font-family = SauceCodePro NF
 font-size = 15
 
+# theme = TokyoNight Night
+theme = Dracula
 cursor-style = block
 cursor-color = green
 cursor-style-blink = true
