@@ -54,7 +54,7 @@ while IFS= read -r line; do
   case "${status:0:1}" in
     M|A|D|R|C)
       if [[ ! "$staged" =~ A ]]; then
-        staged="#[fg=#9ece6a,bold]A#[nobold]"
+        staged="#[fg=green,bold]A#[nobold]"
       fi
       ;;
   esac
@@ -63,7 +63,7 @@ while IFS= read -r line; do
   case "${status:1:2}" in
     M|D)
       if [[ ! "$unstaged" =~ M ]]; then
-        unstaged="#[fg=#f7768e,bold]M#[nobold]"
+        unstaged="#[fg=red,bold]M#[nobold]"
       fi
       ;;
   esac
@@ -71,7 +71,7 @@ while IFS= read -r line; do
   # Check for untracked files
   if [[ "$status" == "??" ]]; then
     if [[ ! "$untracked" =~ "??" ]]; then
-      untracked="#[fg=#7aa2f7,bold]??#[nobold]"
+      untracked="#[fg=blue,bold]??#[nobold]"
     fi
   fi
 done < <(git status --porcelain 2>/dev/null)
@@ -80,7 +80,7 @@ done < <(git status --porcelain 2>/dev/null)
 if git rev-parse --abbrev-ref '@{upstream}' &>/dev/null; then
   ahead=$(git rev-list --count '@{upstream}..HEAD' 2>/dev/null || echo "0")
   if [[ "$ahead" -gt 0 ]]; then
-    unpushed="#[fg=#bb9af7,bold]↑#[nobold]"
+    unpushed="#[fg=magenta,bold]↑#[nobold]"
   fi
 fi
 
@@ -89,7 +89,7 @@ status_str="${staged}${unstaged}${untracked}${unpushed}"
 
 # Format output
 if [[ -n "$status_str" ]]; then
-  echo "#[fg=colour36,bold]${branch}${action}#[fg=#7aa2f7] ${status_str}"
+  echo "#[fg=cyan,bold]${branch}${action}#[fg=cyan] ${status_str}"
 else
-  echo "#[fg=colour36,bold]${branch}${action}#[fg=#7aa2f7]"
+  echo "#[fg=cyan,bold]${branch}${action}#[fg=cyan]"
 fi
