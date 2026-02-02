@@ -96,7 +96,7 @@ setw -g window-status-activity-style "underscore,fg=white,bg=black"
 setw -g window-status-separator ""
 setw -g window-status-style "NONE,fg=cyan,bg=black"
 setw -g window-status-format " #I #W #F "
-setw -g window-status-current-format "#[fg=cyan,bg=black,bold] #I #W #F #[default]"
+setw -g window-status-current-format "#[fg=blue,bg=black,bold] #I #W #F #[default]"
 ## /Status bar colors
 
 # Pane styling - active vs inactive
