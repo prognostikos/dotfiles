@@ -9,5 +9,3 @@ cursor-style-blink = true
 
 shell-integration = "zsh"
 shell-integration-features = "no-cursor"
-
-keybind = shift+enter=text:\x1b\r
