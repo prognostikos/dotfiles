@@ -4,7 +4,7 @@ set -e
 set -o pipefail
 
 # Change to the root directory of your dotfiles repository
-cd ~/.dotfiles || exit 1
+cd "${ZSH:-$HOME/.dotfiles}" || exit 1
 
 # Loop through all directories in vim/vim.symlink/bundle
 for dir in vim/vim.symlink/bundle/*/; do

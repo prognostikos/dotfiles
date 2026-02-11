@@ -9,4 +9,4 @@ OFFLINEIMAP_VERSION=8.0.0_2
 PYTHON_VERSION=python3.12
 
 patch /opt/homebrew/Cellar/offlineimap/$OFFLINEIMAP_VERSION/libexec/lib/$PYTHON_VERSION/site-packages/offlineimap/folder/LocalStatusSQLite.py \
-  ~/.dotfiles/offlineimap/offlineimap-pr139.patch
+  "${ZSH:-$HOME/.dotfiles}/offlineimap/offlineimap-pr139.patch"

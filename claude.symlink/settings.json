@@ -1,11 +1,5 @@
 {
   "includeCoAuthoredBy": false,
-  "enabledPlugins": {
-    "superpowers@superpowers-marketplace": true,
-    "feature-dev@claude-code-plugins": true,
-    "frontend-design@claude-code-plugins": true
-  },
-  "alwaysThinkingEnabled": true,
   "hooks": {
     "Notification": [
       {
@@ -18,5 +12,12 @@
         ]
       }
     ]
-  }
+  },
+  "enabledPlugins": {
+    "superpowers@superpowers-marketplace": true,
+    "feature-dev@claude-code-plugins": true,
+    "frontend-design@claude-code-plugins": true
+  },
+  "alwaysThinkingEnabled": true,
+  "model": "opus"
 }

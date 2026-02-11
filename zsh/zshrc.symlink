@@ -1,5 +1,11 @@
 ### ENV
 
+# Detect dotfiles location by following ~/.zshrc symlink
+# Uses zsh's :A modifier to resolve symlinks, :h to get parent directory
+_zshrc="$HOME/.zshrc"
+export ZSH="${_zshrc:A:h:h}"
+unset _zshrc
+
 export LANG=en_US.UTF-8
 export LC_ALL=$LANG
 export CLICOLOR=true
@@ -68,8 +74,8 @@ if [ -d ~/.bun/bin ]; then
   export PATH="$HOME/.bun/bin:$PATH"
 fi
 
-if [ -d ~/.dotfiles/bin ]; then
-  export PATH="$HOME/.dotfiles/bin:$PATH"
+if [ -d "$ZSH/bin" ]; then
+  export PATH="$ZSH/bin:$PATH"
 fi
 
 if [ -d ~/.local/bin ]; then
@@ -86,9 +92,6 @@ if command -v nvim > /dev/null; then
 else
   export EDITOR=vim
 fi
-
-# shortcut to this dotfiles path is $ZSH
-export ZSH=$HOME/.dotfiles
 
 # pull in config files
 for config_file ($ZSH/**/*.zsh) source $config_file

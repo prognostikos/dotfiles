@@ -1,4 +1,18 @@
-source ~/.dotfiles/zsh/zshenv.symlink
+# Detect dotfiles location by following ~/.bashrc symlink
+_resolve_dotfiles_root() {
+  local file="$HOME/.bashrc"
+  while [ -L "$file" ]; do
+    local dir
+    dir="$(cd "$(dirname "$file")" && pwd)"
+    file="$(readlink "$file")"
+    [[ "$file" != /* ]] && file="$dir/$file"
+  done
+  dirname "$(dirname "$(cd "$(dirname "$file")" && pwd)/$(basename "$file")")"
+}
+DOTFILES_ROOT="$(_resolve_dotfiles_root)"
+unset -f _resolve_dotfiles_root
+
+source "$DOTFILES_ROOT/zsh/zshenv.symlink"
 
 # If not running interactively, don't do anything below here
 [ -z "$PS1" ] && return
@@ -18,7 +32,7 @@ HISTFILESIZE=2000
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
-source ~/.dotfiles/zsh/aliases
-source ~/.dotfiles/git/git.zsh
-source ~/.dotfiles/git/aliases
+source "$DOTFILES_ROOT/zsh/aliases"
+source "$DOTFILES_ROOT/git/git.zsh"
+source "$DOTFILES_ROOT/git/aliases"
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
