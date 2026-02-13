@@ -66,6 +66,19 @@ if [ -f "$MAIN_WORKTREE/.env" ]; then
   ln -sf "$MAIN_WORKTREE/.env" "$WORKTREE_PATH/.env"
 fi
 
+# Copy vendor/bundle with hard links if it exists in main worktree
+if [ -d "$MAIN_WORKTREE/vendor/bundle" ]; then
+  echo "Copying vendor/bundle with hard links"
+  mkdir -p "$WORKTREE_PATH/vendor"
+  cp -al "$MAIN_WORKTREE/vendor/bundle" "$WORKTREE_PATH/vendor/"
+fi
+
+# Copy node_modules with hard links if it exists in main worktree
+if [ -d "$MAIN_WORKTREE/node_modules" ]; then
+  echo "Copying node_modules with hard links"
+  cp -al "$MAIN_WORKTREE/node_modules" "$WORKTREE_PATH/"
+fi
+
 if [ -f "$WORKTREE_PATH/.envrc" ]; then
   read -r -p "Do you trust the .envrc in the worktree? [y/N]: " response
   case "$response" in
