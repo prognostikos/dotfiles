@@ -2,95 +2,165 @@
 
 set -euo pipefail
 
-# Usage message
+# Files to symlink from main worktree
+WT_LINK_FILES="${WT_LINK_FILES:-.env}"
+# Directories to copy with hard links from main worktree
+WT_COPY_DIRS="${WT_COPY_DIRS:-vendor/bundle node_modules}"
+
 usage() {
   echo "Usage: wt <branch-name> [base-branch]" >&2
   echo "  Create a git worktree in a parallel -worktrees directory" >&2
-  echo "  base-branch defaults to 'master'" >&2
+  echo "  base-branch defaults to the default branch (auto-detected)" >&2
   exit 1
 }
 
-# Check for required argument
-if [ $# -eq 0 ]; then
+get_main_worktree() {
+  git worktree list --porcelain | grep -A2 "^worktree " | head -1 | sed 's/^worktree //'
+}
+
+select_existing_worktree() {
+  local worktrees main_worktree project_dir formatted selected
+
+  worktrees=$(git worktree list)
+
+  if [ -z "$worktrees" ]; then
+    usage
+  fi
+
+  # If only one worktree and we're in it, show usage
+  if [ "$(echo "$worktrees" | wc -l)" -eq 1 ]; then
+    local only_worktree
+    only_worktree=$(echo "$worktrees" | awk '{print $1}')
+    if [ "$(pwd -P)" = "$(cd "$only_worktree" && pwd -P)" ]; then
+      usage
+    fi
+  fi
+
+  main_worktree=$(get_main_worktree)
+  project_dir=$(basename "$main_worktree")
+
+  formatted=$(echo "$worktrees" | while read -r path commit branch; do
+    if [ "$path" = "$main_worktree" ]; then
+      echo "$path $branch $commit $project_dir"
+    else
+      echo "$path $branch $commit $project_dir-worktrees/$(basename "$path")"
+    fi
+  done)
+
+  if [ -n "${TMUX:-}" ]; then
+    local input output
+    input=$(mktemp)
+    output=$(mktemp)
+    trap 'rm -f "$input" "$output"' EXIT
+    echo "$formatted" > "$input"
+    tmux display-popup -E -w 80% -h 80% \
+      "fzf --with-nth=2.. --prompt='Select worktree: ' < '$input' | awk '{print \$1}' > '$output'"
+    selected=$(cat "$output")
+  else
+    selected=$(echo "$formatted" | fzf --with-nth=2.. --prompt="Select worktree: " | awk '{print $1}')
+  fi
+
+  if [ -z "$selected" ]; then
+    exit 0
+  fi
+
+  cd "$selected"
+  tat
+}
+
+construct_worktree_path() {
+  MAIN_WORKTREE=$(get_main_worktree)
+  PROJECT_DIR=$(basename "$MAIN_WORKTREE")
+  PARENT_DIR=$(dirname "$MAIN_WORKTREE")
+  WORKTREES_DIR="$PARENT_DIR/${PROJECT_DIR}-worktrees"
+  WORKTREE_PATH="$WORKTREES_DIR/$BRANCH_NAME"
+
+  if [ ! -d "$WORKTREES_DIR" ]; then
+    echo "Creating worktrees directory: $WORKTREES_DIR"
+    mkdir -p "$WORKTREES_DIR"
+  fi
+}
+
+attach_to_existing_worktree() {
+  if [ -d "$WORKTREE_PATH" ]; then
+    if git worktree list --porcelain | grep -q "^worktree $WORKTREE_PATH$"; then
+      echo "Worktree already exists: $WORKTREE_PATH"
+      cd "$WORKTREE_PATH"
+      tat
+      exit 0
+    else
+      echo "Error: Directory exists but is not a valid worktree: $WORKTREE_PATH" >&2
+      echo "Remove it manually or use 'git worktree prune' if it's stale" >&2
+      exit 1
+    fi
+  fi
+}
+
+create_new_worktree() {
+  echo "Creating git worktree: $WORKTREE_PATH"
+
+  if git show-ref --verify --quiet "refs/heads/$BRANCH_NAME"; then
+    echo "Branch '$BRANCH_NAME' already exists, using existing branch"
+    git worktree add "$WORKTREE_PATH" "$BRANCH_NAME"
+  else
+    echo "Creating new branch '$BRANCH_NAME' from '$BASE_BRANCH'"
+    git worktree add -b "$BRANCH_NAME" "$WORKTREE_PATH" "$BASE_BRANCH"
+  fi
+}
+
+link_files() {
+  for file in $WT_LINK_FILES; do
+    if [ -f "$MAIN_WORKTREE/$file" ]; then
+      echo "Linking $file"
+      ln -sf "$MAIN_WORKTREE/$file" "$WORKTREE_PATH/$file"
+    fi
+  done
+}
+
+copy_dirs() {
+  for dir in $WT_COPY_DIRS; do
+    if [ -d "$MAIN_WORKTREE/$dir" ]; then
+      echo "Copying $dir with hard links"
+      mkdir -p "$WORKTREE_PATH/$dir"
+      rsync -a --link-dest="$MAIN_WORKTREE/$dir" "$MAIN_WORKTREE/$dir/" "$WORKTREE_PATH/$dir/"
+    fi
+  done
+}
+
+authorize_envrc() {
+  if [ -f "$WORKTREE_PATH/.envrc" ]; then
+    read -r -p "Do you trust the .envrc in the worktree? [y/N]: " response
+    case "$response" in
+      [yY][eE][sS]|[yY])
+        direnv allow "$WORKTREE_PATH"
+        ;;
+      *)
+        ;;
+    esac
+  fi
+}
+
+# Main flow
+
+if [ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ]; then
   usage
 fi
 
+if [ $# -eq 0 ]; then
+  select_existing_worktree
+  exit 0
+fi
+
 BRANCH_NAME="$1"
-BASE_BRANCH="${2:-master}"
+DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo master)
+BASE_BRANCH="${2:-$DEFAULT_BRANCH}"
 
-# Find the main worktree (works from main checkout or any worktree)
-MAIN_WORKTREE=$(git worktree list --porcelain | grep -A2 "^worktree " | head -1 | sed 's/^worktree //')
-PROJECT_DIR=$(basename "$MAIN_WORKTREE")
-PARENT_DIR=$(dirname "$MAIN_WORKTREE")
-
-# Construct worktrees directory path (parallel to main worktree)
-WORKTREES_DIR="$PARENT_DIR/${PROJECT_DIR}-worktrees"
-
-# Create worktrees directory if it doesn't exist
-if [ ! -d "$WORKTREES_DIR" ]; then
-  echo "Creating worktrees directory: $WORKTREES_DIR"
-  mkdir -p "$WORKTREES_DIR"
-fi
-
-WORKTREE_PATH="$WORKTREES_DIR/$BRANCH_NAME"
-
-# If worktree already exists, just attach to it
-if [ -d "$WORKTREE_PATH" ]; then
-  if git worktree list --porcelain | grep -q "^worktree $WORKTREE_PATH$"; then
-    echo "Worktree already exists: $WORKTREE_PATH"
-    cd "$WORKTREE_PATH"
-    tat
-    exit 0
-  else
-    echo "Error: Directory exists but is not a valid worktree: $WORKTREE_PATH" >&2
-    echo "Remove it manually or use 'git worktree prune' if it's stale" >&2
-    exit 1
-  fi
-fi
-
-# Create git worktree
-echo "Creating git worktree: $WORKTREE_PATH"
-
-# Check if branch already exists
-if git show-ref --verify --quiet "refs/heads/$BRANCH_NAME"; then
-  echo "Branch '$BRANCH_NAME' already exists, using existing branch"
-  git worktree add "$WORKTREE_PATH" "$BRANCH_NAME"
-else
-  echo "Creating new branch '$BRANCH_NAME' from '$BASE_BRANCH'"
-  git worktree add -b "$BRANCH_NAME" "$WORKTREE_PATH" "$BASE_BRANCH"
-fi
-
-# Link .env file if it exists in main worktree
-if [ -f "$MAIN_WORKTREE/.env" ]; then
-  echo "Linking .env file"
-  ln -sf "$MAIN_WORKTREE/.env" "$WORKTREE_PATH/.env"
-fi
-
-# Copy vendor/bundle with hard links if it exists in main worktree
-if [ -d "$MAIN_WORKTREE/vendor/bundle" ]; then
-  echo "Copying vendor/bundle with hard links"
-  mkdir -p "$WORKTREE_PATH/vendor"
-  cp -al "$MAIN_WORKTREE/vendor/bundle" "$WORKTREE_PATH/vendor/"
-fi
-
-# Copy node_modules with hard links if it exists in main worktree
-if [ -d "$MAIN_WORKTREE/node_modules" ]; then
-  echo "Copying node_modules with hard links"
-  cp -al "$MAIN_WORKTREE/node_modules" "$WORKTREE_PATH/"
-fi
-
-if [ -f "$WORKTREE_PATH/.envrc" ]; then
-  read -r -p "Do you trust the .envrc in the worktree? [y/N]: " response
-  case "$response" in
-    [yY][eE][sS]|[yY])
-      direnv allow "$WORKTREE_PATH"
-      ;;
-    *)
-      false
-      ;;
-  esac
-fi
+construct_worktree_path
+attach_to_existing_worktree
+create_new_worktree
+link_files
+copy_dirs
+authorize_envrc
 
 cd "$WORKTREE_PATH"
-
 tat
