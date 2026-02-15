@@ -5,12 +5,23 @@ alias gA='git add --all'
 alias gap='git add --patch --all'
 alias gb='git branch '
 alias gc='git commit -v '
-gd() {
-  if [ -n "$TMUX" ] && [ "$(tmux display-message -p '#{pane_width}')" -lt 120 ] && ! git diff --quiet "$@"; then
-    tmux popup -w 90% -h 90% git diff "$@"
+_git_popup() {
+  if [ -n "$TMUX" ] && [ "$(tmux display-message -p '#{pane_width}')" -lt 120 ]; then
+    tmux popup -w 90% -h 90% git "$@"
   else
-    git diff "$@"
+    git "$@"
   fi
+}
+
+gd() {
+  if git diff --quiet "$@"; then
+    return
+  fi
+  _git_popup diff "$@"
+}
+
+gss() {
+  _git_popup show "$@"
 }
 alias gdc='git diff --cached '
 alias gcb='git checkout -b'
