@@ -51,7 +51,8 @@ select_existing_worktree() {
     local input output
     input=$(mktemp)
     output=$(mktemp)
-    trap 'rm -f "$input" "$output"' EXIT
+    # shellcheck disable=SC2064
+    trap "rm -f '$input' '$output'" EXIT
     echo "$formatted" > "$input"
     tmux display-popup -E -w 80% -h 80% \
       "fzf --with-nth=2.. --prompt='Select worktree: ' < '$input' | awk '{print \$1}' > '$output'"
