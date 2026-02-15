@@ -6,7 +6,7 @@ alias gap='git add --patch --all'
 alias gb='git branch '
 alias gc='git commit -v '
 gd() {
-  if [ -n "$TMUX" ] && [ "$(tmux display-message -p '#{pane_width}')" -lt 120 ]; then
+  if [ -n "$TMUX" ] && [ "$(tmux display-message -p '#{pane_width}')" -lt 120 ] && ! git diff --quiet "$@"; then
     tmux popup -w 90% -h 90% git diff "$@"
   else
     git diff "$@"
