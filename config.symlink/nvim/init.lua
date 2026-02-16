@@ -700,6 +700,10 @@ require('lazy').setup({
       if vim.fn.isdirectory(wiki_dir) == 1 then
         vim.g.wiki_root = wiki_path
       end
+
+      vim.keymap.set('n', '<leader>wo', '<cmd>WikiOpen<cr>', {
+        silent = true, desc = '[W]iki [O]pen'
+      })
     end
   },
 
