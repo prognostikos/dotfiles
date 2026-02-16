@@ -1,10 +1,6 @@
 ARG BUN_VERSION="1.3.8"
-ARG GO_VERSION="1.25.4"
 ARG RUBY_VERSION="4.0.1"
 ARG RUBY_ABI_VERSION="4.0.0"
-
-FROM golang:$GO_VERSION AS gobuilder
-RUN go install github.com/jackc/sqlfmt/cmd/sqlfmt@latest
 
 FROM oven/bun:$BUN_VERSION AS bunbuilder
 
@@ -15,7 +11,6 @@ LABEL maintainer="Matt Rohrer <matt@prognostikos.com>"
 
 ARG RUBY_ABI_VERSION
 
-COPY --from=gobuilder /go/bin/sqlfmt /usr/local/bin/sqlfmt
 COPY --from=bunbuilder /usr/local/bin/bun /usr/local/bin/bun
 COPY --from=rubybuilder /usr/local/bin/ruby /usr/local/bin/ruby
 COPY --from=rubybuilder /usr/local/bin/gem /usr/local/bin/gem
@@ -25,7 +20,7 @@ COPY --from=rubybuilder /usr/local/lib/ruby /usr/local/lib/ruby
 COPY --from=rubybuilder /usr/local/lib/libruby* /usr/local/lib/
 COPY --from=rubybuilder /usr/local/include/ruby-${RUBY_ABI_VERSION} /usr/local/include/ruby-${RUBY_ABI_VERSION}
 
-ARG NEOVIM_VERSION="0.11.5"
+ARG NEOVIM_VERSION="0.11.6"
 ARG NODE_MAJOR_VERSION="22"
 
 ARG USERNAME=dev
