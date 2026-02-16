@@ -123,7 +123,9 @@ copy_dirs() {
     if [ -d "$MAIN_WORKTREE/$dir" ]; then
       echo "Copying $dir with hard links"
       mkdir -p "$WORKTREE_PATH/$dir"
-      rsync -a --link-dest="$MAIN_WORKTREE/$dir" "$MAIN_WORKTREE/$dir/" "$WORKTREE_PATH/$dir/"
+      cp -Rc "$MAIN_WORKTREE/$dir/." "$WORKTREE_PATH/$dir/" 2>/dev/null \
+        || cp -rl "$MAIN_WORKTREE/$dir/." "$WORKTREE_PATH/$dir/" 2>/dev/null \
+        || cp -R "$MAIN_WORKTREE/$dir/." "$WORKTREE_PATH/$dir/"
     fi
   done
 }
