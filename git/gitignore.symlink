@@ -3,9 +3,6 @@
 .DS_Store
 tags
 *.class
-/vendor/ruby/
-/vendor/bundle/
-/node_modules/
 custom_plan.rb
 zeus.json
 *.pyc
