@@ -103,3 +103,5 @@
 	navigate = true
 	dark = true
 	syntax-theme = ansi
+[includeIf "gitdir:/workspaces/"]
+	path = ~/.gitconfig-no-sign
