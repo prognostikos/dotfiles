@@ -30,7 +30,9 @@ select_existing_worktree() {
 
   worktrees=$(git worktree list)
 
-  if [ -z "$worktrees" ]; then
+  if [ -z "$worktrees" ] || [ "$(echo "$worktrees" | wc -l)" -eq 1 ]; then
+    echo "No additional worktrees found." >&2
+    echo "" >&2
     usage
   fi
 
