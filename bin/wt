@@ -8,9 +8,16 @@ WT_LINK_FILES="${WT_LINK_FILES:-.env}"
 WT_COPY_DIRS="${WT_COPY_DIRS:-vendor/bundle node_modules}"
 
 usage() {
-  echo "Usage: wt <branch-name> [base-branch]" >&2
-  echo "  Create a git worktree in a parallel -worktrees directory" >&2
-  echo "  base-branch defaults to the default branch (auto-detected)" >&2
+  echo "Usage: wt [<branch-name> [base-branch]]" >&2
+  echo "" >&2
+  echo "  Create a git worktree in a parallel -worktrees directory." >&2
+  echo "  With no arguments, select an existing worktree via fzf." >&2
+  echo "  base-branch defaults to the default branch (auto-detected)." >&2
+  echo "" >&2
+  echo "Environment variables:" >&2
+  echo "  WT_LINK_FILES      Files to symlink from main worktree (default: .env)" >&2
+  echo "  WT_COPY_DIRS       Dirs to copy with hard links (default: vendor/bundle node_modules)" >&2
+  echo "  NEW_WORKTREE_CMD   Command to run after creating a new worktree (default: bin/new-worktree)" >&2
   exit 1
 }
 
@@ -25,15 +32,6 @@ select_existing_worktree() {
 
   if [ -z "$worktrees" ]; then
     usage
-  fi
-
-  # If only one worktree and we're in it, show usage
-  if [ "$(echo "$worktrees" | wc -l)" -eq 1 ]; then
-    local only_worktree
-    only_worktree=$(echo "$worktrees" | awk '{print $1}')
-    if [ "$(pwd -P)" = "$(cd "$only_worktree" && pwd -P)" ]; then
-      usage
-    fi
   fi
 
   main_worktree=$(get_main_worktree)
@@ -143,6 +141,14 @@ authorize_envrc() {
   fi
 }
 
+run_new_worktree_cmd() {
+  local cmd="${NEW_WORKTREE_CMD:-bin/new-worktree}"
+  if [ -x "$WORKTREE_PATH/$cmd" ]; then
+    echo "Running $cmd"
+    (cd "$WORKTREE_PATH" && "./$cmd")
+  fi
+}
+
 # Main flow
 
 if [ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ]; then
@@ -164,6 +170,7 @@ create_new_worktree
 link_files
 copy_dirs
 authorize_envrc
+run_new_worktree_cmd
 
 cd "$WORKTREE_PATH"
 tat
