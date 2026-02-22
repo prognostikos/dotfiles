@@ -7,6 +7,7 @@ export GIT_OPTIONAL_LOCKS=0
 
 # Exit early if not in a git repo
 if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+  echo "#[fg=cyan,bold]⍟"
   exit 0
 fi
 
