@@ -4,7 +4,34 @@
   "hooks": {
     "Notification": [
       {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-idle"
+          }
+        ]
+      },
+      {
         "matcher": "idle_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-idle"
+          }
+        ]
+      },
+      {
+        "matcher": "auth_success",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-idle"
+          }
+        ]
+      },
+      {
+        "matcher": "elicitation_dialog",
         "hooks": [
           {
             "type": "command",

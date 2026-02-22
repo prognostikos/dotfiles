@@ -17,4 +17,19 @@ else
   MSG="$BRANCH"
 fi
 
-printf '\033]777;notify;Claude Code;%s ready\007' "$MSG"
+# Detect if we're behind tmux and need DCS passthrough wrapping.
+# Direct tmux: $TMUX is set. Behind tmux (e.g. devcontainer): $TERM or
+# $RUNNING_IN_DEVCONTAINER signals passthrough is needed.
+needs_passthrough() {
+  [[ -n "${TMUX:-}" ]] ||
+    [[ "${TERM:-}" == tmux* ]] ||
+    [[ "${TERM:-}" == screen* ]] ||
+    [[ -n "${RUNNING_IN_DEVCONTAINER:-}" ]]
+}
+
+if needs_passthrough; then
+  # Wrap OSC 777 in tmux DCS passthrough (ESC characters doubled inside)
+  printf '\033Ptmux;\033\033]777;notify;Claude Code;%s ready\007\033\\' "$MSG"
+else
+  printf '\033]777;notify;Claude Code;%s ready\007' "$MSG"
+fi
