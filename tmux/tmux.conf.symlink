@@ -60,6 +60,10 @@ set -g default-terminal "tmux-256color"
 set -ag terminal-overrides ",*:RGB"
 set -ag terminal-overrides ",*:Tc"
 
+# cursor style passthrough (Se=\E[0 q resets to terminal's configured default)
+set -ag terminal-overrides ',*:Ss=\E[%p1%d q:Se=\E[0 q'
+setw -g cursor-style blinking-block
+
 # allow OSC 52 clipboard to pass through to terminal
 set -g set-clipboard on
 set -g allow-passthrough on
