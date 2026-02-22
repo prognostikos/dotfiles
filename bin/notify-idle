@@ -2,7 +2,8 @@
 set -euo pipefail
 
 INPUT=$(cat)
-CWD=$(echo "$INPUT" | jq -r '.cwd')
+CWD=$(echo "$INPUT" | jq -r '.cwd // empty')
+CWD="${CWD:-$(pwd)}"
 
 # Get git branch
 BRANCH=$(cd "$CWD" && git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")

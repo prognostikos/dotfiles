@@ -2,27 +2,19 @@
   "includeCoAuthoredBy": false,
   "model": "opus",
   "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-idle"
+          }
+        ]
+      }
+    ],
     "Notification": [
       {
         "matcher": "permission_prompt",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "notify-idle"
-          }
-        ]
-      },
-      {
-        "matcher": "idle_prompt",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "notify-idle"
-          }
-        ]
-      },
-      {
-        "matcher": "auth_success",
         "hooks": [
           {
             "type": "command",
