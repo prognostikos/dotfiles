@@ -181,7 +181,7 @@ local function rename_file()
 
   if new_name ~= '' and new_name ~= old_name then
     vim.cmd('saveas ' .. new_name)
-    vim.fn.system('rm ' .. old_name)
+    vim.fn.delete(old_name)
     vim.cmd('redraw!')
   end
 end
@@ -357,23 +357,6 @@ vim.api.nvim_create_autocmd('WinLeave', {
   end,
 })
 
--- change background when switching tmux panes (focus events)
--- vim.api.nvim_create_augroup('focuswindow', { clear = true })
---
--- vim.api.nvim_create_autocmd({ 'FocusGained', 'VimEnter' }, {
---   group = 'focuswindow',
---   callback = function()
---     vim.cmd('highlight Normal guibg=#1a1b26')
---   end,
--- })
---
--- vim.api.nvim_create_autocmd('FocusLost', {
---   group = 'focuswindow',
---   callback = function()
---     vim.cmd('highlight Normal guibg=#21222d')
---   end,
--- })
-
 -- restore last cursor position
 vim.api.nvim_create_autocmd({'BufWinEnter','BufReadPost'}, {
   group = vim.api.nvim_create_augroup('lastmark', { clear = true }),
@@ -499,10 +482,6 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
--- vim.diagnostic.config({
---   virtual_lines = { current_line = true }
--- })
-
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
@@ -606,7 +585,7 @@ require('lazy').setup({
   {
     'ludovicchabant/vim-gutentags',
     config = function()
-      vim.g.guentags_ctags_exclude = {
+      vim.g.gutentags_ctags_exclude = {
         'node_modules/*',
         'vendor/*',
         'public/*',
@@ -950,6 +929,7 @@ require('lazy').setup({
           -- code, if the language server you are using supports them
           --
           -- This may be unwanted, since they displace some of your code
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
             map('<leader>th', function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
@@ -957,16 +937,6 @@ require('lazy').setup({
           end
         end,
       })
-
-      -- Change diagnostic symbols in the sign column (gutter)
-      -- if vim.g.have_nerd_font then
-      --   local signs = { ERROR = '', WARN = '', INFO = '', HINT = '' }
-      --   local diagnostic_signs = {}
-      --   for type, icon in pairs(signs) do
-      --     diagnostic_signs[vim.diagnostic.severity[type]] = icon
-      --   end
-      --   vim.diagnostic.config { signs = { text = diagnostic_signs } }
-      -- end
 
       -- LSP servers and clients are able to communicate to each other what features they support.
       --  By default, Neovim doesn't support everything that is in the LSP specification.
@@ -1201,25 +1171,6 @@ require('lazy').setup({
       }
     end,
   },
-
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
-    init = function()
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      -- vim.cmd.colorscheme 'tokyonight-night'
-
-      -- You can configure highlights by doing something like:
-      -- vim.cmd.hi 'Comment gui=none'
-    end,
-  },
-
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
