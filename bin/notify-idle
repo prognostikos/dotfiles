@@ -27,9 +27,26 @@ needs_passthrough() {
     [[ -n "${RUNNING_IN_DEVCONTAINER:-}" ]]
 }
 
+# Find the controlling terminal - hook commands have stdout captured,
+# so we must write escape sequences directly to the TTY.
+TTY=$(tty 2>/dev/null) || TTY=""
+if [[ -z "$TTY" || "$TTY" == "not a tty" ]]; then
+  # Fall back to the pts that Claude Code's session is using
+  for candidate in /dev/pts/0 /dev/tty; do
+    if [[ -w "$candidate" ]]; then
+      TTY="$candidate"
+      break
+    fi
+  done
+fi
+
+if [[ -z "$TTY" ]]; then
+  exit 0
+fi
+
 if needs_passthrough; then
   # Wrap OSC 777 in tmux DCS passthrough (ESC characters doubled inside)
-  printf '\033Ptmux;\033\033]777;notify;Claude Code;%s ready\007\033\\' "$MSG"
+  printf '\033Ptmux;\033\033]777;notify;Claude Code;%s ready\007\033\\' "$MSG" > "$TTY"
 else
-  printf '\033]777;notify;Claude Code;%s ready\007' "$MSG"
+  printf '\033]777;notify;Claude Code;%s ready\007' "$MSG" > "$TTY"
 fi
