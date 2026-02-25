@@ -1,0 +1,37 @@
+#!/bin/sh
+
+set -eu
+
+base="${1:-$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')}"
+
+if [ -z "$base" ]; then
+  if git show-ref --verify --quiet refs/heads/main; then
+    base="main"
+  elif git show-ref --verify --quiet refs/heads/master; then
+    base="master"
+  else
+    echo "Unable to determine base branch. Pass one explicitly (for example: git sign-branch main)." >&2
+    exit 1
+  fi
+fi
+
+signed_log="$(mktemp)"
+rebase_log="$(mktemp)"
+trap 'rm -f "$signed_log" "$rebase_log"' EXIT INT TERM
+
+export SIGN_BRANCH_SIGNED_LOG="$signed_log"
+
+if ! git rebase --exec 'if [ "$(git show -s --format=%G? HEAD)" = N ]; then git commit --amend -S --no-edit >>"$SIGN_BRANCH_SIGNED_LOG" 2>&1; fi' "$base" >"$rebase_log" 2>&1; then
+  rebase_errors="$(tr -d '\r' <"$rebase_log" | sed '/Rebasing (/d;/Executing:/d;/^Successfully rebased and updated /d;/^warning: execution failed:/d')"
+  if [ -n "$rebase_errors" ]; then
+    printf '%s\n' "$rebase_errors" >&2
+  fi
+  if [ -s "$signed_log" ]; then
+    cat "$signed_log" >&2
+  fi
+  exit 1
+fi
+
+if [ -s "$signed_log" ]; then
+  cat "$signed_log"
+fi
