@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if ! command -v fzf >/dev/null 2>&1; then
+  echo "fzf is required" >&2
+  exit 1
+fi
+
+if ! git rev-parse --git-dir >/dev/null 2>&1; then
+  echo "Not in a git repository" >&2
+  exit 1
+fi
+
+entries=()
+path=''
+head=''
+branch=''
+
+append_entry() {
+  if [ -z "$path" ]; then
+    return
+  fi
+
+  local branch_name
+  if [ -n "$branch" ]; then
+    branch_name="${branch#refs/heads/}"
+  else
+    branch_name="$(basename "$path")"
+  fi
+
+  entries+=("$(printf '%s\t%s\t%s' "$path" "$branch_name" "$head")")
+}
+
+while IFS= read -r line || [ -n "$line" ]; do
+  if [ -z "$line" ]; then
+    append_entry
+    path=''
+    head=''
+    branch=''
+    continue
+  fi
+
+  case "$line" in
+    worktree\ *) path="${line#worktree }" ;;
+    HEAD\ *) head="${line#HEAD }" ;;
+    branch\ *) branch="${line#branch }" ;;
+  esac
+done < <(git worktree list --porcelain)
+
+append_entry
+
+if [ "${#entries[@]}" -eq 0 ]; then
+  echo "No worktrees found." >&2
+  exit 1
+fi
+
+selected="$(
+  printf '%s\n' "${entries[@]}" |
+    fzf --delimiter=$'\t' --with-nth=2.. --prompt='Remove worktree: '
+)" || exit 0
+
+selected_path="${selected%%$'\t'*}"
+selected_rest="${selected#*$'\t'}"
+selected_name="${selected_rest%%$'\t'*}"
+
+# Intentionally no --force so git blocks removal when there are unmerged changes.
+if ! git worktree remove "$selected_path"; then
+  exit 1
+fi
+
+if command -v tmux >/dev/null 2>&1; then
+  if tmux has-session -t "$selected_name" 2>/dev/null; then
+    tmux kill-session -t "$selected_name"
+  fi
+fi

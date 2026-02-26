@@ -32,6 +32,8 @@ alias gcm='git commit -m '
 alias gp='git push '
 alias ged='git edit'
 alias gpf='git push --force-with-lease --force-if-includes'
+alias dwt='git-delete-worktree'
+alias rwt='git-delete-worktree'
 
 _git_log_format='%Cred%h%Creset%C(yellow)%d%Creset %s %C(blue)%al%Creset'
 _git_log_format_verified="${_git_log_format} %C(cyan)%G?%Creset"

@@ -26,40 +26,57 @@ get_main_worktree() {
 }
 
 select_existing_worktree() {
-  local worktrees main_worktree project_dir formatted selected
+  local selected
+  local entries=()
+  local path=''
+  local head=''
+  local branch=''
 
-  worktrees=$(git worktree list)
+  append_entry() {
+    if [ -z "$path" ]; then
+      return
+    fi
 
-  if [ -z "$worktrees" ] || [ "$(echo "$worktrees" | wc -l)" -eq 1 ]; then
+    local name
+    if [ -n "$branch" ]; then
+      name="${branch#refs/heads/}"
+    else
+      name="$(basename "$path")"
+    fi
+
+    entries+=("$(printf '%s\t%s\t%s' "$path" "$name" "$head")")
+  }
+
+  while IFS= read -r line || [ -n "$line" ]; do
+    if [ -z "$line" ]; then
+      append_entry
+      path=''
+      head=''
+      branch=''
+      continue
+    fi
+
+    case "$line" in
+      worktree\ *) path="${line#worktree }" ;;
+      HEAD\ *) head="${line#HEAD }" ;;
+      branch\ *) branch="${line#branch }" ;;
+    esac
+  done < <(git worktree list --porcelain)
+
+  append_entry
+
+  if [ "${#entries[@]}" -le 1 ]; then
     echo "No additional worktrees found." >&2
     echo "" >&2
     usage
   fi
 
-  main_worktree=$(get_main_worktree)
-  project_dir=$(basename "$main_worktree")
+  selected="$(
+    printf '%s\n' "${entries[@]}" |
+      fzf --delimiter=$'\t' --with-nth=2.. --prompt='Select worktree: '
+  )" || exit 0
 
-  formatted=$(echo "$worktrees" | while read -r path commit branch; do
-    if [ "$path" = "$main_worktree" ]; then
-      echo "$path $branch $commit $project_dir"
-    else
-      echo "$path $branch $commit $project_dir-worktrees/$(basename "$path")"
-    fi
-  done)
-
-  if [ -n "${TMUX:-}" ]; then
-    local input output
-    input=$(mktemp)
-    output=$(mktemp)
-    # shellcheck disable=SC2064
-    trap "rm -f '$input' '$output'" EXIT
-    echo "$formatted" > "$input"
-    tmux display-popup -E -w 80% -h 80% \
-      "fzf --with-nth=2.. --prompt='Select worktree: ' < '$input' | awk '{print \$1}' > '$output'"
-    selected=$(cat "$output")
-  else
-    selected=$(echo "$formatted" | fzf --with-nth=2.. --prompt="Select worktree: " | awk '{print $1}')
-  fi
+  selected="${selected%%$'\t'*}"
 
   if [ -z "$selected" ]; then
     exit 0
