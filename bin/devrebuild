@@ -3,12 +3,13 @@
 set -euo pipefail
 
 usage() {
-  echo "Usage: devrebuild [--nuke]"
+  echo "Usage: devrebuild [--nuke] [--no-cache]"
   echo ""
   echo "Rebuild the devcontainer for the current directory."
   echo ""
   echo "Options:"
-  echo "  --nuke    Completely remove the devcontainer including volumes before rebuilding"
+  echo "  --nuke       Completely remove the devcontainer including volumes before rebuilding"
+  echo "  --no-cache   Build the image without using cache (pulls fresh base image)"
   exit 1
 }
 
@@ -31,12 +32,17 @@ DEVCONTAINER_USER=${DEVCONTAINER_USER:-$(get_remote_user)}
 DEVCONTAINER_USER=${DEVCONTAINER_USER:-vscode}
 
 NUKE=false
+NO_CACHE=false
 
 # Parse arguments
 while [[ $# -gt 0 ]]; do
   case $1 in
     --nuke)
       NUKE=true
+      shift
+      ;;
+    --no-cache)
+      NO_CACHE=true
       shift
       ;;
     -h|--help)
@@ -107,10 +113,16 @@ if [ -d "$WORKTREES_DIR" ]; then
   MOUNT_ARGS+=(--mount "type=bind,source=${WORKTREES_DIR},target=/workspaces/${PROJECT_DIR}-worktrees")
 fi
 
+DEVCONTAINER_ARGS=()
+if [ "$NO_CACHE" = true ]; then
+  DEVCONTAINER_ARGS+=(--build-no-cache)
+fi
+
 devcontainer up \
   --workspace-folder . \
   --remove-existing-container \
   --dotfiles-repository https://github.com/prognostikos/dotfiles \
   --dotfiles-install-command script/setup \
   --dotfiles-target-path "/home/$DEVCONTAINER_USER/.dotfiles" \
-  "${MOUNT_ARGS[@]}"
+  "${MOUNT_ARGS[@]}" \
+  "${DEVCONTAINER_ARGS[@]}"
