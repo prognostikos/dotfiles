@@ -126,4 +126,4 @@ devcontainer up \
   --dotfiles-install-command script/setup \
   --dotfiles-target-path "/home/$DEVCONTAINER_USER/.dotfiles" \
   "${MOUNT_ARGS[@]}" \
-  "${DEVCONTAINER_ARGS[@]}"
+  ${DEVCONTAINER_ARGS[@]+"${DEVCONTAINER_ARGS[@]}"}
