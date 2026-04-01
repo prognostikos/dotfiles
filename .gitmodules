@@ -169,3 +169,6 @@
 [submodule "vim/vim.symlink/bundle/wiki.vim"]
 	path = vim/vim.symlink/bundle/wiki.vim
 	url = https://github.com/lervag/wiki.vim.git
+[submodule "superpowers"]
+	path = superpowers
+	url = https://github.com/prognostikos/superpowers.git
