@@ -1,22 +1,29 @@
 #!/bin/bash
 
-# Disable animations when opening and closing windows.
+# Animation Settings
+
+# Global animation settings
 defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
-
-# Disable animations when opening a Quick Look window.
-defaults write -g QLPanelAnimationDuration -float 0
-
-# Accelerated playback when adjusting the window size (Cocoa applications).
+defaults write NSGlobalDomain NSBrowserColumnAnimationSpeedMultiplier -int 0
+defaults write NSGlobalDomain NSDocumentRevisionsWindowTransformAnimation -int 0
+defaults write NSGlobalDomain NSScrollAnimationEnabled -int 0
+defaults write NSGlobalDomain NSScrollViewRubberbanding -int 0
+defaults write NSGlobalDomain NSToolbarFullScreenAnimationDuration -int 0
 defaults write NSGlobalDomain NSWindowResizeTime -float 0.001
+defaults write NSGlobalDomain QLPanelAnimationDuration -float 0
 
-# Disable animation when opening the Info window in Finder (cmd⌘ + i).
+# Finder animations
 defaults write com.apple.finder DisableAllAnimations -bool true
 
-# Disable animations when you open an application from the Dock.
-defaults write com.apple.dock launchanim -bool false
-
-# Make all animations faster that are used by Mission Control.
+# Dock animations
+defaults write com.apple.dock autohide-delay -float 0
+defaults write com.apple.dock autohide-time-modifier -int 0
 defaults write com.apple.dock expose-animation-duration -float 0.1
+defaults write com.apple.dock launchanim -bool false
+defaults write com.apple.dock mineffect -string "scale"
+defaults write com.apple.dock springboard-hide-duration -int 0
+defaults write com.apple.dock springboard-page-duration -int 0
+defaults write com.apple.dock springboard-show-duration -int 0
 
-# Disable the delay when you hide the Dock
-defaults write com.apple.Dock autohide-delay -float 0
+# Optional accessibility setting
+# defaults write com.apple.Accessibility ReduceMotionEnabled -int 1
