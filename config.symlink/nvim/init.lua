@@ -1189,7 +1189,81 @@ require('lazy').setup({
       'RRethy/nvim-treesitter-endwise'
     },
     build = ':TSUpdate',
-    main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+    config = function(_, opts)
+      if vim.fn.has('nvim-0.12') == 1 then
+        -- Neovim 0.12 may hand directive captures to the frozen nvim-treesitter
+        -- master branch as one-element tables instead of bare TSNodes.
+        local query = require('vim.treesitter.query')
+        local directive_opts = vim.fn.has('nvim-0.10') == 1 and { force = true, all = false } or true
+        local html_script_type_languages = {
+          ["importmap"] = "json",
+          ["module"] = "javascript",
+          ["application/ecmascript"] = "javascript",
+          ["text/ecmascript"] = "javascript",
+        }
+        local non_filetype_match_injection_language_aliases = {
+          ex = "elixir",
+          pl = "perl",
+          sh = "bash",
+          uxn = "uxntal",
+          ts = "typescript",
+        }
+
+        local function unwrap_query_capture(node)
+          if type(node) == 'table' then
+            return node[#node]
+          end
+          return node
+        end
+
+        local function parser_from_markdown_info_string(injection_alias)
+          local match = vim.filetype.match { filename = "a." .. injection_alias }
+          return match or non_filetype_match_injection_language_aliases[injection_alias] or injection_alias
+        end
+
+        query.add_directive("set-lang-from-mimetype!", function(match, _, bufnr, pred, metadata)
+          local node = unwrap_query_capture(match[pred[2]])
+          if not node then
+            return
+          end
+
+          local type_attr_value = vim.treesitter.get_node_text(node, bufnr)
+          local configured = html_script_type_languages[type_attr_value]
+          if configured then
+            metadata["injection.language"] = configured
+          else
+            local parts = vim.split(type_attr_value, "/", {})
+            metadata["injection.language"] = parts[#parts]
+          end
+        end, directive_opts)
+
+        query.add_directive("set-lang-from-info-string!", function(match, _, bufnr, pred, metadata)
+          local node = unwrap_query_capture(match[pred[2]])
+          if not node then
+            return
+          end
+
+          local injection_alias = vim.treesitter.get_node_text(node, bufnr):lower()
+          metadata["injection.language"] = parser_from_markdown_info_string(injection_alias)
+        end, directive_opts)
+
+        query.add_directive("downcase!", function(match, _, bufnr, pred, metadata)
+          local id = pred[2]
+          local node = unwrap_query_capture(match[id])
+          if not node then
+            return
+          end
+
+          local text = vim.treesitter.get_node_text(node, bufnr, { metadata = metadata[id] }) or ""
+          if not metadata[id] then
+            metadata[id] = {}
+          end
+          metadata[id].text = string.lower(text)
+        end, directive_opts)
+      end
+
+      require('nvim-treesitter.configs').setup(opts)
+    end,
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
       ensure_installed = {
