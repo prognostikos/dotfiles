@@ -683,8 +683,16 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>wo', '<cmd>WikiOpen<cr>', {
         silent = true, desc = '[W]iki [O]pen'
       })
+      vim.keymap.set('n', '<leader>wp', '<cmd>WikiPages<cr>', {
+        silent = true, desc = '[W]iki [P]ages'
+      })
+      vim.keymap.set('n', '<leader>wi', '<cmd>WikiIndex<cr>', {
+        silent = true, desc = '[W]iki [I]ndex'
+      })
     end
   },
+
+  { "qadzek/link.vim" },
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
