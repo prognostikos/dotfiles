@@ -107,6 +107,7 @@ WORKTREES_DIR="$PARENT_DIR/${PROJECT_DIR}-worktrees"
 MOUNT_ARGS=(
   --mount "type=bind,source=${HOME}/.claude,target=/home/${DEVCONTAINER_USER}/.claude"
   --mount "type=bind,source=${HOME}/.agents,target=/home/${DEVCONTAINER_USER}/.agents"
+  --mount "type=bind,source=${HOME}/.codex,target=/home/${DEVCONTAINER_USER}/.codex"
 )
 
 # Add worktrees mount if directory exists
