@@ -1185,6 +1185,8 @@ require('lazy').setup({
 
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    branch = 'master',
+    commit = 'cf12346a3414fa1b06af75c79faebe7f76df080a',
     dependencies = {
       'RRethy/nvim-treesitter-endwise'
     },
