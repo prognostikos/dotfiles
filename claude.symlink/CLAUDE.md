@@ -72,3 +72,10 @@ Consider these factors when calculating confidence:
 
 ### Clarification/Question format
 - When asking for clarification, guidance or more context, consider presenting a multiple choice style choice for the user on how to move forward.
+
+## Superpowers Workflow
+
+- When using the Superpowers plugin and an implementation plan is ready, treat the execution choice as already answered: use `superpowers:subagent-driven-development`.
+- Do not ask me whether to use Subagent-Driven or Inline Execution.
+- If subagents are available, immediately execute the plan with `superpowers:subagent-driven-development`.
+- If subagents are unavailable, briefly state that limitation and fall back to `superpowers:executing-plans`.
