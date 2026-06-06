@@ -1,0 +1,13 @@
+model = "gpt-5.5"
+model_reasoning_effort = "xhigh"
+
+[plugins."github@openai-curated"]
+enabled = true
+
+[mcp_servers.appsignal]
+url = "https://appsignal.com/api/mcp"
+bearer_token_env_var = "APPSIGNAL_MCP_TOKEN"
+
+[mcp_servers.chrome-devtools]
+command = "chrome-devtools-mcp"
+args = ["--browser-url=http://127.0.0.1:9222"]

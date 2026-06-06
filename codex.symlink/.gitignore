@@ -1,0 +1,6 @@
+*
+!config.toml
+!skills/
+!skills/**
+skills/.system
+!.gitignore
