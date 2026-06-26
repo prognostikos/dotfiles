@@ -1,5 +1,8 @@
 ### ENV
 
+### uncomment this and the last line for profiling
+#zmodload zsh/zprof
+
 # Detect dotfiles location by following ~/.zshrc symlink
 # Uses zsh's :A modifier to resolve symlinks, :h to get parent directory
 _zshrc="$HOME/.zshrc"
@@ -175,3 +178,6 @@ else
     eval "$(direnv export zsh)"
   fi
 fi
+
+### uncomment this and the first line for profiling
+#zprof
