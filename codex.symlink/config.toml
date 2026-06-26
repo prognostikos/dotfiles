@@ -11,3 +11,6 @@ bearer_token_env_var = "APPSIGNAL_MCP_TOKEN"
 [mcp_servers.chrome-devtools]
 command = "chrome-devtools-mcp"
 args = ["--browser-url=http://127.0.0.1:9222"]
+
+[tui.model_availability_nux]
+"gpt-5.5" = 4
