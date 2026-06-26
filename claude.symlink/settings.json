@@ -43,6 +43,8 @@
     ]
   },
   "alwaysThinkingEnabled": true,
+  "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
-  "theme": "dark"
+  "theme": "dark",
+  "effortLevel": "xhigh"
 }
