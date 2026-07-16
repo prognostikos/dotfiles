@@ -1,5 +1,6 @@
-model = "gpt-5.5"
+model = "gpt-5.6-sol"
 model_reasoning_effort = "xhigh"
+approvals_reviewer = "user"
 
 [plugins."github@openai-curated"]
 enabled = true
@@ -12,5 +13,24 @@ bearer_token_env_var = "APPSIGNAL_MCP_TOKEN"
 command = "chrome-devtools-mcp"
 args = ["--browser-url=http://127.0.0.1:9222"]
 
+[mcp_servers.openaiDeveloperDocs]
+url = "https://developers.openai.com/mcp"
+
 [tui.model_availability_nux]
 "gpt-5.5" = 4
+"gpt-5.6-sol" = 3
+
+[projects."/workspaces/mrclean"]
+trust_level = "trusted"
+
+[projects."/home/bndev/.codex/superpowers"]
+trust_level = "trusted"
+
+[projects."/workspaces/cb2"]
+trust_level = "trusted"
+
+[projects."/workspaces/infra"]
+trust_level = "trusted"
+
+[projects."/workspaces/dotfiles"]
+trust_level = "trusted"

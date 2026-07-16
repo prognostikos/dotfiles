@@ -1,5 +1,6 @@
 {
   "includeCoAuthoredBy": false,
+  "model": "claude-fable-5[1m]",
   "hooks": {
     "Stop": [
       {
@@ -33,8 +34,7 @@
     ]
   },
   "enabledPlugins": {
-    "superpowers@superpowers-dev": true,
-    "ruby-lsp@claude-plugins-official": true
+    "superpowers@superpowers-dev": false
   },
   "spinnerVerbs": {
     "mode": "replace",
@@ -43,8 +43,8 @@
     ]
   },
   "alwaysThinkingEnabled": true,
+  "effortLevel": "xhigh",
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
-  "theme": "dark",
-  "effortLevel": "xhigh"
+  "theme": "dark"
 }
