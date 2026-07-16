@@ -22,7 +22,7 @@ This is a dotfiles repository that manages shell configurations, utilities, and 
 - `tmux-git-status` - Git branch and status indicators for tmux statusline
 
 #### Git Worktrees
-- `wt [branch [base]]` - Create or select a git worktree (uses fzf when no args)
+- `wt [branch [base]]` - Create or select a git worktree in a sibling `<repo>-worktrees` or nested `.worktrees` directory (uses fzf when no args; sibling layout wins if both exist)
 - `fixwt` - Fix broken git worktree references (works on host and in containers)
 
 #### Devcontainers

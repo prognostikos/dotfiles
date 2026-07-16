@@ -2,6 +2,10 @@
 
 set -euo pipefail
 
+# shellcheck source=bin/.worktree-layout
+# shellcheck disable=SC1091
+source "$(dirname "${BASH_SOURCE[0]}")/.worktree-layout"
+
 # Detect environment
 if [ -n "${RUNNING_IN_DEVCONTAINER:-}" ]; then
   ENV="container"
@@ -12,83 +16,91 @@ fi
 # Try to get git info, but handle broken worktrees
 if git rev-parse --git-common-dir &>/dev/null; then
   # Git commands work - we can use them
-  GIT_COMMON_DIR="$(git rev-parse --git-common-dir)"
-  MAIN_REPO="$(cd "$GIT_COMMON_DIR/.." && pwd)"
+  MAIN_REPO="$(wt_main_worktree)"
   CURRENT_DIR="$(git rev-parse --show-toplevel)"
+  if [ "$CURRENT_DIR" != "$MAIN_REPO" ]; then
+    WORKTREE_NAME="$(wt_worktree_id "$CURRENT_DIR")"
+  fi
 else
   # Git commands fail - we're in a broken worktree
   # Use directory structure to find main repo
-  CURRENT_DIR="$(pwd)"
-
-  if [ -f .git ]; then
-    # We're in a worktree - deduce main repo from directory name
-    WORKTREE_NAME="$(basename "$CURRENT_DIR")"
-    PARENT_DIR="$(dirname "$CURRENT_DIR")"
-    PARENT_NAME="$(basename "$PARENT_DIR")"
-
-    # Parent should be something like "mrclean-worktrees"
-    # Main repo is sibling without "-worktrees"
-    REPO_NAME="${PARENT_NAME%-worktrees}"
-    GRANDPARENT_DIR="$(dirname "$PARENT_DIR")"
-    MAIN_REPO="$GRANDPARENT_DIR/$REPO_NAME"
-
-    if [ ! -d "$MAIN_REPO/.git" ]; then
-      echo "Error: Could not find main repo at $MAIN_REPO"
-      exit 1
-    fi
+  if wt_find_broken_worktree "$PWD"; then
+    CURRENT_DIR="$WT_BROKEN_WORKTREE"
+    MAIN_REPO="$WT_BROKEN_MAIN_WORKTREE"
+    WORKTREE_NAME="$(wt_worktree_id "$CURRENT_DIR")"
 
     echo "Detected broken worktree: $WORKTREE_NAME"
     echo "Found main repo: $MAIN_REPO"
   else
     # Assume we're in main repo
-    MAIN_REPO="$(pwd)"
+    MAIN_REPO="$(pwd -P)"
     CURRENT_DIR="$MAIN_REPO"
   fi
 fi
 
-REPO_NAME="$(basename "$MAIN_REPO")"
-PARENT_DIR="$(dirname "$MAIN_REPO")"
+WORKTREES_DIR="$(wt_worktrees_dir "$MAIN_REPO")"
 
 # Determine which worktree to fix
-if [ -n "$WORKTREE_NAME" ]; then
-  # Already determined (broken worktree case)
+if [ -n "${WORKTREE_NAME:-}" ]; then
+  # Already determined from the current worktree.
   echo "Using worktree: $WORKTREE_NAME"
 elif [ "$CURRENT_DIR" == "$MAIN_REPO" ]; then
   # In main repo - need to select worktree
-  readarray -t WORKTREES < <(git worktree list --porcelain |
-    grep '^worktree' |
-    awk '{print $2}' |
-    tail -n +2 |
-    xargs -n1 basename)
+  WORKTREE_PATHS=()
+  WORKTREE_NAMES=()
 
-  if [ ${#WORKTREES[@]} -eq 0 ]; then
+  # Called indirectly by wt_each_worktree.
+  # shellcheck disable=SC2317
+  collect_worktree() {
+    local candidate_path="$2"
+    local candidate_name
+
+    if candidate_name="$(wt_worktree_id "$candidate_path")" &&
+      [ -d "$MAIN_REPO/.git/worktrees/$candidate_name" ]; then
+      WORKTREE_PATHS+=("$candidate_path")
+      WORKTREE_NAMES+=("$candidate_name")
+    fi
+  }
+
+  wt_each_worktree \
+    "$MAIN_REPO" "$WORKTREES_DIR" false collect_worktree
+
+  if [ ${#WORKTREE_PATHS[@]} -eq 0 ]; then
     echo "No worktrees found"
     exit 1
-  elif [ ${#WORKTREES[@]} -eq 1 ]; then
-    WORKTREE_NAME="${WORKTREES[0]}"
-    echo "Found worktree: $WORKTREE_NAME"
+  elif [ ${#WORKTREE_PATHS[@]} -eq 1 ]; then
+    WORKTREE_PATH="${WORKTREE_PATHS[0]}"
+    WORKTREE_NAME="${WORKTREE_NAMES[0]}"
+    echo "Found worktree: ${WORKTREE_PATH#"$WORKTREES_DIR"/}"
   else
     # Use fzf to pick
-    WORKTREE_NAME=$(printf '%s\n' "${WORKTREES[@]}" |
-      fzf --prompt="Select worktree: ")
-    if [ -z "$WORKTREE_NAME" ]; then
+    WORKTREE_PATH=$(printf '%s\n' "${WORKTREE_PATHS[@]}" |
+      fzf --prompt="Select worktree: ") || exit 0
+    if [ -z "$WORKTREE_PATH" ]; then
       echo "No worktree selected"
       exit 1
     fi
+
+    for index in "${!WORKTREE_PATHS[@]}"; do
+      if [ "${WORKTREE_PATHS[$index]}" = "$WORKTREE_PATH" ]; then
+        WORKTREE_NAME="${WORKTREE_NAMES[$index]}"
+        break
+      fi
+    done
   fi
 else
-  # In working worktree - use current
-  WORKTREE_NAME="$(basename "$CURRENT_DIR")"
+  # This is unreachable because linked worktrees are identified above.
+  WORKTREE_NAME="$(wt_worktree_id "$CURRENT_DIR")"
   echo "Using current worktree: $WORKTREE_NAME"
 fi
 
-# Set paths based on environment
-if [ "$ENV" == "container" ]; then
-  MAIN_PATH="/workspaces/$REPO_NAME"
-  WORKTREE_PATH="/workspaces/${REPO_NAME}-worktrees/$WORKTREE_NAME"
-else
-  MAIN_PATH="$MAIN_REPO"
-  WORKTREE_PATH="$PARENT_DIR/${REPO_NAME}-worktrees/$WORKTREE_NAME"
+# The current directory is authoritative when fixwt is run from a linked
+# worktree. From the main checkout, use the preferred layout selected above.
+MAIN_PATH="$MAIN_REPO"
+if [ "$CURRENT_DIR" != "$MAIN_REPO" ]; then
+  WORKTREE_PATH="$CURRENT_DIR"
+elif [ -z "${WORKTREE_PATH:-}" ]; then
+  WORKTREE_PATH="$WORKTREES_DIR/$WORKTREE_NAME"
 fi
 
 # Update gitdir pointer in main repo

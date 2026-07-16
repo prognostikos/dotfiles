@@ -2,6 +2,10 @@
 
 set -euo pipefail
 
+# shellcheck source=bin/.worktree-layout
+# shellcheck disable=SC1091
+source "$(dirname "${BASH_SOURCE[0]}")/.worktree-layout"
+
 if ! command -v fzf >/dev/null 2>&1; then
   echo "fzf is required" >&2
   exit 1
@@ -12,43 +16,33 @@ if ! git rev-parse --git-dir >/dev/null 2>&1; then
   exit 1
 fi
 
+MAIN_WORKTREE="$(wt_main_worktree)"
+WORKTREES_DIR="$(wt_worktrees_dir "$MAIN_WORKTREE")"
+
 entries=()
-path=''
-head=''
-branch=''
 
+# Called indirectly by wt_each_worktree.
+# shellcheck disable=SC2317
 append_entry() {
-  if [ -z "$path" ]; then
-    return
-  fi
-
+  local registered_path="$1"
+  local local_path="$2"
+  local head="$3"
+  local branch="$4"
   local branch_name
+
   if [ -n "$branch" ]; then
     branch_name="${branch#refs/heads/}"
   else
-    branch_name="$(basename "$path")"
+    branch_name="$(basename "$local_path")"
   fi
 
-  entries+=("$(printf '%s\t%s\t%s' "$path" "$branch_name" "$head")")
+  entries+=("$(
+    printf '%s\t%s\t%s' "$registered_path" "$branch_name" "$head"
+  )")
 }
 
-while IFS= read -r line || [ -n "$line" ]; do
-  if [ -z "$line" ]; then
-    append_entry
-    path=''
-    head=''
-    branch=''
-    continue
-  fi
-
-  case "$line" in
-    worktree\ *) path="${line#worktree }" ;;
-    HEAD\ *) head="${line#HEAD }" ;;
-    branch\ *) branch="${line#branch }" ;;
-  esac
-done < <(git worktree list --porcelain)
-
-append_entry
+wt_each_worktree \
+  "$MAIN_WORKTREE" "$WORKTREES_DIR" false append_entry
 
 if [ "${#entries[@]}" -eq 0 ]; then
   echo "No worktrees found." >&2

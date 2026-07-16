@@ -2,6 +2,10 @@
 
 set -euo pipefail
 
+# shellcheck source=bin/.worktree-layout
+# shellcheck disable=SC1091
+source "$(dirname "${BASH_SOURCE[0]}")/.worktree-layout"
+
 usage() {
   echo "Usage: devrebuild [--nuke] [--no-cache]"
   echo ""
@@ -16,20 +20,16 @@ usage() {
 # Get remoteUser from devcontainer.json
 get_remote_user() {
   local devcontainer_json=""
-  if [ -f ".devcontainer/devcontainer.json" ]; then
-    devcontainer_json=".devcontainer/devcontainer.json"
-  elif [ -f ".devcontainer.json" ]; then
-    devcontainer_json=".devcontainer.json"
+  if [ -f "$MAIN_REPO/.devcontainer/devcontainer.json" ]; then
+    devcontainer_json="$MAIN_REPO/.devcontainer/devcontainer.json"
+  elif [ -f "$MAIN_REPO/.devcontainer.json" ]; then
+    devcontainer_json="$MAIN_REPO/.devcontainer.json"
   fi
 
   if [ -n "$devcontainer_json" ]; then
     jq -r '.remoteUser // empty' "$devcontainer_json"
   fi
 }
-
-# Priority: DEVCONTAINER_USER env var > devcontainer.json remoteUser > default
-DEVCONTAINER_USER=${DEVCONTAINER_USER:-$(get_remote_user)}
-DEVCONTAINER_USER=${DEVCONTAINER_USER:-vscode}
 
 NUKE=false
 NO_CACHE=false
@@ -55,8 +55,23 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# Get current directory name
-PROJECT_DIR=$(basename "$PWD")
+# Resolve the main checkout even when invoked from a linked worktree whose Git
+# pointers currently refer to the other side of the host/container boundary.
+if git rev-parse --git-common-dir &>/dev/null; then
+  MAIN_REPO="$(wt_main_worktree)"
+elif wt_find_broken_worktree "$PWD"; then
+  MAIN_REPO="$WT_BROKEN_MAIN_WORKTREE"
+else
+  MAIN_REPO="$(pwd -P)"
+fi
+
+PROJECT_DIR="$(basename "$MAIN_REPO")"
+WORKTREES_DIR="$(wt_worktrees_dir "$MAIN_REPO")"
+SIBLING_WORKTREES_DIR="$(dirname "$MAIN_REPO")/${PROJECT_DIR}-worktrees"
+
+# Priority: DEVCONTAINER_USER env var > devcontainer.json remoteUser > default
+DEVCONTAINER_USER=${DEVCONTAINER_USER:-$(get_remote_user)}
+DEVCONTAINER_USER=${DEVCONTAINER_USER:-vscode}
 
 # Nuke existing devcontainer if requested
 if [ "$NUKE" = true ]; then
@@ -64,10 +79,10 @@ if [ "$NUKE" = true ]; then
 
   # Check if using docker-compose
   COMPOSE_FILE=""
-  if [ -f ".devcontainer/compose.yml" ]; then
-    COMPOSE_FILE=".devcontainer/compose.yml"
-  elif [ -f ".devcontainer/docker-compose.yml" ]; then
-    COMPOSE_FILE=".devcontainer/docker-compose.yml"
+  if [ -f "$MAIN_REPO/.devcontainer/compose.yml" ]; then
+    COMPOSE_FILE="$MAIN_REPO/.devcontainer/compose.yml"
+  elif [ -f "$MAIN_REPO/.devcontainer/docker-compose.yml" ]; then
+    COMPOSE_FILE="$MAIN_REPO/.devcontainer/docker-compose.yml"
   fi
 
   if [ -n "$COMPOSE_FILE" ]; then
@@ -75,7 +90,7 @@ if [ "$NUKE" = true ]; then
     docker compose -f "$COMPOSE_FILE" down -v --remove-orphans
   else
     # Fallback for non-compose devcontainers
-    CONTAINER_FILTER="label=devcontainer.local_folder=$PWD"
+    CONTAINER_FILTER="label=devcontainer.local_folder=$MAIN_REPO"
     CONTAINER_IDS=$(docker ps -aq --filter "$CONTAINER_FILTER" 2>/dev/null || true)
     if [ -n "$CONTAINER_IDS" ]; then
       echo "Removing containers..."
@@ -99,10 +114,6 @@ if [ "$NUKE" = true ]; then
   echo "Nuke complete."
 fi
 
-# Check for parallel worktrees directory
-PARENT_DIR=$(dirname "$PWD")
-WORKTREES_DIR="$PARENT_DIR/${PROJECT_DIR}-worktrees"
-
 # Build mount arguments
 MOUNT_ARGS=(
   --mount "type=bind,source=${HOME}/.claude,target=/home/${DEVCONTAINER_USER}/.claude"
@@ -110,8 +121,9 @@ MOUNT_ARGS=(
   --mount "type=bind,source=${HOME}/.codex,target=/home/${DEVCONTAINER_USER}/.codex"
 )
 
-# Add worktrees mount if directory exists
-if [ -d "$WORKTREES_DIR" ]; then
+# A nested .worktrees directory is already included in the main workspace bind.
+# Only the sibling layout needs an additional mount.
+if [ "$WORKTREES_DIR" = "$SIBLING_WORKTREES_DIR" ] && [ -d "$WORKTREES_DIR" ]; then
   MOUNT_ARGS+=(--mount "type=bind,source=${WORKTREES_DIR},target=/workspaces/${PROJECT_DIR}-worktrees")
 fi
 
@@ -121,7 +133,7 @@ if [ "$NO_CACHE" = true ]; then
 fi
 
 devcontainer up \
-  --workspace-folder . \
+  --workspace-folder "$MAIN_REPO" \
   --remove-existing-container \
   --dotfiles-repository https://github.com/prognostikos/dotfiles \
   --dotfiles-install-command script/setup \

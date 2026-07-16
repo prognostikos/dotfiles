@@ -1,0 +1,194 @@
+# shellcheck shell=bash disable=SC2034
+
+# Shared helpers for scripts that support the sibling <repo>-worktrees and
+# repository-local <repo>/.worktrees layouts.
+
+wt_main_worktree() {
+  local git_common_dir
+
+  git_common_dir="$(git rev-parse --git-common-dir 2>/dev/null)" || return 1
+  (cd "$git_common_dir/.." && pwd -P)
+}
+
+wt_worktrees_dir() {
+  local main_worktree="${1%/}"
+  local parent_dir
+  local project_dir
+  local sibling_dir
+  local nested_dir
+
+  parent_dir="$(dirname "$main_worktree")"
+  project_dir="$(basename "$main_worktree")"
+  sibling_dir="$parent_dir/${project_dir}-worktrees"
+  nested_dir="$main_worktree/.worktrees"
+
+  if [ -d "$sibling_dir" ] && [ -d "$nested_dir" ]; then
+    echo "Warning: Both worktree directories exist; using $sibling_dir instead of $nested_dir." >&2
+  fi
+
+  if [ -d "$sibling_dir" ]; then
+    printf '%s\n' "$sibling_dir"
+  elif [ -d "$nested_dir" ]; then
+    printf '%s\n' "$nested_dir"
+  else
+    # Preserve the historical default when neither layout exists yet.
+    printf '%s\n' "$sibling_dir"
+  fi
+}
+
+# Translate a path recorded by Git into the equivalent path under the selected
+# worktree directory in the current environment. This handles host/container
+# namespace differences such as:
+#
+#   /workspaces/infra/.worktrees/feature
+#   /Users/example/infra/.worktrees/feature
+wt_local_worktree_path() {
+  local registered_path="$1"
+  local main_worktree="${2%/}"
+  local worktrees_dir="${3%/}"
+  local marker
+  local relative_path
+  local local_path
+
+  case "$registered_path" in
+    "$worktrees_dir"/*)
+      relative_path="${registered_path#"$worktrees_dir"/}"
+      ;;
+    *)
+      if [ "$worktrees_dir" = "$main_worktree/.worktrees" ]; then
+        marker="/$(basename "$main_worktree")/.worktrees/"
+      else
+        marker="/$(basename "$worktrees_dir")/"
+      fi
+
+      case "$registered_path" in
+        *"$marker"*) relative_path="${registered_path##*"$marker"}" ;;
+        *) return 1 ;;
+      esac
+      ;;
+  esac
+
+  [ -n "$relative_path" ] || return 1
+  local_path="$worktrees_dir/$relative_path"
+  [ -d "$local_path" ] || return 1
+  printf '%s\n' "$local_path"
+}
+
+wt_worktree_id() {
+  local worktree_path="$1"
+  local gitdir_line
+
+  IFS= read -r gitdir_line < "$worktree_path/.git" || return 1
+  case "$gitdir_line" in
+    gitdir:\ *) basename "${gitdir_line#gitdir: }" ;;
+    *) return 1 ;;
+  esac
+}
+
+# Parse Git's porcelain output once and invoke a callback for each worktree in
+# the selected layout. Callback arguments are:
+#
+#   registered_path local_path head branch is_main
+#
+# registered_path is the namespace stored by Git; local_path is translated for
+# the current host/container environment.
+wt_each_worktree() {
+  local main_worktree="$1"
+  local worktrees_dir="$2"
+  local include_main="$3"
+  local callback="$4"
+  local registered_path=''
+  local local_path
+  local head=''
+  local branch=''
+  local is_main=true
+  local record_is_main
+
+  while IFS= read -r line || [ -n "$line" ]; do
+    if [ -z "$line" ]; then
+      if [ -n "$registered_path" ]; then
+        record_is_main="$is_main"
+        is_main=false
+
+        if [ "$record_is_main" = true ]; then
+          local_path="$main_worktree"
+          if [ "$include_main" = true ]; then
+            "$callback" \
+              "$registered_path" "$local_path" "$head" "$branch" true
+          fi
+        elif local_path="$(
+          wt_local_worktree_path \
+            "$registered_path" "$main_worktree" "$worktrees_dir"
+        )"; then
+          "$callback" \
+            "$registered_path" "$local_path" "$head" "$branch" false
+        fi
+      fi
+
+      registered_path=''
+      head=''
+      branch=''
+      continue
+    fi
+
+    case "$line" in
+      worktree\ *) registered_path="${line#worktree }" ;;
+      HEAD\ *) head="${line#HEAD }" ;;
+      branch\ *) branch="${line#branch }" ;;
+    esac
+  done < <(
+    git worktree list --porcelain
+    printf '\n'
+  )
+}
+
+# Locate a linked worktree whose .git file contains paths from another
+# environment (for example, host paths while running in a devcontainer).
+# Sets WT_BROKEN_MAIN_WORKTREE and WT_BROKEN_WORKTREE when successful.
+wt_find_broken_worktree() {
+  local directory
+  local layout_dir
+  local parent_dir
+  local parent_name
+  local main_worktree
+  local repo_name
+
+  directory="$(cd "${1:-$PWD}" && pwd -P)" || return 1
+
+  while [ "$directory" != "/" ]; do
+    if [ -f "$directory/.git" ]; then
+      layout_dir="$(dirname "$directory")"
+      while [ "$layout_dir" != "/" ]; do
+        parent_name="$(basename "$layout_dir")"
+
+        if [ "$parent_name" = ".worktrees" ]; then
+          main_worktree="$(dirname "$layout_dir")"
+          break
+        fi
+
+        case "$parent_name" in
+          *-worktrees)
+            repo_name="${parent_name%-worktrees}"
+            parent_dir="$(dirname "$layout_dir")"
+            if [ -n "$repo_name" ] &&
+              [ -d "$parent_dir/$repo_name/.git" ]; then
+              main_worktree="$parent_dir/$repo_name"
+              break
+            fi
+            ;;
+        esac
+
+        layout_dir="$(dirname "$layout_dir")"
+      done
+
+      [ -n "${main_worktree:-}" ] && [ -d "$main_worktree/.git" ] || return 1
+      WT_BROKEN_MAIN_WORKTREE="$(cd "$main_worktree" && pwd -P)"
+      WT_BROKEN_WORKTREE="$directory"
+      return 0
+    fi
+
+    directory="$(dirname "$directory")"
+  done
+
+  return 1
+}

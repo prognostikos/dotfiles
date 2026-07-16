@@ -2,6 +2,10 @@
 
 set -euo pipefail
 
+# shellcheck source=bin/.worktree-layout
+# shellcheck disable=SC1091
+source "$(dirname "${BASH_SOURCE[0]}")/.worktree-layout"
+
 # Files to symlink from main worktree
 WT_LINK_FILES="${WT_LINK_FILES:-.env}"
 # Directories to copy with hard links from main worktree
@@ -10,7 +14,8 @@ WT_COPY_DIRS="${WT_COPY_DIRS:-vendor/bundle node_modules}"
 usage() {
   echo "Usage: wt [<branch-name> [base-branch]]" >&2
   echo "" >&2
-  echo "  Create a git worktree in a parallel -worktrees directory." >&2
+  echo "  Create a git worktree in a sibling <repo>-worktrees directory or" >&2
+  echo "  a .worktrees directory inside the main worktree." >&2
   echo "  With no arguments, select an existing worktree via fzf." >&2
   echo "  base-branch defaults to the default branch (auto-detected)." >&2
   echo "" >&2
@@ -21,49 +26,29 @@ usage() {
   exit 1
 }
 
-get_main_worktree() {
-  git worktree list --porcelain | grep -A2 "^worktree " | head -1 | sed 's/^worktree //'
-}
-
 select_existing_worktree() {
   local selected
   local entries=()
-  local path=''
-  local head=''
-  local branch=''
 
+  # Called indirectly by wt_each_worktree.
+  # shellcheck disable=SC2317
   append_entry() {
-    if [ -z "$path" ]; then
-      return
-    fi
-
+    local local_path="$2"
+    local head="$3"
+    local branch="$4"
     local name
+
     if [ -n "$branch" ]; then
       name="${branch#refs/heads/}"
     else
-      name="$(basename "$path")"
+      name="$(basename "$local_path")"
     fi
 
-    entries+=("$(printf '%s\t%s\t%s' "$path" "$name" "$head")")
+    entries+=("$(printf '%s\t%s\t%s' "$local_path" "$name" "$head")")
   }
 
-  while IFS= read -r line || [ -n "$line" ]; do
-    if [ -z "$line" ]; then
-      append_entry
-      path=''
-      head=''
-      branch=''
-      continue
-    fi
-
-    case "$line" in
-      worktree\ *) path="${line#worktree }" ;;
-      HEAD\ *) head="${line#HEAD }" ;;
-      branch\ *) branch="${line#branch }" ;;
-    esac
-  done < <(git worktree list --porcelain)
-
-  append_entry
+  wt_each_worktree \
+    "$MAIN_WORKTREE" "$WORKTREES_DIR" true append_entry
 
   if [ "${#entries[@]}" -le 1 ]; then
     echo "No additional worktrees found." >&2
@@ -87,10 +72,6 @@ select_existing_worktree() {
 }
 
 construct_worktree_path() {
-  MAIN_WORKTREE=$(get_main_worktree)
-  PROJECT_DIR=$(basename "$MAIN_WORKTREE")
-  PARENT_DIR=$(dirname "$MAIN_WORKTREE")
-  WORKTREES_DIR="$PARENT_DIR/${PROJECT_DIR}-worktrees"
   WORKTREE_PATH="$WORKTREES_DIR/$BRANCH_NAME"
 
   if [ ! -d "$WORKTREES_DIR" ]; then
@@ -101,7 +82,22 @@ construct_worktree_path() {
 
 attach_to_existing_worktree() {
   if [ -d "$WORKTREE_PATH" ]; then
-    if git worktree list --porcelain | grep -q "^worktree $WORKTREE_PATH$"; then
+    local is_registered=false
+
+    # Called indirectly by wt_each_worktree.
+    # shellcheck disable=SC2317
+    find_registered_worktree() {
+      local local_path="$2"
+
+      if [ "$local_path" = "$WORKTREE_PATH" ]; then
+        is_registered=true
+      fi
+    }
+
+    wt_each_worktree \
+      "$MAIN_WORKTREE" "$WORKTREES_DIR" false find_registered_worktree
+
+    if [ "$is_registered" = true ]; then
       echo "Worktree already exists: $WORKTREE_PATH"
       cd "$WORKTREE_PATH"
       tat
@@ -173,6 +169,9 @@ run_new_worktree_cmd() {
 if [ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ]; then
   usage
 fi
+
+MAIN_WORKTREE="$(wt_main_worktree)"
+WORKTREES_DIR="$(wt_worktrees_dir "$MAIN_WORKTREE")"
 
 if [ $# -eq 0 ]; then
   select_existing_worktree
