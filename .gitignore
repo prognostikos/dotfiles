@@ -14,3 +14,4 @@ config.symlink/cb/certs
 config.symlink/karabiner/automatic_backups
 tmp/*
 aws.symlink/sso/cache/*
+aws.symlink/cli/cache/*
