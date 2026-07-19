@@ -1,0 +1,124 @@
+#!/bin/bash
+
+set -uo pipefail
+
+remote_name="${1:-}"
+verified_commits=' '
+invalid_commits=0
+range_errors=0
+
+is_zero_oid() {
+  case "$1" in
+    ''|*[!0]*) return 1 ;;
+    *) return 0 ;;
+  esac
+}
+
+signature_description() {
+  case "$1" in
+    N) printf 'unsigned' ;;
+    B) printf 'bad signature' ;;
+    E) printf 'signature could not be checked' ;;
+    X) printf 'expired signature' ;;
+    Y) printf 'signature made with an expired key' ;;
+    R) printf 'signature made with a revoked key' ;;
+    U) printf 'good signature with unknown trust' ;;
+    G) printf 'good signature' ;;
+    *) printf 'unknown signature status' ;;
+  esac
+}
+
+report_invalid_commit() {
+  local commit="$1"
+  local short_oid
+  local subject
+  local signature_status
+
+  short_oid="$(git rev-parse --short "$commit")"
+  subject="$(git show -s --format=%s "$commit")"
+  signature_status="$(git show -s --format=%G? "$commit" 2>/dev/null)"
+
+  if [ "$invalid_commits" -eq 0 ]; then
+    echo "pre-push: refusing to push commits without valid signatures:" >&2
+  fi
+
+  printf '  %s %s (%s)\n' \
+    "$short_oid" "$subject" \
+    "$(signature_description "$signature_status")" >&2
+  invalid_commits=$((invalid_commits + 1))
+}
+
+verify_commit() {
+  local commit="$1"
+
+  case "$verified_commits" in
+    *" $commit "*) return ;;
+  esac
+  verified_commits="$verified_commits$commit "
+
+  if ! git verify-commit "$commit" >/dev/null 2>&1; then
+    report_invalid_commit "$commit"
+  fi
+}
+
+verify_range() {
+  local range_description="$1"
+  shift
+  local commits
+  local commit
+
+  if ! commits="$(git rev-list "$@")"; then
+    echo "pre-push: could not inspect commits for $range_description." >&2
+    range_errors=$((range_errors + 1))
+    return
+  fi
+
+  while IFS= read -r commit; do
+    [ -n "$commit" ] || continue
+    verify_commit "$commit"
+  done <<< "$commits"
+}
+
+while read -r local_ref local_oid remote_ref remote_oid; do
+  [ -n "${local_ref:-}" ] || continue
+
+  # Ref deletions introduce no commits.
+  if is_zero_oid "$local_oid"; then
+    continue
+  fi
+
+  if ! local_commit="$(git rev-parse --verify "$local_oid^{commit}" 2>/dev/null)"; then
+    # A tag can point to a tree or blob, which has no commits to verify.
+    continue
+  fi
+
+  if is_zero_oid "$remote_oid"; then
+    if [ -n "$remote_name" ] &&
+      git remote get-url "$remote_name" >/dev/null 2>&1; then
+      verify_range "$local_ref -> $remote_ref" \
+        "$local_commit" --not "--remotes=$remote_name"
+    else
+      verify_range "$local_ref -> $remote_ref" "$local_commit"
+    fi
+    continue
+  fi
+
+  if ! remote_commit="$(
+    git rev-parse --verify "$remote_oid^{commit}" 2>/dev/null
+  )"; then
+    echo "pre-push: cannot inspect $remote_ref because $remote_oid is unavailable locally." >&2
+    echo "pre-push: fetch the remote and try again." >&2
+    range_errors=$((range_errors + 1))
+    continue
+  fi
+
+  verify_range "$local_ref -> $remote_ref" "$remote_commit..$local_commit"
+done
+
+if [ "$invalid_commits" -gt 0 ]; then
+  echo "pre-push: re-sign these commits before pushing (for example, with git sign-branch)." >&2
+fi
+
+if [ "$invalid_commits" -gt 0 ] || [ "$range_errors" -gt 0 ]; then
+  exit 1
+fi

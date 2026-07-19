@@ -1,37 +1,214 @@
-#!/bin/sh
+#!/bin/bash
 
-set -eu
+set -euo pipefail
 
-base="${1:-$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')}"
+usage() {
+  echo 'Usage: git sign-branch [--all | <base>]' >&2
+}
 
-if [ -z "$base" ]; then
-  if git show-ref --verify --quiet refs/heads/main; then
-    base="main"
-  elif git show-ref --verify --quiet refs/heads/master; then
-    base="master"
+has_signature() {
+  local commit="$1"
+  local line
+
+  while IFS= read -r line; do
+    if [[ -z "$line" ]]; then
+      break
+    fi
+    if [[ "$line" == 'gpgsig '* ]]; then
+      return 0
+    fi
+  done < <(git cat-file commit "$commit")
+
+  return 1
+}
+
+cleanup_temp() {
+  if [[ -n "${temp_dir:-}" && -d "$temp_dir" ]]; then
+    rm -rf "$temp_dir"
+  fi
+}
+
+restore_original_history() {
+  local current_head
+  local current_ref
+
+  if [[ "$mode" != all || "$owns_rebase" != true ]]; then
+    return 0
+  fi
+  if [[ -d "$rebase_merge_path" || -d "$rebase_apply_path" ]]; then
+    if ! git rebase --abort; then
+      return 1
+    fi
+  fi
+
+  current_ref="$(git symbolic-ref --quiet HEAD 2>/dev/null || true)"
+  if [[ "$current_ref" != "$original_ref" ]]; then
+    return 1
+  fi
+
+  current_head="$(git rev-parse HEAD)"
+  if [[ "$current_head" != "$original_head" ]]; then
+    if ! git reset --hard "$original_head"; then
+      return 1
+    fi
+  fi
+
+  [[ "$(git rev-parse HEAD)" == "$original_head" ]]
+}
+
+handle_interrupt() {
+  local abort_status=0
+  local abort_output=''
+
+  trap - EXIT INT
+  if abort_output="$(restore_original_history 2>&1)"; then
+    echo 'Interrupted by INT; restored the original history.' >&2
   else
-    echo "Unable to determine base branch. Pass one explicitly (for example: git sign-branch main)." >&2
-    exit 1
+    abort_status=$?
+    printf 'Interrupted by INT; unable to restore the original history:\n%s\n' \
+      "$abort_output" >&2
+  fi
+  cleanup_temp
+
+  if (( abort_status != 0 )); then
+    exit "$abort_status"
+  fi
+  exit 130
+}
+
+mode=range
+base=''
+owns_rebase=false
+rebase_merge_path=''
+rebase_apply_path=''
+original_head=''
+original_ref=''
+
+if (( $# > 1 )); then
+  usage
+  exit 2
+fi
+
+if (( $# == 1 )); then
+  if [[ "$1" == --all ]]; then
+    mode=all
+  elif [[ "$1" == -* ]]; then
+    usage
+    exit 2
+  else
+    base="$1"
   fi
 fi
 
-signed_log="$(mktemp)"
-rebase_log="$(mktemp)"
-trap 'rm -f "$signed_log" "$rebase_log"' EXIT INT TERM
+if [[ "$mode" == range && -z "$base" ]]; then
+  base="$(
+    git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null \
+      | sed 's@^refs/remotes/origin/@@' || true
+  )"
+
+  if [[ -z "$base" ]]; then
+    if git show-ref --verify --quiet refs/heads/main; then
+      base=main
+    elif git show-ref --verify --quiet refs/heads/master; then
+      base=master
+    else
+      echo "Unable to determine base branch. Pass one explicitly (for example: git sign-branch main)." >&2
+      exit 1
+    fi
+  fi
+fi
+
+oldest_unsigned=''
+if [[ "$mode" == all ]]; then
+  rebase_merge_path="$(git rev-parse --git-path rebase-merge)"
+  rebase_apply_path="$(git rev-parse --git-path rebase-apply)"
+  if [[ -d "$rebase_merge_path" || -d "$rebase_apply_path" ]]; then
+    echo 'Refusing to sign commits while a rebase is already in progress.' >&2
+    exit 1
+  fi
+
+  while read -r commit; do
+    if ! has_signature "$commit"; then
+      oldest_unsigned="$commit"
+      break
+    fi
+  done < <(git rev-list --reverse --topo-order HEAD)
+
+  if [[ -z "$oldest_unsigned" ]]; then
+    exit 0
+  fi
+
+  if ! git diff --quiet -- || ! git diff --cached --quiet --; then
+    echo 'Refusing to sign commits with tracked index or worktree changes.' >&2
+    exit 1
+  fi
+  original_head="$(git rev-parse HEAD)"
+  original_ref="$(git symbolic-ref --quiet HEAD 2>/dev/null || true)"
+fi
+
+temp_dir="$(mktemp -d)"
+trap cleanup_temp EXIT
+if [[ "$mode" == all ]]; then
+  trap handle_interrupt INT
+else
+  trap cleanup_temp INT TERM
+fi
+signed_log="$temp_dir/signed.log"
+rebase_log="$temp_dir/rebase.log"
 
 export SIGN_BRANCH_SIGNED_LOG="$signed_log"
 
-if ! git rebase --exec 'if [ "$(git show -s --format=%G? HEAD)" = N ]; then git commit --amend -S --no-edit >>"$SIGN_BRANCH_SIGNED_LOG" 2>&1; fi' "$base" >"$rebase_log" 2>&1; then
+if [[ "$mode" == all ]]; then
+  sign_command="git commit --amend -S --no-edit --allow-empty >>\"\$SIGN_BRANCH_SIGNED_LOG\" 2>&1"
+  if git rev-parse --verify --quiet "$oldest_unsigned^" >/dev/null; then
+    rebase_command=(
+      git rebase --rebase-merges --no-autosquash --no-update-refs
+      --reapply-cherry-picks
+      --empty=keep --exec "$sign_command"
+      "$oldest_unsigned^"
+    )
+  else
+    rebase_command=(
+      git rebase --rebase-merges --no-autosquash --no-update-refs
+      --reapply-cherry-picks
+      --empty=keep --root --exec "$sign_command"
+    )
+  fi
+else
+  sign_command="if [ \"\$(git show -s --format=%G? HEAD)\" = N ]; then git commit --amend -S --no-edit >>\"\$SIGN_BRANCH_SIGNED_LOG\" 2>&1; fi"
+  rebase_command=(git rebase --exec "$sign_command" "$base")
+fi
+
+if [[ "$mode" == all ]]; then
+  owns_rebase=true
+fi
+
+if ! "${rebase_command[@]}" >"$rebase_log" 2>&1; then
   rebase_errors="$(tr -d '\r' <"$rebase_log" | sed '/Rebasing (/d;/Executing:/d;/^Successfully rebased and updated /d;/^warning: execution failed:/d')"
-  if [ -n "$rebase_errors" ]; then
+  abort_status=0
+  abort_output=''
+  if [[ "$mode" == all ]]; then
+    if abort_output="$(restore_original_history 2>&1)"; then
+      :
+    else
+      abort_status=$?
+    fi
+    owns_rebase=false
+  fi
+  if [[ -n "$rebase_errors" ]]; then
     printf '%s\n' "$rebase_errors" >&2
   fi
-  if [ -s "$signed_log" ]; then
+  if [[ -s "$signed_log" ]]; then
     cat "$signed_log" >&2
+  fi
+  if (( abort_status != 0 )); then
+    printf 'Unable to abort failed rebase:\n%s\n' "$abort_output" >&2
   fi
   exit 1
 fi
 
-if [ -s "$signed_log" ]; then
+owns_rebase=false
+
+if [[ -s "$signed_log" ]]; then
   cat "$signed_log"
 fi
