@@ -13,4 +13,4 @@ config.symlink/cb/api.crunchybridge.com
 config.symlink/cb/certs
 config.symlink/karabiner/automatic_backups
 tmp/*
-aws.symlink/cli/cache
+aws.symlink/sso/cache/*
