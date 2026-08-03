@@ -3,7 +3,8 @@
 set -euo pipefail
 
 usage() {
-  echo 'Usage: git sign-branch [--all | <base>]' >&2
+  echo 'Usage: git sign-branch [<base> [<branch>]]' >&2
+  echo '       git sign-branch --all [<branch>]' >&2
 }
 
 has_signature() {
@@ -26,6 +27,22 @@ cleanup_temp() {
   if [[ -n "${temp_dir:-}" && -d "$temp_dir" ]]; then
     rm -rf "$temp_dir"
   fi
+}
+
+cleanup_worktree() {
+  if [[ -z "${worktree_dir:-}" || ! -d "$worktree_dir" ]]; then
+    return 0
+  fi
+  if [[ -d "$(git -C "$worktree_dir" rev-parse --git-path rebase-merge)" \
+    || -d "$(git -C "$worktree_dir" rev-parse --git-path rebase-apply)" ]]; then
+    git -C "$worktree_dir" rebase --abort >/dev/null 2>&1 || true
+  fi
+  git worktree remove --force "$worktree_dir" >/dev/null 2>&1 || true
+}
+
+cleanup_all() {
+  cleanup_worktree
+  cleanup_temp
 }
 
 restore_original_history() {
@@ -76,28 +93,76 @@ handle_interrupt() {
   exit 130
 }
 
+handle_worktree_interrupt() {
+  trap - EXIT INT
+  cleanup_all
+  echo "Interrupted by INT; branch '$branch' did not change." >&2
+  exit 130
+}
+
 mode=range
 base=''
+branch=''
+use_worktree=false
+worktree_dir=''
+original_tip=''
 owns_rebase=false
 rebase_merge_path=''
 rebase_apply_path=''
 original_head=''
 original_ref=''
 
-if (( $# > 1 )); then
-  usage
-  exit 2
-fi
+positionals=()
+for arg in "$@"; do
+  case "$arg" in
+    --all)
+      mode=all
+      ;;
+    -*)
+      usage
+      exit 2
+      ;;
+    *)
+      positionals+=("$arg")
+      ;;
+  esac
+done
 
-if (( $# == 1 )); then
-  if [[ "$1" == --all ]]; then
-    mode=all
-  elif [[ "$1" == -* ]]; then
+if [[ "$mode" == all ]]; then
+  if (( ${#positionals[@]} > 1 )); then
     usage
     exit 2
-  else
-    base="$1"
   fi
+  branch="${positionals[0]:-}"
+else
+  if (( ${#positionals[@]} > 2 )); then
+    usage
+    exit 2
+  fi
+  base="${positionals[0]:-}"
+  branch="${positionals[1]:-}"
+fi
+
+if [[ -n "$branch" ]]; then
+  if ! git show-ref --verify --quiet "refs/heads/$branch"; then
+    echo "No local branch named '$branch'." >&2
+    exit 1
+  fi
+  current_branch="$(git symbolic-ref --quiet --short HEAD 2>/dev/null || true)"
+  if [[ "$branch" == "$current_branch" ]]; then
+    branch=''
+  else
+    if git worktree list --porcelain | grep -qxF "branch refs/heads/$branch"; then
+      echo "Refusing to sign branch '$branch' because it is checked out in another worktree." >&2
+      exit 1
+    fi
+    use_worktree=true
+  fi
+fi
+
+target=HEAD
+if [[ "$use_worktree" == true ]]; then
+  target="refs/heads/$branch"
 fi
 
 if [[ "$mode" == range && -z "$base" ]]; then
@@ -120,11 +185,13 @@ fi
 
 oldest_unsigned=''
 if [[ "$mode" == all ]]; then
-  rebase_merge_path="$(git rev-parse --git-path rebase-merge)"
-  rebase_apply_path="$(git rev-parse --git-path rebase-apply)"
-  if [[ -d "$rebase_merge_path" || -d "$rebase_apply_path" ]]; then
-    echo 'Refusing to sign commits while a rebase is already in progress.' >&2
-    exit 1
+  if [[ "$use_worktree" != true ]]; then
+    rebase_merge_path="$(git rev-parse --git-path rebase-merge)"
+    rebase_apply_path="$(git rev-parse --git-path rebase-apply)"
+    if [[ -d "$rebase_merge_path" || -d "$rebase_apply_path" ]]; then
+      echo 'Refusing to sign commits while a rebase is already in progress.' >&2
+      exit 1
+    fi
   fi
 
   while read -r commit; do
@@ -132,29 +199,45 @@ if [[ "$mode" == all ]]; then
       oldest_unsigned="$commit"
       break
     fi
-  done < <(git rev-list --reverse --topo-order HEAD)
+  done < <(git rev-list --reverse --topo-order "$target")
 
   if [[ -z "$oldest_unsigned" ]]; then
     exit 0
   fi
 
-  if ! git diff --quiet -- || ! git diff --cached --quiet --; then
-    echo 'Refusing to sign commits with tracked index or worktree changes.' >&2
-    exit 1
+  if [[ "$use_worktree" != true ]]; then
+    if ! git diff --quiet -- || ! git diff --cached --quiet --; then
+      echo 'Refusing to sign commits with tracked index or worktree changes.' >&2
+      exit 1
+    fi
+    original_head="$(git rev-parse HEAD)"
+    original_ref="$(git symbolic-ref --quiet HEAD 2>/dev/null || true)"
   fi
-  original_head="$(git rev-parse HEAD)"
-  original_ref="$(git symbolic-ref --quiet HEAD 2>/dev/null || true)"
 fi
 
 temp_dir="$(mktemp -d)"
-trap cleanup_temp EXIT
-if [[ "$mode" == all ]]; then
+trap cleanup_all EXIT
+if [[ "$use_worktree" == true ]]; then
+  trap handle_worktree_interrupt INT
+elif [[ "$mode" == all ]]; then
   trap handle_interrupt INT
 else
-  trap cleanup_temp INT TERM
+  trap cleanup_all INT TERM
 fi
 signed_log="$temp_dir/signed.log"
 rebase_log="$temp_dir/rebase.log"
+
+run=(git)
+if [[ "$use_worktree" == true ]]; then
+  worktree_dir="$temp_dir/worktree"
+  original_tip="$(git rev-parse "refs/heads/$branch")"
+  if ! git worktree add --detach "$worktree_dir" "refs/heads/$branch" \
+    >"$temp_dir/worktree.log" 2>&1; then
+    cat "$temp_dir/worktree.log" >&2
+    exit 1
+  fi
+  run=(git -C "$worktree_dir")
+fi
 
 export SIGN_BRANCH_SIGNED_LOG="$signed_log"
 
@@ -162,24 +245,28 @@ if [[ "$mode" == all ]]; then
   sign_command="git commit --amend -S --no-edit --allow-empty >>\"\$SIGN_BRANCH_SIGNED_LOG\" 2>&1"
   if git rev-parse --verify --quiet "$oldest_unsigned^" >/dev/null; then
     rebase_command=(
-      git rebase --rebase-merges --no-autosquash --no-update-refs
+      "${run[@]}" rebase --rebase-merges --no-autosquash --no-update-refs
       --reapply-cherry-picks
       --empty=keep --exec "$sign_command"
       "$oldest_unsigned^"
     )
   else
     rebase_command=(
-      git rebase --rebase-merges --no-autosquash --no-update-refs
+      "${run[@]}" rebase --rebase-merges --no-autosquash --no-update-refs
       --reapply-cherry-picks
       --empty=keep --root --exec "$sign_command"
     )
   fi
 else
   sign_command="if [ \"\$(git show -s --format=%G? HEAD)\" = N ]; then git commit --amend -S --no-edit >>\"\$SIGN_BRANCH_SIGNED_LOG\" 2>&1; fi"
-  rebase_command=(git rebase --exec "$sign_command" "$base")
+  rebase_command=("${run[@]}" rebase)
+  if [[ "$use_worktree" == true ]]; then
+    rebase_command+=(--no-update-refs)
+  fi
+  rebase_command+=(--exec "$sign_command" "$base")
 fi
 
-if [[ "$mode" == all ]]; then
+if [[ "$mode" == all && "$use_worktree" != true ]]; then
   owns_rebase=true
 fi
 
@@ -187,7 +274,7 @@ if ! "${rebase_command[@]}" >"$rebase_log" 2>&1; then
   rebase_errors="$(tr -d '\r' <"$rebase_log" | sed '/Rebasing (/d;/Executing:/d;/^Successfully rebased and updated /d;/^warning: execution failed:/d')"
   abort_status=0
   abort_output=''
-  if [[ "$mode" == all ]]; then
+  if [[ "$mode" == all && "$use_worktree" != true ]]; then
     if abort_output="$(restore_original_history 2>&1)"; then
       :
     else
@@ -201,6 +288,9 @@ if ! "${rebase_command[@]}" >"$rebase_log" 2>&1; then
   if [[ -s "$signed_log" ]]; then
     cat "$signed_log" >&2
   fi
+  if [[ "$use_worktree" == true ]]; then
+    echo "Branch '$branch' did not change." >&2
+  fi
   if (( abort_status != 0 )); then
     printf 'Unable to abort failed rebase:\n%s\n' "$abort_output" >&2
   fi
@@ -208,6 +298,14 @@ if ! "${rebase_command[@]}" >"$rebase_log" 2>&1; then
 fi
 
 owns_rebase=false
+
+if [[ "$use_worktree" == true ]]; then
+  new_head="$("${run[@]}" rev-parse HEAD)"
+  if ! git update-ref "refs/heads/$branch" "$new_head" "$original_tip"; then
+    echo "Unable to update branch '$branch'; it moved while signing." >&2
+    exit 1
+  fi
+fi
 
 if [[ -s "$signed_log" ]]; then
   cat "$signed_log"
