@@ -72,6 +72,15 @@ for package in "${desired_packages[@]}"; do
   fi
 done
 
+# neovim in the Ubuntu repos is old; add the neovim-ppa/stable PPA
+if ! dpkg -s neovim > /dev/null 2>&1; then
+  if ! command -v add-apt-repository > /dev/null 2>&1; then
+    sudo DEBIAN_FRONTEND=noninteractive apt-get update
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common
+  fi
+  sudo add-apt-repository -y ppa:neovim-ppa/stable
+fi
+
 # tofu (OpenTofu) is not in the Ubuntu repos; add the OpenTofu apt repo
 # per https://opentofu.org/docs/intro/install/deb/
 if ! dpkg -s tofu > /dev/null 2>&1; then
