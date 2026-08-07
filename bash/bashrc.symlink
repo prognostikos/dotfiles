@@ -267,3 +267,10 @@ else
     eval "$(direnv export bash)"
   fi
 fi
+
+# machine-local overrides, e.g. written by bin/provision-exe-vm
+# contents must be compatible with both zsh and macOS bash
+if [ -f ~/.localrc ]; then
+  # shellcheck disable=SC1090
+  source ~/.localrc
+fi

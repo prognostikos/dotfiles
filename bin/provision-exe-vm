@@ -129,6 +129,12 @@ git clone --recursive https://github.com/prognostikos/dotfiles.git "$HOME/.dotfi
 
 cd "$HOME/.dotfiles"
 ./script/setup
+
+# env vars for exe VMs only; sourced by both zshrc and bashrc
+# contents must be compatible with both zsh and macOS bash
+cat > "$HOME/.localrc" <<'LOCALRC'
+export GH_HOST=github.int.exe.xyz
+LOCALRC
 SETUP
 
 new_args=(new)
