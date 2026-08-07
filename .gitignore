@@ -15,3 +15,5 @@ config.symlink/karabiner/automatic_backups
 tmp/*
 aws.symlink/sso/cache/*
 aws.symlink/cli/cache/*
+fzf/completion.zsh
+fzf/key-bindings.zsh
