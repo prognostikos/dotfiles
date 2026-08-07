@@ -38,7 +38,8 @@ vm_name="${1:-}"
 
 # The setup script runs once, at first boot, as the login user on the VM.
 # Its output goes to ~/provision.log on the VM for troubleshooting.
-ssh exe.dev defaults write dev.exe new.setup-script <<'SETUP'
+setup_script() {
+  cat <<'SETUP'
 #!/bin/bash
 set -euo pipefail
 
@@ -146,6 +147,21 @@ export GH_HOST=github.int.exe.xyz
 export TZ=Europe/Copenhagen
 LOCALRC
 SETUP
+}
+
+# Only push the setup script to exe.dev when its content changed since
+# the last run; the ssh round-trip is slow and the default is sticky.
+# Delete the cache file to force a write.
+cache_file="${XDG_CACHE_HOME:-$HOME/.cache}/provision-exe-vm.hash"
+current_hash=$(setup_script | git hash-object --stdin)
+
+if [ ! -f "$cache_file" ] || [ "$(cat "$cache_file")" != "$current_hash" ]; then
+  setup_script | ssh exe.dev defaults write dev.exe new.setup-script
+  mkdir -p "$(dirname "$cache_file")"
+  printf '%s\n' "$current_hash" > "$cache_file"
+else
+  echo "Setup script unchanged; skipping defaults write"
+fi
 
 new_args=(new)
 if [ -n "$vm_name" ]; then
