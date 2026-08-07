@@ -2,12 +2,12 @@
 
 set -euo pipefail
 
-ldir
+if command -v direnv > /dev/null; then
+  direnv allow
+fi
 
 fixwt
 
 [ -f script/update ] && script/update && [ -f db/structure.sql ] && git checkout db/structure.sql
-
-simple_prompt
 
 echo "✓ Worktree prepped for work"

@@ -35,6 +35,11 @@ alias gpf='git push --force-with-lease --force-if-includes'
 alias dwt='git-delete-worktree'
 alias rwt='git-delete-worktree'
 
+# wrapper so simple_prompt runs in the calling shell, not in the script
+prepwt() {
+  command prepwt "$@" && simple_prompt
+}
+
 _git_log_format='%Cred%h%Creset%C(yellow)%d%Creset %s %C(blue)%al%Creset'
 _git_log_format_verified="${_git_log_format} %C(cyan)%G?%Creset"
 
@@ -68,8 +73,9 @@ gfx() {
       default_branch="master"
     fi
   fi
-  local commit_hash
-  commit_hash=$(git log $(git merge-base "$default_branch" HEAD)..HEAD --oneline | fzf | cut -d" " -f1)
+  local merge_base commit_hash
+  merge_base=$(git merge-base "$default_branch" HEAD)
+  commit_hash=$(git log "${merge_base}..HEAD" --oneline | fzf | cut -d" " -f1)
   if [ -n "$commit_hash" ]; then
     git commit --fixup "$commit_hash"
   fi
