@@ -57,7 +57,6 @@ desired_packages=(
   gnupg2
   htop
   jq
-  neovim
   postgresql-client
   ripgrep
   tig
@@ -76,14 +75,19 @@ for package in "${desired_packages[@]}"; do
   fi
 done
 
-# neovim in the Ubuntu repos is old; add the neovim-ppa/stable PPA
-if ! dpkg -s neovim > /dev/null 2>&1; then
-  if ! command -v add-apt-repository > /dev/null 2>&1; then
-    sudo DEBIAN_FRONTEND=noninteractive apt-get update
-    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common
-  fi
-  sudo add-apt-repository -y ppa:neovim-ppa/stable
-fi
+# neovim in the base image / Ubuntu repos is too old for the nvim config
+# and the neovim-ppa has no noble builds; remove the apt version and
+# install the official tarball
+sudo DEBIAN_FRONTEND=noninteractive apt-get remove -y neovim neovim-runtime
+case "$(uname -m)" in
+  aarch64) nvim_arch=arm64 ;;
+  *) nvim_arch=x86_64 ;;
+esac
+curl -fsSL "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-${nvim_arch}.tar.gz" -o /tmp/nvim.tar.gz
+sudo rm -rf /opt/nvim-linux-"$nvim_arch"
+sudo tar -C /opt -xzf /tmp/nvim.tar.gz
+sudo ln -sf "/opt/nvim-linux-${nvim_arch}/bin/nvim" /usr/local/bin/nvim
+rm /tmp/nvim.tar.gz
 
 # gh in the base image / Ubuntu repos is old; add GitHub's official apt repo
 # per https://github.com/cli/cli/blob/trunk/docs/install_linux.md
