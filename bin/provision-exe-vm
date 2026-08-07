@@ -81,6 +81,20 @@ if ! dpkg -s neovim > /dev/null 2>&1; then
   sudo add-apt-repository -y ppa:neovim-ppa/stable
 fi
 
+# gh in the base image / Ubuntu repos is old; add GitHub's official apt repo
+# per https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+# always (re)install gh so a preinstalled old version gets upgraded
+if [ ! -f /etc/apt/sources.list.d/github-cli.list ]; then
+  sudo install -m 0755 -d /etc/apt/keyrings
+  curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg |
+    sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null
+  sudo chmod a+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" |
+    sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+  sudo chmod a+r /etc/apt/sources.list.d/github-cli.list
+fi
+missing_packages+=(gh)
+
 # tofu (OpenTofu) is not in the Ubuntu repos; add the OpenTofu apt repo
 # per https://opentofu.org/docs/intro/install/deb/
 if ! dpkg -s tofu > /dev/null 2>&1; then
