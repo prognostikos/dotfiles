@@ -62,6 +62,7 @@ desired_packages=(
   tofu
   tree
   universal-ctags
+  unzip
   zsh
 )
 
@@ -114,6 +115,14 @@ if [ "${#missing_packages[@]}" -gt 0 ]; then
   sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "${missing_packages[@]}"
 fi
 
+# aws cli v2 has no official apt repo; use the official bundle installer
+if ! command -v aws > /dev/null 2>&1; then
+  curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o /tmp/awscliv2.zip
+  unzip -q /tmp/awscliv2.zip -d /tmp
+  sudo /tmp/aws/install
+  rm -rf /tmp/awscliv2.zip /tmp/aws
+fi
+
 # Ubuntu installs bat and fd under different command names
 mkdir -p "$HOME/.local/bin"
 if command -v batcat > /dev/null 2>&1 && ! command -v bat > /dev/null 2>&1; then
@@ -134,6 +143,7 @@ cd "$HOME/.dotfiles"
 # contents must be compatible with both zsh and macOS bash
 cat > "$HOME/.localrc" <<'LOCALRC'
 export GH_HOST=github.int.exe.xyz
+export TZ=Europe/Copenhagen
 LOCALRC
 SETUP
 
