@@ -18,19 +18,13 @@ url = "https://developers.openai.com/mcp"
 
 [tui.model_availability_nux]
 "gpt-5.5" = 4
-"gpt-5.6-sol" = 3
+"gpt-5.6-sol" = 4
 
-[projects."/workspaces/mrclean"]
+[features]
+default_mode_request_user_input = true
+
+[projects."/workspaces/*"]
 trust_level = "trusted"
 
-[projects."/home/bndev/.codex/superpowers"]
-trust_level = "trusted"
-
-[projects."/workspaces/cb2"]
-trust_level = "trusted"
-
-[projects."/workspaces/infra"]
-trust_level = "trusted"
-
-[projects."/workspaces/dotfiles"]
+[projects."/Users/rohrer/c/*"]
 trust_level = "trusted"
