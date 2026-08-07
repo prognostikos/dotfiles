@@ -1,4 +1,9 @@
+# shellcheck shell=bash
+# Mirrors zsh/zshrc.symlink as closely as bash allows.
+# Must work with macOS bash 3.2 + BSD utils and Linux bash + GNU coreutils.
+
 # Detect dotfiles location by following ~/.bashrc symlink
+# (no readlink -f: BSD readlink does not support it on older macOS)
 _resolve_dotfiles_root() {
   local file="$HOME/.bashrc"
   while [ -L "$file" ]; do
@@ -7,32 +12,258 @@ _resolve_dotfiles_root() {
     file="$(readlink "$file")"
     [[ "$file" != /* ]] && file="$dir/$file"
   done
-  dirname "$(dirname "$(cd "$(dirname "$file")" && pwd)/$(basename "$file")")"
+  dirname "$(cd "$(dirname "$file")" && pwd)"
 }
 DOTFILES_ROOT="$(_resolve_dotfiles_root)"
 unset -f _resolve_dotfiles_root
 
-source "$DOTFILES_ROOT/zsh/zshenv.symlink"
+# Some shared files and scripts expect $ZSH to point at the dotfiles root
+export ZSH="$DOTFILES_ROOT"
+
+### ENV (mirrors the env section of zsh/zshrc.symlink)
+
+export LANG=en_US.UTF-8
+export LC_ALL=$LANG
+export CLICOLOR=true
+export COLORTERM=truecolor
+
+export GIT_PS1_SHOWDIRTYSTATE=true
+export GIT_PS1_SHOWUNTRACKEDFILES=true
+
+### Mac / homebrew specific settings
+if [[ "$OSTYPE" == darwin* ]]; then
+  export CDPATH=$HOME/c/bn:$HOME/c:$HOME/b:$HOME:$HOME/d
+
+  if command -v hdiutil > /dev/null && [ ! -d /Volumes/secrets ] && [ -f ~/Documents/secrets.sparseimage ]; then
+    hdiutil attach ~/Documents/secrets.sparseimage
+  fi
+
+  if [ "$(uname -p)" = "arm" ]; then
+    BREW_PREFIX="/opt/homebrew"
+  else
+    BREW_PREFIX="/usr/local"
+  fi
+
+  if [ -d "$BREW_PREFIX" ]; then
+    export PATH="$BREW_PREFIX/bin:$BREW_PREFIX/sbin:$PATH"
+  fi
+
+  if [ -d "$BREW_PREFIX/opt/postgresql@16/bin" ]; then
+    export PATH="$BREW_PREFIX/opt/postgresql@16/bin:$PATH"
+  fi
+
+  export HOMEBREW_NO_ENV_HINTS=1
+
+  # allow spring and others to work in newer macos
+  export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+fi
+
+if command -v direnv > /dev/null; then
+  eval "$(direnv hook bash)"
+fi
+
+if [ -d ~/c/go ]; then
+  export GOPATH=~/c/go
+  export PATH="$GOPATH/bin:$PATH"
+fi
+
+if [ -d ~/.bun/bin ]; then
+  export PATH="$HOME/.bun/bin:$PATH"
+fi
+
+if [ -d "$DOTFILES_ROOT/bin" ]; then
+  export PATH="$DOTFILES_ROOT/bin:$PATH"
+fi
+
+if [ -d ~/.local/bin ]; then
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
+# setup EDITOR
+if command -v nvim > /dev/null; then
+  export EDITOR=nvim
+  alias vi=nvim
+else
+  export EDITOR=vim
+fi
 
 # If not running interactively, don't do anything below here
-[ -z "$PS1" ] && return
+case $- in
+  *i*) ;;
+  *) return ;;
+esac
 
-# don't put duplicate lines in the history. See bash(1) for more options
-# ... or force ignoredups and ignorespace
-HISTCONTROL=ignoredups:ignorespace
+### History (bash equivalent of zsh/history.zsh)
 
-# append to the history file, don't overwrite it
+HISTCONTROL=ignorespace:ignoredups
+HISTSIZE=99999
+HISTFILESIZE=99999
 shopt -s histappend
-
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
-source "$DOTFILES_ROOT/zsh/aliases"
-source "$DOTFILES_ROOT/git/git.zsh"
-source "$DOTFILES_ROOT/git/aliases"
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+### Shared config files (the bash-compatible subset of $ZSH/**/*.zsh;
+### zsh/prompt.zsh, zsh/history.zsh and zsh/cursor.zsh have bash
+### equivalents in this file)
+
+for config_file in \
+  "$DOTFILES_ROOT/git/git.zsh" \
+  "$DOTFILES_ROOT/git/git-wrapper.zsh" \
+  "$DOTFILES_ROOT/docker/docker.zsh" \
+  "$DOTFILES_ROOT/fzf/commands.zsh"; do
+  # shellcheck disable=SC1090
+  [ -f "$config_file" ] && source "$config_file"
+done
+unset config_file
+
+### Pull in all aliases
+
+for aliases_file in "$DOTFILES_ROOT"/*/aliases; do
+  # shellcheck disable=SC1090
+  [ -f "$aliases_file" ] && source "$aliases_file"
+done
+unset aliases_file
+
+# use C-s for opening in vertical splits w/command-t, not capturing output
+[ -t 0 ] && stty -ixon
+
+### Completions
+
+if [ -n "${BREW_PREFIX:-}" ] && [ -r "$BREW_PREFIX/etc/profile.d/bash_completion.sh" ]; then
+  # shellcheck disable=SC1091
+  source "$BREW_PREFIX/etc/profile.d/bash_completion.sh"
+elif [ -r /usr/share/bash-completion/bash_completion ]; then
+  # shellcheck disable=SC1091
+  source /usr/share/bash-completion/bash_completion
+elif [ -r /etc/bash_completion ]; then
+  # shellcheck disable=SC1091
+  source /etc/bash_completion
+fi
+
+if command -v aws_completer > /dev/null; then
+  complete -C aws_completer aws
+fi
+
+### fzf integration (bash equivalent of fzf/completion.sh)
+
+if command -v fzf > /dev/null 2>&1; then
+  if fzf --bash > /dev/null 2>&1; then
+    eval "$(fzf --bash)"
+  elif [ -f ~/.fzf.bash ]; then
+    # shellcheck disable=SC1090
+    source ~/.fzf.bash
+  fi
+fi
+
+### Prompt (bash equivalent of zsh/prompt.zsh)
+
+_ps1_hostname='\h:'
+_ps1_username='\u@'
+[ -z "${SSH_TTY:-}" ] && _ps1_hostname=''
+[ "$USER" = rohrer ] && _ps1_username=''
+
+# Use git's official prompt helper when available
+for _git_prompt in \
+  "${BREW_PREFIX:-/usr/local}/etc/bash_completion.d/git-prompt.sh" \
+  /usr/lib/git-core/git-sh-prompt \
+  /usr/share/git-core/contrib/completion/git-prompt.sh \
+  /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh; do
+  if [ -r "$_git_prompt" ]; then
+    # shellcheck disable=SC1090
+    source "$_git_prompt"
+    break
+  fi
+done
+unset _git_prompt
+
+# Fallback: branch name only
+if ! command -v __git_ps1 > /dev/null; then
+  __git_ps1() {
+    local fmt="${1:- (%s)}" branch
+    branch=$(git symbolic-ref --short HEAD 2>/dev/null) || return 0
+    # shellcheck disable=SC2059
+    printf "$fmt" "$branch"
+  }
+fi
+
+_ps1_magenta='\[\e[35m\]'
+_ps1_blue='\[\e[34m\]'
+_ps1_cyan='\[\e[36m\]'
+_ps1_reset='\[\e[0m\]'
+
+_ps1_fancy="${_ps1_magenta}${_ps1_username}${_ps1_hostname}${_ps1_blue}\W${_ps1_cyan}\$(__git_ps1 '[%s]')${_ps1_reset}\\\$ "
+_ps1_tmux="${_ps1_magenta}${_ps1_username}${_ps1_hostname}${_ps1_blue}\W${_ps1_reset}\\\$ "
+
+# Fancy prompt: all git checks (branch, dirty state, untracked)
+fancy_prompt() {
+  export GIT_PS1_SHOWDIRTYSTATE=true
+  export GIT_PS1_SHOWUNTRACKEDFILES=true
+  PS1=$_ps1_fancy
+}
+
+# Minimal prompt: only branch (fast for large/mounted repos)
+minimal_prompt() {
+  unset GIT_PS1_SHOWDIRTYSTATE GIT_PS1_SHOWUNTRACKEDFILES
+  PS1=$_ps1_fancy
+}
+
+simple_prompt() {
+  PS1='\$ '
+}
+
+# Start with fancy prompt by default, or simplified prompt if in tmux
+# (tmux status bar shows full git status)
+if [ -n "${TMUX:-}" ]; then
+  PS1=$_ps1_tmux
+else
+  PS1=$_ps1_fancy
+fi
+
+# Reset cursor to terminal default after each command
+# (bash equivalent of zsh/cursor.zsh)
+_reset_cursor() { printf '\e[0 q'; }
+PROMPT_COMMAND="_reset_cursor${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
+
+### Misc (mirrors the tail of zsh/zshrc.symlink)
+
+# run this after reattaching to a detached tmux session to update the
+# ssh-agent forwarding config
+fixssh() {
+  local key value
+  for key in SSH_AUTH_SOCK SSH_CONNECTION SSH_CLIENT; do
+    value=$(tmux show-environment | sed -n "s/^${key}=//p")
+    if [ -n "$value" ]; then
+      export "${key}=${value}"
+    fi
+  done
+}
+
+if [ -f "$HOME/.cacert.pem" ]; then
+  export CURL_CA_BUNDLE="$HOME/.cacert.pem"
+fi
+
+if [ -f "$HOME/.config/lazygit/config.yml" ]; then
+  export LG_CONFIG_FILE="$HOME/.config/lazygit/config.yml"
+fi
+
+if [ -z "${RUNNING_IN_DEVCONTAINER:-}" ]; then
+  if ! pgrep -x -u "${USER}" gpg-agent > /dev/null 2>&1; then
+    gpg-connect-agent /bye > /dev/null 2>&1
+  fi
+
+  GPG_TTY=$(tty)
+  export GPG_TTY
+
+  if [ -f ~/.config/op/plugins.sh ]; then
+    # shellcheck disable=SC1090
+    source ~/.config/op/plugins.sh
+  fi
+else
+  export CDPATH=/workspaces
+
+  if command -v direnv > /dev/null; then
+    eval "$(direnv export bash)"
+  fi
+fi
