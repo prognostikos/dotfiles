@@ -5,6 +5,9 @@
 set -e
 set -o pipefail
 
+# match hidden files when globbing children; empty dirs expand to nothing
+shopt -s dotglob nullglob
+
 DOTFILES_ROOT="$(pwd)"
 
 if [ -z "$1" ]; then
@@ -12,6 +15,34 @@ if [ -z "$1" ]; then
 else
   DEST_ROOT="$1"
 fi
+
+# Link $1 (source) to $2 (dest). If dest is a real directory and source is
+# a directory too, descend and link the children into it instead of
+# skipping, so a pre-existing ~/.config etc. still gets its contents.
+link_entry() {
+  local source="$1" dest="$2" child
+
+  if [ -L "$dest" ]; then
+    if [ "$dest" -ef "$source" ]; then
+      return
+    fi
+    echo "Updating symlink $dest"
+    rm "$dest"
+  elif [ -d "$dest" ]; then
+    if [ -d "$source" ]; then
+      for child in "$source"/*; do
+        link_entry "$child" "$dest/$(basename "$child")"
+      done
+    else
+      echo "Skipping $dest (directory exists, source is a file)"
+    fi
+    return
+  elif [ -f "$dest" ]; then
+    mv -fv "$dest" "${dest}.backup"
+  fi
+
+  ln -svf "$source" "$dest"
+}
 
 find "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -print0 | while IFS= read -r -d '' source
 do
@@ -22,20 +53,7 @@ do
     continue
   fi
 
-  if [ -L "$dest" ]; then
-    if [ "$dest" -ef "$source" ]; then
-      continue
-    fi
-    echo "Updating symlink $dest"
-    rm "$dest"
-  elif [ -d "$dest" ]; then
-    echo "Skipping $dest (directory exists)"
-    continue
-  elif [ -f "$dest" ]; then
-    mv -fv "$dest" "${dest}.backup"
-  fi
-
-  ln -svf "$source" "$dest"
+  link_entry "$source" "$dest"
 done
 
 if command -v fzf > /dev/null 2>&1; then
