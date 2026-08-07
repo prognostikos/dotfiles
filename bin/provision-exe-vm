@@ -16,6 +16,7 @@ The setup script:
   2. Changes the login shell to zsh
   3. Clones the dotfiles repository to ~/.dotfiles
   4. Runs the dotfiles setup script
+  5. Notifies the exe.dev app that the VM is ready
 
 The default applies to all new VMs. To remove it:
   ssh exe.dev defaults delete dev.exe new.setup-script
@@ -146,6 +147,10 @@ cat > "$HOME/.localrc" <<'LOCALRC'
 export GH_HOST=github.int.exe.xyz
 export TZ=Europe/Copenhagen
 LOCALRC
+
+# ping the exe.dev app (undocumented, see https://blog.exe.dev/ios);
+# must not fail provisioning
+curl -sf -X POST -d "{\"title\":\"VM provisioned: $(hostname)\"}" https://notify.int.exe.xyz || true
 SETUP
 }
 
