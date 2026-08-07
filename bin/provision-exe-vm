@@ -11,12 +11,12 @@ Usage: provision-exe-vm [vm_name]
 
 Write the default exe.dev setup script, then create a new VM.
 The setup script:
-  1. Installs the required packages if they are not present
-     (see the package list in the setup script below)
-  2. Changes the login shell to zsh
-  3. Clones the dotfiles repository to ~/.dotfiles
+  1. Clones the dotfiles repository to ~/.dotfiles
+  2. Runs bin/provision-ubuntu-vm from the clone (packages and tools)
+  3. Changes the login shell to zsh
   4. Runs the dotfiles setup script
-  5. Notifies the exe.dev app that the VM is ready
+  5. Writes ~/.localrc with exe-specific env vars
+  6. Notifies the exe.dev app that the VM is ready
 
 The default applies to all new VMs. To remove it:
   ssh exe.dev defaults delete dev.exe new.setup-script
@@ -39,6 +39,9 @@ vm_name="${1:-}"
 
 # The setup script runs once, at first boot, as the login user on the VM.
 # Its output goes to ~/provision.log on the VM for troubleshooting.
+# The heavy lifting lives in bin/provision-ubuntu-vm in the dotfiles, so
+# the VM runs whatever is on GitHub master at first boot - push before
+# provisioning.
 setup_script() {
   cat <<'SETUP'
 #!/bin/bash
@@ -46,125 +49,11 @@ set -euo pipefail
 
 exec > "$HOME/provision.log" 2>&1
 
-# apt package names (not command names), sorted
-desired_packages=(
-  1password-cli
-  bat
-  direnv
-  fd-find
-  fzf
-  git-delta
-  gnupg2
-  htop
-  jq
-  postgresql-client
-  ripgrep
-  tig
-  tmux
-  tofu
-  tree
-  universal-ctags
-  unzip
-  zsh
-)
+git clone --recursive https://github.com/prognostikos/dotfiles.git "$HOME/.dotfiles"
 
-missing_packages=()
-for package in "${desired_packages[@]}"; do
-  if ! dpkg -s "$package" > /dev/null 2>&1; then
-    missing_packages+=("$package")
-  fi
-done
-
-# neovim in the base image / Ubuntu repos is too old for the nvim config
-# and the neovim-ppa has no noble builds; remove the apt version and
-# install the official tarball
-sudo DEBIAN_FRONTEND=noninteractive apt-get remove -y neovim neovim-runtime
-case "$(uname -m)" in
-  aarch64) nvim_arch=arm64 ;;
-  *) nvim_arch=x86_64 ;;
-esac
-curl -fsSL "https://github.com/neovim/neovim/releases/latest/download/nvim-linux-${nvim_arch}.tar.gz" -o /tmp/nvim.tar.gz
-sudo rm -rf /opt/nvim-linux-"$nvim_arch"
-sudo tar -C /opt -xzf /tmp/nvim.tar.gz
-sudo ln -sf "/opt/nvim-linux-${nvim_arch}/bin/nvim" /usr/local/bin/nvim
-rm /tmp/nvim.tar.gz
-
-# gh in the base image / Ubuntu repos is old; add GitHub's official apt repo
-# per https://github.com/cli/cli/blob/trunk/docs/install_linux.md
-# always (re)install gh so a preinstalled old version gets upgraded
-if [ ! -f /etc/apt/sources.list.d/github-cli.list ]; then
-  sudo install -m 0755 -d /etc/apt/keyrings
-  curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg |
-    sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null
-  sudo chmod a+r /etc/apt/keyrings/githubcli-archive-keyring.gpg
-  echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" |
-    sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-  sudo chmod a+r /etc/apt/sources.list.d/github-cli.list
-fi
-missing_packages+=(gh)
-
-# the 1password op cli is not in the Ubuntu repos; add 1Password's apt repo
-# per https://developer.1password.com/docs/cli/get-started/
-if ! dpkg -s 1password-cli > /dev/null 2>&1; then
-  arch=$(dpkg --print-architecture)
-  curl -fsSL https://downloads.1password.com/linux/keys/1password.asc |
-    sudo gpg --no-tty --batch --dearmor -o /usr/share/keyrings/1password-archive-keyring.gpg
-  echo "deb [arch=$arch signed-by=/usr/share/keyrings/1password-archive-keyring.gpg] https://downloads.1password.com/linux/debian/$arch stable main" |
-    sudo tee /etc/apt/sources.list.d/1password.list > /dev/null
-  sudo install -m 0755 -d /etc/debsig/policies/AC2D62742012EA22 /usr/share/debsig/keyrings/AC2D62742012EA22
-  curl -fsSL https://downloads.1password.com/linux/debian/debsig/1password.pol |
-    sudo tee /etc/debsig/policies/AC2D62742012EA22/1password.pol > /dev/null
-  curl -fsSL https://downloads.1password.com/linux/keys/1password.asc |
-    sudo gpg --no-tty --batch --dearmor -o /usr/share/debsig/keyrings/AC2D62742012EA22/debsig.gpg
-fi
-
-# node in the Ubuntu repos is old; add the NodeSource repo for the
-# current LTS and always (re)install so a preinstalled version upgrades
-curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo bash -
-missing_packages+=(nodejs)
-
-# tofu (OpenTofu) is not in the Ubuntu repos; add the OpenTofu apt repo
-# per https://opentofu.org/docs/intro/install/deb/
-if ! dpkg -s tofu > /dev/null 2>&1; then
-  sudo install -m 0755 -d /etc/apt/keyrings
-  curl -fsSL https://get.opentofu.org/opentofu.gpg |
-    sudo tee /etc/apt/keyrings/opentofu.gpg > /dev/null
-  curl -fsSL https://packages.opentofu.org/opentofu/tofu/gpgkey |
-    sudo gpg --no-tty --batch --dearmor -o /etc/apt/keyrings/opentofu-repo.gpg > /dev/null
-  sudo chmod a+r /etc/apt/keyrings/opentofu.gpg /etc/apt/keyrings/opentofu-repo.gpg
-  echo "deb [signed-by=/etc/apt/keyrings/opentofu.gpg,/etc/apt/keyrings/opentofu-repo.gpg] https://packages.opentofu.org/opentofu/tofu/any/ any main" |
-    sudo tee /etc/apt/sources.list.d/opentofu.list > /dev/null
-  sudo chmod a+r /etc/apt/sources.list.d/opentofu.list
-fi
-
-if [ "${#missing_packages[@]}" -gt 0 ]; then
-  sudo DEBIAN_FRONTEND=noninteractive apt-get update
-  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "${missing_packages[@]}"
-fi
-
-# aws cli v2 has no official apt repo; use the official bundle installer
-if ! command -v aws > /dev/null 2>&1; then
-  curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o /tmp/awscliv2.zip
-  unzip -q /tmp/awscliv2.zip -d /tmp
-  sudo /tmp/aws/install
-  rm -rf /tmp/awscliv2.zip /tmp/aws
-fi
-
-# devcontainer cli (needs the nodejs installed above)
-sudo npm install -g @devcontainers/cli
-
-# Ubuntu installs bat and fd under different command names
-mkdir -p "$HOME/.local/bin"
-if command -v batcat > /dev/null 2>&1 && ! command -v bat > /dev/null 2>&1; then
-  ln -sf "$(command -v batcat)" "$HOME/.local/bin/bat"
-fi
-if command -v fdfind > /dev/null 2>&1 && ! command -v fd > /dev/null 2>&1; then
-  ln -sf "$(command -v fdfind)" "$HOME/.local/bin/fd"
-fi
+"$HOME/.dotfiles/bin/provision-ubuntu-vm"
 
 sudo chsh -s "$(command -v zsh)" "$(id -un)"
-
-git clone --recursive https://github.com/prognostikos/dotfiles.git "$HOME/.dotfiles"
 
 cd "$HOME/.dotfiles"
 ./script/setup
