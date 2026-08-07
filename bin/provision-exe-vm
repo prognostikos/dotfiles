@@ -1,0 +1,117 @@
+#!/bin/bash
+
+# Provision a new exe.dev VM and customize it with these dotfiles.
+# See https://exe.dev/docs/customization#setup-scripts
+
+set -euo pipefail
+
+usage() {
+  cat <<USAGE
+Usage: provision-exe-vm [vm_name]
+
+Write the default exe.dev setup script, then create a new VM.
+The setup script:
+  1. Installs the required packages if they are not present
+     (see the package list in the setup script below)
+  2. Changes the login shell to zsh
+  3. Clones the dotfiles repository to ~/.dotfiles
+  4. Runs the dotfiles setup script
+
+The default applies to all new VMs. To remove it:
+  ssh exe.dev defaults delete dev.exe new.setup-script
+
+If vm_name is not given, exe.dev picks a name.
+USAGE
+}
+
+if [ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ]; then
+  usage
+  exit 0
+fi
+
+if [ "$#" -gt 1 ]; then
+  usage
+  exit 1
+fi
+
+vm_name="${1:-}"
+
+# The setup script runs once, at first boot, as the login user on the VM.
+# Its output goes to ~/provision.log on the VM for troubleshooting.
+ssh exe.dev defaults write dev.exe new.setup-script <<'SETUP'
+#!/bin/bash
+set -euo pipefail
+
+exec > "$HOME/provision.log" 2>&1
+
+# apt package names (not command names), sorted
+desired_packages=(
+  bat
+  direnv
+  fd-find
+  fzf
+  git-delta
+  gnupg2
+  htop
+  jq
+  neovim
+  postgresql-client
+  ripgrep
+  tig
+  tmux
+  tofu
+  tree
+  universal-ctags
+  zsh
+)
+
+missing_packages=()
+for package in "${desired_packages[@]}"; do
+  if ! dpkg -s "$package" > /dev/null 2>&1; then
+    missing_packages+=("$package")
+  fi
+done
+
+# tofu (OpenTofu) is not in the Ubuntu repos; add the OpenTofu apt repo
+# per https://opentofu.org/docs/intro/install/deb/
+if ! dpkg -s tofu > /dev/null 2>&1; then
+  sudo install -m 0755 -d /etc/apt/keyrings
+  curl -fsSL https://get.opentofu.org/opentofu.gpg |
+    sudo tee /etc/apt/keyrings/opentofu.gpg > /dev/null
+  curl -fsSL https://packages.opentofu.org/opentofu/tofu/gpgkey |
+    sudo gpg --no-tty --batch --dearmor -o /etc/apt/keyrings/opentofu-repo.gpg > /dev/null
+  sudo chmod a+r /etc/apt/keyrings/opentofu.gpg /etc/apt/keyrings/opentofu-repo.gpg
+  echo "deb [signed-by=/etc/apt/keyrings/opentofu.gpg,/etc/apt/keyrings/opentofu-repo.gpg] https://packages.opentofu.org/opentofu/tofu/any/ any main" |
+    sudo tee /etc/apt/sources.list.d/opentofu.list > /dev/null
+  sudo chmod a+r /etc/apt/sources.list.d/opentofu.list
+fi
+
+if [ "${#missing_packages[@]}" -gt 0 ]; then
+  sudo DEBIAN_FRONTEND=noninteractive apt-get update
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y "${missing_packages[@]}"
+fi
+
+# Ubuntu installs bat and fd under different command names
+mkdir -p "$HOME/.local/bin"
+if command -v batcat > /dev/null 2>&1 && ! command -v bat > /dev/null 2>&1; then
+  ln -sf "$(command -v batcat)" "$HOME/.local/bin/bat"
+fi
+if command -v fdfind > /dev/null 2>&1 && ! command -v fd > /dev/null 2>&1; then
+  ln -sf "$(command -v fdfind)" "$HOME/.local/bin/fd"
+fi
+
+sudo chsh -s "$(command -v zsh)" "$(id -un)"
+
+git clone --recursive https://github.com/prognostikos/dotfiles.git "$HOME/.dotfiles"
+
+cd "$HOME/.dotfiles"
+./script/setup
+SETUP
+
+new_args=(new)
+if [ -n "$vm_name" ]; then
+  new_args+=(--name "$vm_name")
+fi
+
+# shellcheck disable=SC2029 # client-side expansion is intended
+ssh exe.dev "${new_args[@]}"
