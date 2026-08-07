@@ -1,0 +1,3 @@
+[url "https://github.int.exe.xyz/BetterNowOrg/mrclean"]
+	insteadOf = https://github.com/BetterNowOrg/mrclean
+	insteadOf = git@github.com:BetterNowOrg/mrclean

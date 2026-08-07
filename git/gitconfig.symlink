@@ -73,10 +73,6 @@
 [rerere]
 	enabled = true
 	autoupdate = true
-[credential]
-	helper = osxkeychain
-[ghi]
-	token = !security find-internet-password -a prognostikos -s github.com -l 'ghi token' -w
 [commit]
 	gpgsign = true
 	verbose = true
@@ -103,5 +99,10 @@
 	navigate = true
 	dark = true
 	syntax-theme = ansi
+[includeIf "gitdir:/Users"]
+	path = ~/.gitconfig-darwin
 [includeIf "gitdir:/workspaces/"]
+	path = ~/.gitconfig-no-sign
+[includeIf "gitdir:/home/exedev"]
+	path = ~/.gitconfig-exe-dot-dev
 	path = ~/.gitconfig-no-sign
