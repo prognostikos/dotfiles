@@ -65,9 +65,8 @@ export GH_HOST=github.int.exe.xyz
 export TZ=Europe/Copenhagen
 LOCALRC
 
-# ping the exe.dev app (undocumented, see https://blog.exe.dev/ios);
-# must not fail provisioning
-curl -sf -X POST -d "{\"title\":\"VM provisioned: $(hostname)\"}" https://notify.int.exe.xyz || true
+# ping the exe.dev app; must not fail provisioning
+"$HOME/.dotfiles/bin/notify-from-exe" "VM provisioned: $(hostname)" || true
 SETUP
 }
 

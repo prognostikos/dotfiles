@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Send a push notification to the exe.dev app from an exe.dev VM
+# (undocumented, see https://blog.exe.dev/ios).
+
+set -euo pipefail
+
+usage() {
+  cat <<USAGE
+Usage: notify-from-exe title [body]
+
+Send a push notification to the exe.dev app.
+Quote multi-word arguments:
+  notify-from-exe "Build complete" "All tests passed"
+USAGE
+}
+
+if [ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ]; then
+  usage
+  exit 0
+fi
+
+if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
+  usage
+  exit 1
+fi
+
+payload=$(jq -n --arg title "$1" --arg body "${2:-}" \
+  'if $body == "" then {title: $title} else {title: $title, body: $body} end')
+
+if ! curl -sf --connect-timeout 5 -X POST -d "$payload" https://notify.int.exe.xyz; then
+  echo "error: could not reach notify.int.exe.xyz; this only works from an exe.dev VM" >&2
+  exit 1
+fi
