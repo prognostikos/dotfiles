@@ -1,3 +1,9 @@
+# Use the orbstack context on macOS; the guard matters because docker
+# errors on every command when DOCKER_CONTEXT names a missing context
+if [[ "$OSTYPE" == darwin* ]] && command -v orbctl > /dev/null; then
+  export DOCKER_CONTEXT=orbstack
+fi
+
 docker-cleanup() {
   docker ps -a | grep Exit | awk '{print $1}' | xargs docker rm
 }

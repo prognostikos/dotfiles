@@ -4,7 +4,5 @@
 		"https://index.docker.io/v1/": {},
 		"registry.heroku.com": {}
 	},
-	"detachKeys": "ctrl-q,ctrl-q",
-	"credsStore": "osxkeychain",
-	"currentContext": "orbstack"
+	"detachKeys": "ctrl-q,ctrl-q"
 }
