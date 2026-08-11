@@ -16,6 +16,20 @@ else
   DEST_ROOT="$1"
 fi
 
+# A mount point at dest can be a shared host directory (e.g. ~/.codex
+# mounted into a VM) that resolves to this repo's own working tree on the
+# host -- descending into it would replace tracked files with symlinks.
+is_mount_point() {
+  local dir="$1"
+  if command -v mountpoint > /dev/null 2>&1; then
+    mountpoint -q "$dir"
+  else
+    # macOS has no mountpoint(1); a mount point lives on a different
+    # device than its parent directory
+    [ "$(stat -f %d "$dir")" != "$(stat -f %d "$(dirname "$dir")")" ]
+  fi
+}
+
 # Link $1 (source) to $2 (dest). If dest is a real directory and source is
 # a directory too, descend and link the children into it instead of
 # skipping, so a pre-existing ~/.config etc. still gets its contents.
@@ -29,7 +43,9 @@ link_entry() {
     echo "Updating symlink $dest"
     rm "$dest"
   elif [ -d "$dest" ]; then
-    if [ -d "$source" ]; then
+    if is_mount_point "$dest"; then
+      echo "Skipping $dest (mount point)"
+    elif [ -d "$source" ]; then
       for child in "$source"/*; do
         link_entry "$child" "$dest/$(basename "$child")"
       done
