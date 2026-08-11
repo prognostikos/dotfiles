@@ -1,0 +1,98 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Convert Nordea CSV exports to a YNAB-compatible CSV.
+#
+# Detects the export type from the header row:
+#   - Credit card export (Transaktionsdato;Bogføringsdato;Beskrivelse;...)
+#   - Account export (Bogføringsdato;Beløb;Afsender;...)
+#
+# Output format (https://support.ynab.com/en_us/formatting-a-csv-file-an-overview-BJvczkuRq):
+#   Date,Payee,Memo,Amount
+
+require "bigdecimal"
+require "csv"
+require "date"
+require "optparse"
+
+# Parse a Nordea amount ("-1615.49" or "7.170,59") into a BigDecimal.
+def parse_amount(raw)
+  raw = raw.to_s.strip
+  return nil if raw.empty?
+
+  raw = raw.delete(".").tr(",", ".") if raw.include?(",")
+  BigDecimal(raw)
+end
+
+def convert_card_row(row)
+  amount = parse_amount(row["Beløb"])
+  return nil if amount.nil?
+
+  memo = nil
+  orig_amount = row["Oprindeligt beløb"].to_s.strip
+  orig_currency = row["Oprindelig valuta"].to_s.strip
+  memo = "#{orig_amount} #{orig_currency}" unless orig_amount.empty? || orig_currency.empty?
+
+  {
+    "Date" => Date.strptime(row["Transaktionsdato"].strip, "%d.%m.%Y").iso8601,
+    "Payee" => row["Beskrivelse"].to_s.strip,
+    "Memo" => memo,
+    "Amount" => format("%.2f", amount)
+  }
+end
+
+def convert_account_row(row)
+  amount = parse_amount(row["Beløb"])
+  return nil if amount.nil?
+
+  {
+    "Date" => Date.strptime(row["Bogføringsdato"].strip, "%Y/%m/%d").iso8601,
+    "Payee" => row["Beskrivelse"].to_s.strip,
+    "Memo" => nil,
+    "Amount" => format("%.2f", amount)
+  }
+end
+
+output_path = nil
+parser = OptionParser.new do |opts|
+  opts.banner = "Usage: nordea-to-ynab [options] <nordea-export.csv>"
+  opts.on("-o", "--output FILE", "output file (default: stdout)") { |f| output_path = f }
+  opts.on("-h", "--help", "show this help") do
+    puts opts
+    exit
+  end
+end
+parser.parse!
+
+input_path = ARGV[0]
+if input_path.nil?
+  warn parser
+  exit 1
+end
+
+table = CSV.read(input_path, encoding: "bom|utf-8", col_sep: ";", headers: true)
+fields = table.headers
+
+if fields.include?("Transaktionsdato")
+  converter = method(:convert_card_row)
+elsif fields.include?("Bogføringsdato") && fields.include?("Beskrivelse")
+  converter = method(:convert_account_row)
+else
+  abort "error: unrecognized Nordea CSV header: #{fields.inspect}"
+end
+
+rows = table.map { |row| converter.call(row) }.compact
+
+begin
+  out = output_path ? File.open(output_path, "w") : $stdout
+  begin
+    out.puts %w[Date Payee Memo Amount].to_csv
+    rows.each { |row| out.puts row.values_at("Date", "Payee", "Memo", "Amount").to_csv }
+  ensure
+    out.close if output_path
+  end
+rescue Errno::EPIPE
+  exit 0
+end
+
+warn "converted #{rows.length} transactions"
