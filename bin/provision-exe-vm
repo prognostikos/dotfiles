@@ -5,6 +5,10 @@
 
 set -euo pipefail
 
+# 1Password reference for the service account token that goes to the VM.
+# Override with the environment variable if you use a different item.
+OP_TOKEN_REF=${OP_TOKEN_REF:-"op://Employee/ef6cnygin7ob2nhdu24skimxma/credential"}
+
 usage() {
   cat <<USAGE
 Usage: provision-exe-vm [vm_name] [exe.dev new options...]
@@ -17,6 +21,11 @@ The setup script:
   4. Runs the dotfiles setup script
   5. Writes ~/.localrc with exe-specific env vars
   6. Notifies the exe.dev app that the VM is ready
+
+After the VM is created, this script reads the 1Password service
+account token (OP_TOKEN_REF, default op://Employee/.../credential)
+and writes it to /etc/op/token on the VM (root, 600). devrebuild
+uses that token to generate .env files from 1Password environments.
 
 The default applies to all new VMs. To remove it:
   ssh exe.dev defaults delete dev.exe new.setup-script
@@ -87,11 +96,37 @@ else
   echo "Setup script unchanged; skipping defaults write"
 fi
 
-new_args=(new)
+new_args=(new --json)
 if [ -n "$vm_name" ]; then
   new_args+=(--name "$vm_name")
 fi
 new_args+=("$@")
 
 # shellcheck disable=SC2029 # client-side expansion is intended
-ssh exe.dev "${new_args[@]}"
+vm_json=$(ssh exe.dev "${new_args[@]}")
+printf '%s\n' "$vm_json"
+
+ssh_dest=$(printf '%s\n' "$vm_json" | jq -r '.ssh_dest // empty')
+if [ -z "$ssh_dest" ]; then
+  echo "error: no ssh_dest in the exe.dev response; write the token manually:" >&2
+  echo "  op read \"$OP_TOKEN_REF\" | ssh <vm> 'sudo install -d -m 700 /etc/op && umask 077 && sudo tee /etc/op/token > /dev/null'" >&2
+  exit 1
+fi
+
+# Give the VM the 1Password service account token so that devrebuild can
+# generate .env files from 1Password environments on the VM.
+op_token=$(op read "$OP_TOKEN_REF")
+
+for attempt in 1 2 3 4 5; do
+  if printf '%s' "$op_token" | ssh -o StrictHostKeyChecking=accept-new "$ssh_dest" \
+    'sudo install -d -m 700 /etc/op && umask 077 && sudo tee /etc/op/token > /dev/null'; then
+    echo "Wrote the 1Password token to $ssh_dest:/etc/op/token"
+    break
+  fi
+  if [ "$attempt" -eq 5 ]; then
+    echo "error: could not write the token to $ssh_dest after 5 attempts" >&2
+    exit 1
+  fi
+  echo "ssh to $ssh_dest failed; retry in 3 seconds..." >&2
+  sleep 3
+done

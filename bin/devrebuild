@@ -132,6 +132,21 @@ if [ "$NO_CACHE" = true ]; then
   DEVCONTAINER_ARGS+=(--build-no-cache)
 fi
 
+# Compose files reference ../.env, which resolves to the repository root.
+# When that file is missing on a host that provision-exe-vm gave a
+# 1Password service account token (/etc/op/token, root-only), generate it
+# from a 1Password environment for the duration of this script. The trap
+# removes it again, so the secrets never stay on disk.
+ENV_FILE="$MAIN_REPO/.env"
+if [ ! -f "$ENV_FILE" ] && [ -d /etc/op ] && sudo test -f /etc/op/token; then
+  echo "Generating $ENV_FILE from 1Password (removed on exit)..."
+  OP_SERVICE_ACCOUNT_TOKEN=$(sudo cat /etc/op/token)
+  export OP_SERVICE_ACCOUNT_TOKEN
+  trap 'rm -f "$ENV_FILE"' EXIT
+  (umask 077; op environment read "${OP_ENVIRONMENT_ID:-os2pfekn55ky2d6uptjrgvvgm4}" > "$ENV_FILE")
+  unset OP_SERVICE_ACCOUNT_TOKEN
+fi
+
 devcontainer up \
   --workspace-folder "$MAIN_REPO" \
   --remove-existing-container \
