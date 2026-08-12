@@ -5,9 +5,9 @@ else
   alias ls="ls -F"
 fi
 
-alias vj="${EDITOR:-vim} ~/d/journal.md.pgp"
-alias vw="${EDITOR:-vim} ~/d/wiki/index.md"
-alias wj="${EDITOR:-vim} -c :WikiJournal"
+alias vj='${EDITOR:-vim} ~/d/journal.md.pgp'
+alias vw='${EDITOR:-vim} ~/d/wiki/index.md'
+alias wj='${EDITOR:-vim} -c :WikiJournal'
 
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias n=nvim
