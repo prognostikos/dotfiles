@@ -7,6 +7,7 @@ set -euo pipefail
 
 # 1Password reference for the service account token that goes to the VM.
 # Override with the environment variable if you use a different item.
+export OP_ACCOUNT=${OP_ACCOUNT:-"betternow.1password.com"}
 OP_TOKEN_REF=${OP_TOKEN_REF:-"op://Employee/ef6cnygin7ob2nhdu24skimxma/credential"}
 
 usage() {
