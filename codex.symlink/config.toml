@@ -1,13 +1,10 @@
 model = "gpt-5.6-sol"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 approvals_reviewer = "user"
+suppress_unstable_features_warning = true
 
 [plugins."github@openai-curated"]
 enabled = true
-
-[mcp_servers.appsignal]
-url = "https://appsignal.com/api/mcp"
-bearer_token_env_var = "APPSIGNAL_MCP_TOKEN"
 
 [mcp_servers.chrome-devtools]
 command = "chrome-devtools-mcp"
@@ -23,8 +20,5 @@ url = "https://developers.openai.com/mcp"
 [features]
 default_mode_request_user_input = true
 
-[projects."/workspaces/*"]
-trust_level = "trusted"
-
-[projects."/Users/rohrer/c/*"]
+[projects."/workspaces/mrclean"]
 trust_level = "trusted"

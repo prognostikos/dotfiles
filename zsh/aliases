@@ -37,7 +37,9 @@ yolo() {
 
   case "${1:-codex}" in
     codex)
-      codex --yolo
+      local codex_profile="${PWD:t}"
+      codex_profile="${codex_profile//[^A-Za-z0-9._-]/-}"
+      codex --profile "$codex_profile" --yolo
       ;;
     claude)
       claude --dangerously-skip-permissions
