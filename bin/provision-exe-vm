@@ -100,7 +100,7 @@ else
   echo "Setup script unchanged; skipping defaults write"
 fi
 
-new_args=(new --json)
+new_args=(new --json --disk=32)
 if [ -n "$vm_name" ]; then
   new_args+=(--name "$vm_name")
 fi
