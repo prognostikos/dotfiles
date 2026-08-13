@@ -113,17 +113,24 @@ printf '%s\n' "$vm_json"
 ssh_dest=$(printf '%s\n' "$vm_json" | jq -r '.ssh_dest // empty')
 if [ -z "$ssh_dest" ]; then
   echo "error: no ssh_dest in the exe.dev response; write the token manually:" >&2
-  echo "  op read \"$OP_TOKEN_REF\" | ssh <vm> 'sudo install -d -m 700 /etc/op && umask 077 && sudo tee /etc/op/token > /dev/null'" >&2
+  echo "  op read \"$OP_TOKEN_REF\" | ssh <vm> 'sudo install -d -m 700 /etc/op && umask 077 && sudo tee /etc/op/token > /dev/null && sudo chmod 600 /etc/op/token'" >&2
   exit 1
 fi
 
 # Give the VM the 1Password service account token so that devrebuild can
 # generate .env files from 1Password environments on the VM.
 op_token=$(op read "$OP_TOKEN_REF")
+write_marker="provision-exe-vm:token-written"
 
 for attempt in 1 2 3 4 5; do
-  if printf '%s' "$op_token" | ssh -o StrictHostKeyChecking=accept-new "$ssh_dest" \
-    'sudo install -d -m 700 /etc/op && umask 077 && sudo tee /etc/op/token > /dev/null'; then
+  write_status=0
+  write_output=$(printf '%s' "$op_token" | ssh -o StrictHostKeyChecking=accept-new "$ssh_dest" \
+    'sudo install -d -m 700 /etc/op && umask 077 && sudo tee /etc/op/token > /dev/null && sudo chmod 600 /etc/op/token && sudo test -s /etc/op/token && printf "%s\n" "provision-exe-vm:token-written"') || write_status=$?
+
+  # A new exe.dev hostname can briefly route commands to the account shell.
+  # That shell reports sudo failure but exits successfully, so also require a
+  # marker printed after the VM has written and checked the token file.
+  if [ "$write_status" -eq 0 ] && [ "$write_output" = "$write_marker" ]; then
     echo "Wrote the 1Password token to $ssh_dest:/etc/op/token"
     break
   fi
