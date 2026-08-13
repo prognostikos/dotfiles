@@ -19,6 +19,3 @@ url = "https://developers.openai.com/mcp"
 
 [features]
 default_mode_request_user_input = true
-
-[projects."/workspaces/mrclean"]
-trust_level = "trusted"
