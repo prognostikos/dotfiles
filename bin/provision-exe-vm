@@ -78,6 +78,9 @@ export GH_HOST=github.int.exe.xyz
 export TZ=Europe/Copenhagen
 LOCALRC
 
+# mirror the devcontainer setup for host/container worktree path compat
+sudo ln -s /home/exedev /workspaces
+
 # ping the exe.dev app; must not fail provisioning
 "$HOME/.dotfiles/bin/notify-from-exe" "VM provisioned: $(hostname)" || true
 SETUP
