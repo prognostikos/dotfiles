@@ -1,0 +1,18 @@
+#!/bin/sh
+set -e
+
+hook="$(git rev-parse --git-common-dir)/hooks/ctags"
+
+# A detached child becomes a zombie in containers whose PID 1 does not reap
+# orphan processes. Use a private tmux server as a portable job supervisor;
+# it stays alive and reaps each completed ctags job.
+if command -v tmux >/dev/null 2>&1; then
+  socket=dotfiles-git-ctags
+  job="ctags-$$"
+
+  TMUX='' tmux -L "$socket" -f /dev/null \
+    start-server \; set-option -g exit-empty off
+  TMUX='' tmux -L "$socket" new-session -d -s "$job" -c "$PWD" "$hook"
+else
+  "$hook"
+fi
