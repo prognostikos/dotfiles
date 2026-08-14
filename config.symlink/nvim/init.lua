@@ -545,11 +545,20 @@ require('lazy').setup({
         lint.linters.standardrb.ignore_exitcode = true
       end
 
+      local function linter_is_available(linter)
+        local command = linter.cmd
+        if type(command) == "function" then
+          command = command()
+        end
+
+        return vim.fn.executable(command) == 1
+      end
+
       -- Trigger lint on multiple events
       vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
         group = vim.api.nvim_create_augroup('nvim_lint', { clear = true }),
         callback = function()
-          lint.try_lint()
+          lint.try_lint(nil, { filter = linter_is_available })
         end,
       })
     end
