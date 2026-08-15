@@ -12,6 +12,7 @@ desired_packages=(
   1password-cli
   bat
   direnv
+  dnsutils
   fd-find
   fzf
   gh
@@ -19,12 +20,19 @@ desired_packages=(
   gnupg2
   htop
   jq
+  lsof
+  net-tools
   nodejs
   postgresql-client
   ripgrep
+  ruby
+  shellcheck
+  socat
+  strace
   tig
   tmux
   tofu
+  tree
   tree
   universal-ctags
   unzip
