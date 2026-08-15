@@ -1,5 +1,8 @@
-onboarding = false
 # herdr configuration — keybindings ported from tmux/tmux.conf.symlink
+onboarding = false
+
+[terminal]
+default_shell = "/bin/zsh"
 
 [theme]
 # Use terminal ANSI colors, same approach as the tmux status bar styling
