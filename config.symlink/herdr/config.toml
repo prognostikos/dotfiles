@@ -1,0 +1,67 @@
+onboarding = false
+# herdr configuration — keybindings ported from tmux/tmux.conf.symlink
+
+[theme]
+# Use terminal ANSI colors, same approach as the tmux status bar styling
+name = "terminal"
+
+[keys]
+# tmux: set-option -g prefix C-a
+prefix = "ctrl+a"
+
+# tmux: bind C-v split-window -h (side by side), bind C-s split-window (stacked)
+split_vertical = "prefix+ctrl+v"
+split_horizontal = "prefix+ctrl+s"
+
+# tmux: bind h/j/k/l select-pane (these are herdr defaults, kept explicit)
+focus_pane_left = "prefix+h"
+focus_pane_down = "prefix+j"
+focus_pane_up = "prefix+k"
+focus_pane_right = "prefix+l"
+
+# tmux: bind H/J/K/L resize-pane has no direct herdr equivalent;
+# resize mode (herdr default) uses the same h/j/k/l keys once active
+resize_mode = "prefix+r"
+
+# tmux default muscle memory: d detach, c new window, n/p next/prev,
+# comma rename, x kill-pane, z zoom
+detach = "prefix+d"
+new_tab = "prefix+c"
+next_tab = "prefix+n"
+previous_tab = "prefix+p"
+switch_tab = "prefix+1..9"
+rename_tab = "prefix+comma"
+close_pane = "prefix+x"
+zoom = "prefix+z"
+
+# tmux: bind s display-popup tmux-session-switcher
+# herdr workspaces map to tmux sessions, so the workspace picker replaces it
+workspace_picker = "prefix+s"
+# settings moved off its default prefix+s to make room for the picker
+settings = "prefix+shift+s"
+
+# tmux: bind Space switch-client -l (jump back to last place)
+last_pane = "prefix+space"
+
+# tmux: bind Escape copy-mode — closest herdr feature is scrollback editing
+edit_scrollback = "prefix+esc"
+
+# tmux: bind u display-popup -EE -w 80% -h 80%
+[[keys.command]]
+key = "prefix+u"
+type = "popup"
+command = "zsh"
+width = "80%"
+height = "80%"
+
+# tmux: bind f display-popup -E tmux-file-picker
+[[keys.command]]
+key = "prefix+f"
+type = "popup"
+command = "herdr-file-picker"
+width = "80%"
+height = "80%"
+
+[ui]
+# Match tmux active pane border / status accent (fg=cyan)
+accent = "cyan"

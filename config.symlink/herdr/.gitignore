@@ -1,0 +1,5 @@
+# herdr runtime state — only config.toml belongs in the repo
+*.log
+*.sock
+session.json
+.plugins.lock

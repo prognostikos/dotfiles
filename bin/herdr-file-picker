@@ -1,0 +1,42 @@
+#!/bin/bash
+# herdr port of tmux-file-picker: pick files with fzf, then type them into
+# the focused herdr pane with an @ prefix (falls back to the clipboard)
+
+set -euo pipefail
+
+# Find files using fd if available, otherwise find
+if command -v fd > /dev/null 2>&1; then
+  files=$(fd --type f --hidden --follow --exclude .git)
+elif command -v fdfind > /dev/null 2>&1; then
+  files=$(fdfind --type f --hidden --follow --exclude .git)
+else
+  files=$(find . -type f -not -path '*/.git/*' | sed 's|^\./||')
+fi
+
+# Determine preview command
+if command -v bat > /dev/null 2>&1; then
+  preview_cmd='bat --color=always --style=numbers --line-range=:500 {}'
+elif command -v batcat > /dev/null 2>&1; then
+  preview_cmd='batcat --color=always --style=numbers --line-range=:500 {}'
+else
+  preview_cmd='cat {}'
+fi
+
+# Use fzf for selection (multi-select with tab)
+selected=$(echo "$files" | fzf --multi --preview "$preview_cmd" --preview-window=right:50%:wrap) || exit 0
+
+# Target the pane under the popup: the UI-focused pane, as long as it is
+# not this popup's own pane
+target=""
+if command -v jq > /dev/null 2>&1; then
+  target=$(herdr pane current 2> /dev/null \
+    | jq -r '.result.pane.pane_id // .result.pane_id // empty' || true)
+fi
+if [ -n "$target" ] && [ "$target" != "${HERDR_PANE_ID:-}" ]; then
+  while IFS= read -r file; do
+    herdr pane send-text "$target" "@$file "
+  done <<< "$selected"
+else
+  # No pane to type into; put the paths on the clipboard instead
+  printf '%s' "$(sed 's|^|@|; s|$| |' <<< "$selected")" | pbcopy
+fi
