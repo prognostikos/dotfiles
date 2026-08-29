@@ -1,0 +1,8 @@
+{
+  "name": "Default dev container",
+  "image": "ghcr.io/betternoworg/devcontainer-base",
+  "remoteUser": "dev",
+  "remoteEnv": {
+    "PATH": "/home/dev/.local/bin:/home/dev/.bun/bin:${containerEnv:PATH}"
+  }
+}

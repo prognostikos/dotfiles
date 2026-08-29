@@ -6,6 +6,10 @@ set -euo pipefail
 # shellcheck disable=SC1091
 source "$(dirname "${BASH_SOURCE[0]}")/.worktree-layout"
 
+# shellcheck source=bin/.devcontainer-config
+# shellcheck disable=SC1091
+source "$(dirname "${BASH_SOURCE[0]}")/.devcontainer-config"
+
 usage() {
   echo "Usage: devrebuild [--nuke] [--no-cache]"
   echo ""
@@ -17,18 +21,9 @@ usage() {
   exit 1
 }
 
-# Get remoteUser from devcontainer.json
+# Get remoteUser from the selected dev container configuration.
 get_remote_user() {
-  local devcontainer_json=""
-  if [ -f "$MAIN_REPO/.devcontainer/devcontainer.json" ]; then
-    devcontainer_json="$MAIN_REPO/.devcontainer/devcontainer.json"
-  elif [ -f "$MAIN_REPO/.devcontainer.json" ]; then
-    devcontainer_json="$MAIN_REPO/.devcontainer.json"
-  fi
-
-  if [ -n "$devcontainer_json" ]; then
-    jq -r '.remoteUser // empty' "$devcontainer_json"
-  fi
+  jq -r '.remoteUser // empty' "$DEVCONTAINER_CONFIG_FILE"
 }
 
 NUKE=false
@@ -55,19 +50,14 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-# Resolve the main checkout even when invoked from a linked worktree whose Git
-# pointers currently refer to the other side of the host/container boundary.
-if git rev-parse --git-common-dir &>/dev/null; then
-  MAIN_REPO="$(wt_main_worktree)"
-elif wt_find_broken_worktree "$PWD"; then
-  MAIN_REPO="$WT_BROKEN_MAIN_WORKTREE"
-else
-  MAIN_REPO="$(pwd -P)"
-fi
+wt_resolve_current_worktree
+MAIN_REPO="$WT_MAIN_WORKTREE"
 
 PROJECT_DIR="$(basename "$MAIN_REPO")"
 WORKTREES_DIR="$(wt_worktrees_dir "$MAIN_REPO")"
 SIBLING_WORKTREES_DIR="$(dirname "$MAIN_REPO")/${PROJECT_DIR}-worktrees"
+
+devcontainer_resolve_workspace "$MAIN_REPO"
 
 # Priority: DEVCONTAINER_USER env var > devcontainer.json remoteUser > default
 DEVCONTAINER_USER=${DEVCONTAINER_USER:-$(get_remote_user)}
@@ -147,7 +137,7 @@ if [ ! -f "$ENV_FILE" ] && [ -d /etc/op ] && sudo test -f /etc/op/token; then
 fi
 
 devcontainer up \
-  --workspace-folder "$MAIN_REPO" \
+  "${DEVCONTAINER_WORKSPACE_ARGS[@]}" \
   --remove-existing-container \
   --dotfiles-repository https://github.com/prognostikos/dotfiles \
   --dotfiles-install-command script/setup \

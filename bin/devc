@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# shellcheck source=bin/.devcontainer-config
+# shellcheck disable=SC1091
+source "$(dirname "${BASH_SOURCE[0]}")/.devcontainer-config"
+
+if [ $# -eq 0 ]; then
+  exec devcontainer --help
+fi
+
+case "$1" in
+  --help|-h|--version)
+    exec devcontainer "$@"
+    ;;
+esac
+
+COMMAND="$1"
+shift
+
+devcontainer_resolve_workspace .
+
+exec devcontainer "$COMMAND" \
+  "${DEVCONTAINER_WORKSPACE_ARGS[@]}" \
+  "$@"

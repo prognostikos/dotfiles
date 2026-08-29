@@ -6,6 +6,10 @@ set -euo pipefail
 # shellcheck disable=SC1091
 source "$(dirname "${BASH_SOURCE[0]}")/.worktree-layout"
 
+# shellcheck source=bin/.devcontainer-config
+# shellcheck disable=SC1091
+source "$(dirname "${BASH_SOURCE[0]}")/.devcontainer-config"
+
 if [ -n "${RUNNING_IN_DEVCONTAINER:-}" ]; then
   echo "Already inside a devcontainer" >&2
   exit 1
@@ -15,27 +19,15 @@ if [ $# -eq 0 ]; then
   set -- zsh
 fi
 
-# Try to get git info, but handle broken worktrees
-if git rev-parse --git-common-dir &>/dev/null; then
-  # Git commands work - we can use them
-  MAIN_REPO="$(wt_main_worktree)"
-  CURRENT_DIR="$(git rev-parse --show-toplevel)"
-else
-  # Git commands fail - we're in a broken worktree
-  # Use directory structure to find main repo
-  if wt_find_broken_worktree "$PWD"; then
-    CURRENT_DIR="$WT_BROKEN_WORKTREE"
-    MAIN_REPO="$WT_BROKEN_MAIN_WORKTREE"
-  else
-    # Assume we're in main repo
-    MAIN_REPO="$(pwd -P)"
-    CURRENT_DIR="$MAIN_REPO"
-  fi
-fi
+wt_resolve_current_worktree
+MAIN_REPO="$WT_MAIN_WORKTREE"
+CURRENT_DIR="$WT_CURRENT_WORKTREE"
 
 # Select the layout here even though the current worktree path is authoritative,
 # so an ambiguous setup produces the same warning as the other commands.
 wt_worktrees_dir "$MAIN_REPO" >/dev/null
+
+devcontainer_resolve_workspace "$MAIN_REPO"
 
 # Check if we're in a separate worktree (not the main repo)
 if [ "$CURRENT_DIR" != "$MAIN_REPO" ]; then
@@ -51,8 +43,12 @@ if [ "$CURRENT_DIR" != "$MAIN_REPO" ]; then
   CONTAINER_PATH="/workspaces/$RELATIVE_PATH"
 
   # Execute in main worktree's devcontainer but cd to the worktree path first
-  devcontainer exec --workspace-folder "$MAIN_REPO" bash -c "cd '$CONTAINER_PATH' && exec env \"\$@\"" -- "$@"
+  devcontainer exec \
+    "${DEVCONTAINER_WORKSPACE_ARGS[@]}" \
+    bash -c "cd '$CONTAINER_PATH' && exec env \"\$@\"" -- "$@"
 else
   # We're in the main repo, use normal behavior
-  devcontainer exec --workspace-folder "$MAIN_REPO" env "$@"
+  devcontainer exec \
+    "${DEVCONTAINER_WORKSPACE_ARGS[@]}" \
+    env "$@"
 fi

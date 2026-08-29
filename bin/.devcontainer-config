@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Build the common CLI arguments for a workspace. Use the project configuration
+# when it exists. Otherwise, use the shared configuration as an override.
+# Sets DEVCONTAINER_CONFIG_FILE and DEVCONTAINER_WORKSPACE_ARGS.
+devcontainer_resolve_workspace() {
+  local workspace="$1"
+  local installed_default="$HOME/.config/devcontainer/default.json"
+  local source_default
+
+  source_default="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)/config.symlink/devcontainer/default.json"
+
+  DEVCONTAINER_WORKSPACE_ARGS=(--workspace-folder "$workspace")
+
+  if [ -f "$workspace/.devcontainer/devcontainer.json" ]; then
+    DEVCONTAINER_CONFIG_FILE="$workspace/.devcontainer/devcontainer.json"
+  elif [ -f "$workspace/.devcontainer.json" ]; then
+    DEVCONTAINER_CONFIG_FILE="$workspace/.devcontainer.json"
+  elif [ -f "$installed_default" ]; then
+    DEVCONTAINER_CONFIG_FILE="$installed_default"
+    DEVCONTAINER_WORKSPACE_ARGS+=(--override-config "$DEVCONTAINER_CONFIG_FILE")
+  elif [ -f "$source_default" ]; then
+    DEVCONTAINER_CONFIG_FILE="$source_default"
+    DEVCONTAINER_WORKSPACE_ARGS+=(--override-config "$DEVCONTAINER_CONFIG_FILE")
+  else
+    echo "Default dev container configuration not found: $installed_default" >&2
+    return 1
+  fi
+}

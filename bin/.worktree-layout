@@ -10,6 +10,22 @@ wt_main_worktree() {
   (cd "$git_common_dir/.." && pwd -P)
 }
 
+# Resolve the main checkout and the current worktree. This also supports a
+# linked worktree whose Git paths refer to another host or container.
+# Sets WT_MAIN_WORKTREE and WT_CURRENT_WORKTREE.
+wt_resolve_current_worktree() {
+  if git rev-parse --git-common-dir &>/dev/null; then
+    WT_MAIN_WORKTREE="$(wt_main_worktree)"
+    WT_CURRENT_WORKTREE="$(git rev-parse --show-toplevel)"
+  elif wt_find_broken_worktree "$PWD"; then
+    WT_MAIN_WORKTREE="$WT_BROKEN_MAIN_WORKTREE"
+    WT_CURRENT_WORKTREE="$WT_BROKEN_WORKTREE"
+  else
+    WT_MAIN_WORKTREE="$(pwd -P)"
+    WT_CURRENT_WORKTREE="$WT_MAIN_WORKTREE"
+  fi
+}
+
 wt_worktrees_dir() {
   local main_worktree="${1%/}"
   local parent_dir
