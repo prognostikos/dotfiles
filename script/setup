@@ -74,14 +74,28 @@ done
 
 if command -v fzf > /dev/null 2>&1; then
   if ! fzf --zsh > /dev/null 2>&1; then
-    if [ ! -f "$DOTFILES_ROOT/fzf/key-bindings.zsh" ] || [ ! -f "$DOTFILES_ROOT/fzf/completion.zsh" ]; then
+    fzf_package_dir="/usr/share/doc/fzf/examples"
+
+    if [ ! -r "$fzf_package_dir/key-bindings.zsh" ] || [ ! -r "$fzf_package_dir/completion.zsh" ]; then
       fzf_version=$(fzf --version | cut -d " " -f 1)
-      url_prefix="https://raw.githubusercontent.com/junegunn/fzf/refs/tags/$fzf_version/shell/"
+      fzf_cache_dir="${XDG_CACHE_HOME:-$DEST_ROOT/.cache}/dotfiles/fzf/$fzf_version"
+      url_prefix="https://raw.githubusercontent.com/junegunn/fzf/refs/tags/$fzf_version/shell"
 
-      echo "Installing zsh files for fzf version $fzf_version"
+      mkdir -p "$fzf_cache_dir"
+      echo "Installing zsh files for fzf version $fzf_version into $fzf_cache_dir"
 
-      curl -fsSL "$url_prefix/key-bindings.zsh" -o "$DOTFILES_ROOT/fzf/key-bindings.zsh"
-      curl -fsSL "$url_prefix/completion.zsh" -o "$DOTFILES_ROOT/fzf/completion.zsh"
+      for fzf_shell_file in key-bindings.zsh completion.zsh; do
+        if [ ! -s "$fzf_cache_dir/$fzf_shell_file" ]; then
+          fzf_download_ok=false
+          curl -fsSL "$url_prefix/$fzf_shell_file" -o "$fzf_cache_dir/$fzf_shell_file.tmp" && fzf_download_ok=true || true
+
+          if [ "$fzf_download_ok" = true ] && [ -s "$fzf_cache_dir/$fzf_shell_file.tmp" ]; then
+            mv "$fzf_cache_dir/$fzf_shell_file.tmp" "$fzf_cache_dir/$fzf_shell_file"
+          else
+            rm -f "$fzf_cache_dir/$fzf_shell_file.tmp"
+          fi
+        fi
+      done
     fi
   fi
 fi
