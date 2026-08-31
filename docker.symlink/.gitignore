@@ -2,3 +2,4 @@ buildx
 cli-plugins
 contexts
 .token_seed*
+config.json
