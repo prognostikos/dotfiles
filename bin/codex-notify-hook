@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+
+set -uo pipefail
+
+is_exe_dev_vm() {
+  case "${EXE_DEV_VM:-}" in
+    1 | true | yes) return 0 ;;
+    0 | false | no) return 1 ;;
+  esac
+
+  if [[ "${HOME:-}" == /home/exedev || "${HOME:-}" == /home/exedev/* ||
+    "${PWD:-}" == /home/exedev || "${PWD:-}" == /home/exedev/* ||
+    -e /etc/exe.dev || -e /etc/exedev ]]; then
+    return 0
+  fi
+
+  # Devcontainers do not see the host's /home/exedev or /etc markers. On an
+  # exe.dev VM, its private notification endpoint resolves to this link-local
+  # address through the host resolver.
+  command -v getent >/dev/null 2>&1 &&
+    getent ahostsv4 notify.int.exe.xyz 2>/dev/null |
+      awk '$1 == "169.254.169.254" { found = 1 } END { exit !found }'
+}
+
+emit_hook_result() {
+  # Stop hooks require valid JSON on stdout. An empty object is also harmless
+  # for PreToolUse and PermissionRequest hooks.
+  printf '{}\n'
+}
+
+if ! payload=$(jq -c . 2>/dev/null); then
+  emit_hook_result
+  exit 0
+fi
+
+if ! is_exe_dev_vm; then
+  emit_hook_result
+  exit 0
+fi
+
+notify_bin=${NOTIFY_FROM_EXE_BIN:-notify-from-exe}
+if ! command -v "$notify_bin" >/dev/null 2>&1; then
+  emit_hook_result
+  exit 0
+fi
+
+event_name=$(jq -r '.hook_event_name // empty' <<<"$payload")
+cwd=$(jq -r '.cwd // empty' <<<"$payload")
+
+case "$event_name" in
+  PermissionRequest)
+    title="Codex needs approval"
+    body=$(jq -r '
+      .tool_input.description //
+      ("Approval requested for " + (.tool_name // "a tool"))
+    ' <<<"$payload")
+    ;;
+  PreToolUse)
+    title="Codex needs input"
+    body=$(jq -r '
+      .tool_input.questions[0].question //
+      .tool_input.question //
+      .cwd //
+      "Codex is waiting for input."
+    ' <<<"$payload")
+    ;;
+  Stop)
+    title="Codex turn complete"
+    body=$(jq -r '
+      .last_assistant_message //
+      .cwd //
+      "Codex has finished the current turn."
+    ' <<<"$payload")
+    ;;
+  *)
+    emit_hook_result
+    exit 0
+    ;;
+esac
+
+# Keep notifications compact and strip NUL bytes, which cannot be arguments.
+body=${body//$'\0'/}
+body=${body:0:1000}
+
+if [[ "${CODEX_NOTIFY_DRY_RUN:-}" == 1 ]]; then
+  printf 'notify-from-exe title=%q body=%q cwd=%q\n' \
+    "$title" "$body" "$cwd" >&2
+elif ! "$notify_bin" "$title" "$body" >/dev/null; then
+  printf 'codex-notify-hook: notify-from-exe failed\n' >&2
+fi
+
+emit_hook_result

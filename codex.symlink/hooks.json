@@ -1,0 +1,39 @@
+{
+  "description": "Send exe.dev notifications when Codex needs attention.",
+  "hooks": {
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "codex-notify-hook",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "^request_user_input$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "codex-notify-hook",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "codex-notify-hook",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
