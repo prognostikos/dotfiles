@@ -11,6 +11,8 @@ Concept/layout stolen from [@holman's dotfiles](https://github.com/holman/dotfil
 ## Layout
 
 - **bin/**: Anything in `bin/` will get added to the beginning of your `$PATH`
+- **test/**: Tests and fixtures kept in Git. Setup and shell startup exclude
+  this directory. See [test/README.md](test/README.md) for test instructions.
 - **<dir>/\*.zsh**: Any files ending in `.zsh` get loaded into your
   zsh environment.
 - **<dir>/\*.bash**: Any files ending in `.bash` get loaded into your

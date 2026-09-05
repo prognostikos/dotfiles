@@ -5,6 +5,100 @@ set -euo pipefail
 usage() {
   echo 'Usage: git sign-branch [<base> [<branch>]]' >&2
   echo '       git sign-branch --all [<branch>]' >&2
+  echo '       git sign-branch --stack <base>' >&2
+  echo 'Stack mode: check out the top branch first. All local branches in <base>..HEAD are updated, including backup branches.' >&2
+}
+
+check_stack() {
+  local ref tip upstream remote_ref remote_tip remote_name local_ref found
+  local worktrees local_refs remote_refs
+
+  if ! git symbolic-ref --quiet HEAD >/dev/null; then
+    echo 'Stack mode requires a checked-out top branch.' >&2
+    exit 1
+  fi
+  if ! base="$(git rev-parse --verify "$base^{commit}")"; then
+    echo 'Stack mode requires a valid base commit.' >&2
+    exit 1
+  fi
+  if ! git merge-base --is-ancestor "$base" HEAD; then
+    echo 'The stack base must be an ancestor of HEAD.' >&2
+    exit 1
+  fi
+  rebase_merge_path="$(git rev-parse --git-path rebase-merge)"
+  rebase_apply_path="$(git rev-parse --git-path rebase-apply)"
+  if [[ -d "$rebase_merge_path" || -d "$rebase_apply_path" ]]; then
+    echo 'Refusing to sign commits while a rebase is already in progress.' >&2
+    exit 1
+  fi
+  if ! git diff --quiet -- || ! git diff --cached --quiet --; then
+    echo 'Refusing to sign commits with tracked index or worktree changes.' >&2
+    exit 1
+  fi
+
+  worktrees="$(git worktree list --porcelain)"
+  local_refs="$(git for-each-ref --format='%(refname) %(objectname) %(upstream)' refs/heads/)"
+  remote_refs="$(git for-each-ref --format='%(refname) %(objectname) %(symref)' refs/remotes/)"
+  while read -r ref tip upstream; do
+    [[ -n "$ref" ]] || continue
+    if in_stack_range "$tip"; then
+      if [[ "$ref" != "$(git symbolic-ref HEAD)" ]] \
+        && grep -qxF "branch $ref" <<<"$worktrees"; then
+        echo "Refusing to sign the stack: '${ref#refs/heads/}' is checked out in another worktree." >&2
+        exit 1
+      fi
+    fi
+  done <<<"$local_refs"
+
+  # Git cannot update remote-tracking refs. Check fetched branch tips in the
+  # range against their local tracking branch (or a branch with the same name).
+  while read -r remote_ref remote_tip ref; do
+    [[ -n "$remote_ref" && -z "$ref" ]] || continue
+    in_stack_range "$remote_tip" || continue
+    remote_name="${remote_ref#refs/remotes/}"
+    local_ref="refs/heads/${remote_name#*/}"
+    found=false
+    while read -r ref tip upstream; do
+      if [[ "$upstream" == "$remote_ref" || "$ref" == "$local_ref" ]]; then
+        if in_stack_range "$tip" && git merge-base --is-ancestor "$remote_tip" "$tip"; then
+          found=true
+          break
+        fi
+      fi
+    done <<<"$local_refs"
+    if [[ "$found" != true ]]; then
+      echo "No local stack branch contains '$remote_name'. Fetch and check out the complete stack first." >&2
+      exit 1
+    fi
+  done <<<"$remote_refs"
+
+  echo 'Stack mode will update these local branches (including any backup branches):' >&2
+  while read -r ref tip upstream; do
+    [[ -n "$ref" ]] || continue
+    if in_stack_range "$tip"; then
+      printf '  %s\n' "${ref#refs/heads/}" >&2
+    fi
+  done <<<"$local_refs"
+}
+
+in_stack_range() {
+  git merge-base --is-ancestor "$1" HEAD \
+    && ! git merge-base --is-ancestor "$1" "$base"
+}
+
+stack_recovery_message() {
+  if [[ -d "$rebase_merge_path" || -d "$rebase_apply_path" ]]; then
+    echo 'Stack rebase stopped. Fix the cause, then run git rebase --continue, or use git rebase --abort to cancel.' >&2
+  else
+    echo 'Check git status and the stack branch refs before you retry.' >&2
+  fi
+}
+
+handle_stack_interrupt() {
+  local status="$1"
+  trap - INT TERM
+  stack_recovery_message
+  exit "$status"
 }
 
 has_signature() {
@@ -115,8 +209,12 @@ original_ref=''
 positionals=()
 for arg in "$@"; do
   case "$arg" in
-    --all)
-      mode=all
+    --all|--stack)
+      if [[ "$mode" != range && "$mode" != "${arg#--}" ]]; then
+        echo '--all and --stack cannot be used together.' >&2
+        exit 2
+      fi
+      mode="${arg#--}"
       ;;
     -*)
       usage
@@ -128,7 +226,13 @@ for arg in "$@"; do
   esac
 done
 
-if [[ "$mode" == all ]]; then
+if [[ "$mode" == stack ]]; then
+  if (( ${#positionals[@]} != 1 )) || [[ -z "${positionals[0]}" ]]; then
+    usage
+    exit 2
+  fi
+  base="${positionals[0]}"
+elif [[ "$mode" == all ]]; then
   if (( ${#positionals[@]} > 1 )); then
     usage
     exit 2
@@ -184,6 +288,9 @@ if [[ "$mode" == range && -z "$base" ]]; then
 fi
 
 oldest_unsigned=''
+if [[ "$mode" == stack ]]; then
+  check_stack
+fi
 if [[ "$mode" == all ]]; then
   if [[ "$use_worktree" != true ]]; then
     rebase_merge_path="$(git rev-parse --git-path rebase-merge)"
@@ -217,7 +324,10 @@ fi
 
 temp_dir="$(mktemp -d)"
 trap cleanup_all EXIT
-if [[ "$use_worktree" == true ]]; then
+if [[ "$mode" == stack ]]; then
+  trap 'handle_stack_interrupt 130' INT
+  trap 'handle_stack_interrupt 143' TERM
+elif [[ "$use_worktree" == true ]]; then
   trap handle_worktree_interrupt INT
 elif [[ "$mode" == all ]]; then
   trap handle_interrupt INT
@@ -241,7 +351,17 @@ fi
 
 export SIGN_BRANCH_SIGNED_LOG="$signed_log"
 
-if [[ "$mode" == all ]]; then
+if [[ "$mode" == stack ]]; then
+  # Keep the exec command self-contained so --continue works after this script
+  # exits. Retry failed signing commands before updating intermediate refs.
+  sign_command='git commit --amend -S --no-edit --allow-empty'
+  rebase_command=(
+    "${run[@]}" rebase --update-refs --rebase-merges=no-rebase-cousins
+    --no-autosquash --no-autostash --no-fork-point --force-rebase
+    --reapply-cherry-picks --empty=keep --reschedule-failed-exec
+    --exec "$sign_command" "$base"
+  )
+elif [[ "$mode" == all ]]; then
   sign_command="git commit --amend -S --no-edit --allow-empty >>\"\$SIGN_BRANCH_SIGNED_LOG\" 2>&1"
   if git rev-parse --verify --quiet "$oldest_unsigned^" >/dev/null; then
     rebase_command=(
@@ -290,6 +410,9 @@ if ! "${rebase_command[@]}" >"$rebase_log" 2>&1; then
   fi
   if [[ "$use_worktree" == true ]]; then
     echo "Branch '$branch' did not change." >&2
+  fi
+  if [[ "$mode" == stack ]]; then
+    stack_recovery_message
   fi
   if (( abort_status != 0 )); then
     printf 'Unable to abort failed rebase:\n%s\n' "$abort_output" >&2

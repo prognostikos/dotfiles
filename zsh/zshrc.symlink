@@ -97,10 +97,16 @@ else
 fi
 
 # pull in config files
-for config_file ($ZSH/**/*.zsh) source $config_file
+for config_file in "$ZSH"/**/*.zsh(N); do
+  [[ "$config_file" == "$ZSH/test/"* ]] && continue
+  source "$config_file"
+done
 
 # pull in all aliases
-for aliases_file ($ZSH/**/aliases) source $aliases_file
+for aliases_file in "$ZSH"/**/aliases(N); do
+  [[ "$aliases_file" == "$ZSH/test/"* ]] && continue
+  source "$aliases_file"
+done
 
 # Act like emacs even though Vim is my editor
 bindkey -e
@@ -133,7 +139,10 @@ zmodload -i zsh/complist
 fignore=(.o .class .ctxt .obj)
 
 # pull in all custom completion.sh files
-for completion_file ($ZSH/**/completion.sh) source $completion_file
+for completion_file in "$ZSH"/**/completion.sh(N); do
+  [[ "$completion_file" == "$ZSH/test/"* ]] && continue
+  source "$completion_file"
+done
 
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"

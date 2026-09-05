@@ -121,6 +121,7 @@ unset config_file
 ### Pull in all aliases
 
 for aliases_file in "$DOTFILES_ROOT"/*/aliases; do
+  [[ "$aliases_file" == "$DOTFILES_ROOT/test/"* ]] && continue
   # shellcheck disable=SC1090
   [ -f "$aliases_file" ] && source "$aliases_file"
 done

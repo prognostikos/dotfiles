@@ -60,7 +60,8 @@ link_entry() {
   ln -svf "$source" "$dest"
 }
 
-find "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -print0 | while IFS= read -r -d '' source
+find "$DOTFILES_ROOT" -maxdepth 2 -path "$DOTFILES_ROOT/test" -prune -o \
+  -name '*.symlink' -print0 | while IFS= read -r -d '' source
 do
   dest="${DEST_ROOT}/.$(basename "${source%.*}")"
 
