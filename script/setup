@@ -70,7 +70,34 @@ do
     continue
   fi
 
+  # Relative shared-skill links must resolve from the home directory on
+  # both the host and the container, even when their home paths differ.
+  if [ "$(basename "${source%.*}")" = "claude" ]; then
+    if [ -L "$dest" ] && [ "$dest" -ef "$source" ]; then
+      rm "$dest"
+    fi
+    if [ ! -e "$dest" ] && [ ! -L "$dest" ]; then
+      mkdir -p "$dest"
+    fi
+  fi
+
   link_entry "$source" "$dest"
+done
+
+mkdir -p "$DEST_ROOT/.claude/skills"
+for skill in "$DEST_ROOT/.agents/skills"/*; do
+  [ -f "$skill/SKILL.md" ] || continue
+  skill_name="$(basename "$skill")"
+  skill_link="$DEST_ROOT/.claude/skills/$skill_name"
+  skill_target="../../.agents/skills/$skill_name"
+  if [ -L "$skill_link" ] && [ "$(readlink "$skill_link")" = "$skill_target" ]; then
+    continue
+  fi
+  if [ -e "$skill_link" ] || [ -L "$skill_link" ]; then
+    echo "Skipping shared skill $skill_name (Claude skill already exists)"
+    continue
+  fi
+  ln -sv "$skill_target" "$skill_link"
 done
 
 if command -v fzf > /dev/null 2>&1; then

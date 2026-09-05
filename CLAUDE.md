@@ -27,7 +27,7 @@ This is a dotfiles repository that manages shell configurations, utilities, and 
 
 #### Devcontainers
 - `deve [cmd]` - Execute commands inside a devcontainer (handles worktrees)
-- `devrebuild [--nuke]` - Rebuild devcontainer (auto-mounts worktrees and `.claude`)
+- `devrebuild [--nuke]` - Rebuild devcontainer (auto-mounts worktrees, `.agents`, `.claude`, and `.codex`)
 
 #### Git
 - `git-pr` - Open a GitHub compare page for the current branch
@@ -96,6 +96,7 @@ The repository is organized into topic directories (git/, zsh/, docker/, etc.). 
 - **Tmux**: Custom keybindings, session management via `tat`, git statusline
 - **Devcontainers**: Full workflow support via `deve` and `devrebuild`
 - **Claude Code**: Config managed via `claude.symlink/`
+- **Shared skills**: `agents.symlink/skills/` installs to `~/.agents/skills/`. Setup creates `~/.claude/skills/` and adds relative links for shared skills, preserving existing Claude skills.
 
 ## Shell Script Conventions
 
@@ -126,7 +127,7 @@ Scripts in `bin/` are automatically available in PATH. Make them executable: `ch
 ### Devcontainer Workflow
 
 The repo has full devcontainer support:
-- `devrebuild` rebuilds with dotfiles auto-installed, mounts worktrees and `~/.claude`
+- `devrebuild` rebuilds with dotfiles auto-installed and mounts worktrees, `~/.agents`, `~/.claude`, and `~/.codex`
 - `deve` runs commands inside a devcontainer, translating worktree paths
 - `fixwt` repairs worktree git references that break across host/container boundaries
 - `script/setup` skips the `.claude` symlink inside devcontainers (mounted directly)
