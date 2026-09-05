@@ -17,7 +17,8 @@ usage() {
   echo "  Create a git worktree in a sibling <repo>-worktrees directory or" >&2
   echo "  a .worktrees directory inside the main worktree." >&2
   echo "  With no arguments, select an existing worktree via fzf." >&2
-  echo "  base-branch defaults to the default branch (auto-detected)." >&2
+  echo "  Without base-branch, use a same-name origin branch when available;" >&2
+  echo "  otherwise, use the default branch (auto-detected)." >&2
   echo "" >&2
   echo "Environment variables:" >&2
   echo "  WT_LINK_FILES      Files to symlink from main worktree (default: .env)" >&2
@@ -116,6 +117,10 @@ create_new_worktree() {
   if git show-ref --verify --quiet "refs/heads/$BRANCH_NAME"; then
     echo "Branch '$BRANCH_NAME' already exists, using existing branch"
     git worktree add "$WORKTREE_PATH" "$BRANCH_NAME"
+  elif [ "$BASE_BRANCH_GIVEN" = false ] \
+    && git show-ref --verify --quiet "refs/remotes/origin/$BRANCH_NAME"; then
+    echo "Creating local branch '$BRANCH_NAME' tracking 'origin/$BRANCH_NAME'"
+    git worktree add --track -b "$BRANCH_NAME" "$WORKTREE_PATH" "origin/$BRANCH_NAME"
   else
     echo "Creating new branch '$BRANCH_NAME' from '$BASE_BRANCH'"
     git worktree add -b "$BRANCH_NAME" "$WORKTREE_PATH" "$BASE_BRANCH"
@@ -180,6 +185,10 @@ fi
 
 BRANCH_NAME="$1"
 DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo master)
+BASE_BRANCH_GIVEN=false
+if [ $# -ge 2 ]; then
+  BASE_BRANCH_GIVEN=true
+fi
 BASE_BRANCH="${2:-$DEFAULT_BRANCH}"
 
 construct_worktree_path
