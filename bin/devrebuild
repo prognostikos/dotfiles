@@ -17,7 +17,9 @@ usage() {
   echo ""
   echo "Options:"
   echo "  --nuke       Completely remove the devcontainer including volumes before rebuilding"
-  echo "  --no-cache   Build the image without using cache (pulls fresh base image)"
+  echo "  --no-cache   Build without cached layers. For an image-based configuration,"
+  echo "               this does NOT pull a new image. Run docker pull <image> first."
+  echo "               Dockerfile builds can also pull base images, depending on the CLI build path."
   exit 1
 }
 
