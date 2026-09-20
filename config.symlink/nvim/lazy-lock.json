@@ -15,6 +15,7 @@
   "link.vim": { "branch": "main", "commit": "53e09621fc0dcee54e3231422029be19dab75018" },
   "lists.vim": { "branch": "main", "commit": "33ced550dc7cc9b9025f2b8b5428bee1d32f355c" },
   "luvit-meta": { "branch": "main", "commit": "7edcd52ac6f2acc2f83f0cc27ac989a142408fbf" },
+  "markdown-preview.nvim": { "branch": "master", "commit": "a923f5fc5ba36a3b17e289dc35dc17f66d0548ee" },
   "nvim-autopairs": { "branch": "master", "commit": "430522f95fe4fb7c511ec64f8c1a90cc6a66c05c" },
   "nvim-cmp": { "branch": "main", "commit": "2ffe79f1f021def8dd1fcd81deb16f1bb0d989f3" },
   "nvim-lint": { "branch": "master", "commit": "3d55c8f67c6ae5c15e1042571e107c7a3d5c5f4e" },

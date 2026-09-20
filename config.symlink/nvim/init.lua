@@ -1085,6 +1085,16 @@ require('lazy').setup({
 
   'tpope/vim-rsi',
 
+  {
+    'iamcco/markdown-preview.nvim',
+    cmd = { 'MarkdownPreview', 'MarkdownPreviewStop', 'MarkdownPreviewToggle' },
+    ft = { 'markdown' },
+    build = 'cd app && npm install',
+    init = function()
+      vim.g.mkdp_open_to_the_world = 0
+      vim.g.mkdp_echo_preview_url = 1
+    end,
+  },
 }, {
     rocks = {
       enabled = false,
