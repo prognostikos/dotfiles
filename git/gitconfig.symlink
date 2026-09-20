@@ -106,3 +106,5 @@
 [includeIf "gitdir:/home/exedev/"]
 	path = ~/.gitconfig-exe-dot-dev
 	path = ~/.gitconfig-no-sign
+[credential "https://git.heroku.com"]
+	helper = !heroku git:credentials
