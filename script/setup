@@ -36,6 +36,11 @@ is_mount_point() {
 link_entry() {
   local source="$1" dest="$2" child
 
+  if [ "$dest" = "$DEST_ROOT/.claude/skills" ] && [ -d "$source" ]; then
+    install_claude_skills "$source" "$dest"
+    return
+  fi
+
   if [ -L "$dest" ]; then
     if [ "$dest" -ef "$source" ]; then
       return
@@ -58,6 +63,34 @@ link_entry() {
   fi
 
   ln -svf "$source" "$dest"
+}
+
+# Keep this directory real: it is shared with containers whose home paths
+# differ from the host. Copy Claude-only skills without replacing local edits.
+install_claude_skills() {
+  local source="$1" dest="$2" child target staging
+
+  if [ -L "$dest" ]; then
+    if [ ! "$dest" -ef "$source" ]; then
+      echo "Cannot install Claude skills: $dest is an unmanaged symlink." >&2
+      return 1
+    fi
+    staging="$(mktemp -d "${dest}.XXXXXX")"
+    if ! cp -R "$dest/." "$staging/"; then
+      rm -r "$staging"
+      return 1
+    fi
+    rm "$dest"
+    mv "$staging" "$dest"
+  fi
+
+  mkdir -p "$dest"
+  for child in "$source"/*; do
+    target="$dest/$(basename "$child")"
+    if [ ! -e "$target" ] && [ ! -L "$target" ]; then
+      cp -R "$child" "$target"
+    fi
+  done
 }
 
 find "$DOTFILES_ROOT" -maxdepth 2 -path "$DOTFILES_ROOT/test" -prune -o \
@@ -84,6 +117,10 @@ do
   link_entry "$source" "$dest"
 done
 
+if [ -L "$DEST_ROOT/.claude/skills" ] && [ ! -d "$DEST_ROOT/.claude/skills" ]; then
+  echo "Cannot access $DEST_ROOT/.claude/skills. Run the updated script/setup on the host before rebuilding the container." >&2
+  exit 1
+fi
 mkdir -p "$DEST_ROOT/.claude/skills"
 for skill in "$DEST_ROOT/.agents/skills"/*; do
   [ -f "$skill/SKILL.md" ] || continue
