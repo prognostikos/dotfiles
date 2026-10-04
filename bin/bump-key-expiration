@@ -9,19 +9,42 @@ usage() {
   exit 1
 }
 
-if [[ $# -lt 1 ]]; then
+if [[ $# -lt 1 || $# -gt 2 ]]; then
   usage
 fi
 
 key="$1"
 expires="${2:-1y}"
 
-gpg --quick-set-expire "$key" "$expires"
-# also update subkeys
-gpg --quick-set-expire "$key" "$expires" '*'
+# Resolve key IDs to one primary fingerprint before changing any dates.
+listing="$(gpg --with-colons --with-subkey-fingerprint --list-keys -- "$key")"
+if [[ "$(awk -F: '$1 == "pub" { count++ } END { print count+0 }' <<< "$listing")" != 1 ]]; then
+  echo "Error: KEY_ID must select exactly one primary key." >&2
+  exit 1
+fi
+key="$(awk -F: '$1 == "fpr" { print $10; exit }' <<< "$listing")"
+subkeys=()
+while IFS= read -r fingerprint; do
+  subkeys+=("$fingerprint")
+done < <(awk -F: '
+  $1 == "sub" { include = ($2 != "r") }
+  $1 == "fpr" && include { print $10; include = 0 }
+' <<< "$listing")
 
-gpg --keyserver keys.openpgp.org --send-keys "$key"
-gpg --keyserver keyserver.ubuntu.com --send-keys "$key"
+gpg --quick-set-expire "$key" "$expires"
+# The wildcard skips expired subkeys. Explicit fingerprints include them.
+if [[ ${#subkeys[@]} -gt 0 ]]; then
+  gpg --quick-set-expire "$key" "$expires" "${subkeys[@]}"
+fi
+
+publish_status=0
+for server in hkps://keys.openpgp.org hkps://keyserver.ubuntu.com; do
+  if ! gpg --keyserver "$server" --send-keys "$key"; then
+    echo "Warning: Key upload failed for $server. Local expiration dates are updated." >&2
+    echo "Retry with: gpg --keyserver $server --send-keys $key" >&2
+    publish_status=1
+  fi
+done
 
 if command -v pbcopy &> /dev/null; then
   gpg --armor --export "$key" | pbcopy
@@ -37,3 +60,4 @@ echo "1. Go to https://github.com/settings/keys"
 echo "2. Delete the old key"
 echo "3. Add the new key"
 
+exit "$publish_status"
