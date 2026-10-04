@@ -1,6 +1,6 @@
 {
   "name": "dotfiles",
-  "image": "ghcr.io/betternoworg/devcontainer-base:ruby-3.4.10",
+  "image": "ghcr.io/betternoworg/devcontainer-base:ruby-3.4.11",
   "remoteUser": "dev",
   "workspaceFolder": "/workspaces/dotfiles",
   "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/dotfiles,type=bind",
