@@ -23,7 +23,6 @@ export ZSH="$DOTFILES_ROOT"
 ### ENV (mirrors the env section of zsh/zshrc.symlink)
 
 export LANG=en_US.UTF-8
-export LC_ALL=$LANG
 export CLICOLOR=true
 export COLORTERM=truecolor
 

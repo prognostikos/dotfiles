@@ -10,7 +10,6 @@ export ZSH="${_zshrc:A:h:h}"
 unset _zshrc
 
 export LANG=en_US.UTF-8
-export LC_ALL=$LANG
 export CLICOLOR=true
 export COLORTERM=truecolor
 
