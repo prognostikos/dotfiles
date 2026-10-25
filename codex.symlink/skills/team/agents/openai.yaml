@@ -1,4 +1,0 @@
-interface:
-  display_name: "Team"
-  short_description: "Coordinate tasks across a focused agent team"
-  default_prompt: "Use $team to complete this task with a coordinated team of agents."
