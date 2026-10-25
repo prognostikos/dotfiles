@@ -548,10 +548,10 @@ require('lazy').setup({
   {
     'ludovicchabant/vim-gutentags',
     config = function()
-      -- Use tracked files so nested worktrees and ignored files are not scanned.
+      -- Include new files while excluding ignored worktrees and dependencies.
       vim.g.gutentags_file_list_command = {
         markers = {
-          ['.git'] = 'git ls-files',
+          ['.git'] = 'git ls-files --cached --others --exclude-standard',
         },
       }
       vim.g.gutentags_exclude_filetypes = { 'gitcommit' }
