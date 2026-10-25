@@ -39,16 +39,16 @@ wt_worktrees_dir() {
   nested_dir="$main_worktree/.worktrees"
 
   if [ -d "$sibling_dir" ] && [ -d "$nested_dir" ]; then
-    echo "Warning: Both worktree directories exist; using $sibling_dir instead of $nested_dir." >&2
+    echo "Warning: Both worktree directories exist; using $nested_dir instead of $sibling_dir." >&2
   fi
 
-  if [ -d "$sibling_dir" ]; then
-    printf '%s\n' "$sibling_dir"
-  elif [ -d "$nested_dir" ]; then
+  if [ -d "$nested_dir" ]; then
     printf '%s\n' "$nested_dir"
-  else
-    # Preserve the historical default when neither layout exists yet.
+  elif [ -d "$sibling_dir" ]; then
     printf '%s\n' "$sibling_dir"
+  else
+    # wt creates this directory when adding the first worktree.
+    printf '%s\n' "$nested_dir"
   fi
 }
 

@@ -14,8 +14,9 @@ WT_COPY_DIRS="${WT_COPY_DIRS:-vendor/bundle node_modules}"
 usage() {
   echo "Usage: wt [<branch-name> [base-branch]]" >&2
   echo "" >&2
-  echo "  Create a git worktree in a sibling <repo>-worktrees directory or" >&2
-  echo "  a .worktrees directory inside the main worktree." >&2
+  echo "  Create a git worktree in .worktrees inside the main worktree." >&2
+  echo "  If only a sibling <repo>-worktrees directory exists, use it." >&2
+  echo "  If neither directory exists, create .worktrees and show a message." >&2
   echo "  With no arguments, select an existing worktree via fzf." >&2
   echo "  Without base-branch, use a same-name origin branch when available;" >&2
   echo "  otherwise, use the default branch (auto-detected)." >&2
