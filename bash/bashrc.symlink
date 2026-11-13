@@ -109,7 +109,6 @@ shopt -s checkwinsize
 
 for config_file in \
   "$DOTFILES_ROOT/git/git.zsh" \
-  "$DOTFILES_ROOT/git/git-wrapper.zsh" \
   "$DOTFILES_ROOT/docker/docker.zsh" \
   "$DOTFILES_ROOT/fzf/commands.zsh"; do
   # shellcheck disable=SC1090
