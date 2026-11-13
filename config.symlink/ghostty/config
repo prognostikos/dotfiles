@@ -10,4 +10,4 @@ cursor-style-blink = true
 shell-integration = "zsh"
 shell-integration-features = "no-cursor"
 
-auto-update-channel = tip
+# auto-update-channel = tip
