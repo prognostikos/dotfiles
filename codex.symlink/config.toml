@@ -1,5 +1,5 @@
-model = "gpt-5.6-sol"
-model_reasoning_effort = "high"
+model = "gpt-6-astra"
+model_reasoning_effort = "medium"
 approvals_reviewer = "user"
 suppress_unstable_features_warning = true
 
@@ -13,21 +13,22 @@ args = ["--browser-url=http://127.0.0.1:9222"]
 [mcp_servers.openaiDeveloperDocs]
 url = "https://developers.openai.com/mcp"
 
-[tui.model_availability_nux]
-"gpt-5.5" = 4
-"gpt-5.6-sol" = 4
+[mcp_servers.aws-review]
+command = "/usr/bin/env"
+args = ["-C", "/home/dev/.aws-config/agent-review", "-u", "AWS_ACCESS_KEY_ID", "-u", "AWS_SECRET_ACCESS_KEY", "-u", "AWS_SESSION_TOKEN", "-u", "AWS_PROFILE", "-u", "AWS_ROLE_ARN", "-u", "AWS_WEB_IDENTITY_TOKEN_FILE", "/home/dev/.local/bin/uvx", "mcp-proxy-for-aws-cli==1.7.0", "https://aws-mcp.eu-west-1.api.aws/mcp", "--read-only", "--metadata", "AWS_REGION=eu-west-1", "--disable-telemetry"]
+
+[mcp_servers.aws-review.env]
+AWS_CONFIG_FILE = "/home/dev/.aws-config/agent-review/config"
+AWS_EC2_METADATA_DISABLED = "true"
+AWS_MCP_PROXY_PROFILES = "review-management review-infrastructure review-log-archive review-security-tooling review-workload"
+AWS_REGION = "eu-west-1"
+AWS_SHARED_CREDENTIALS_FILE = "/home/dev/.aws-config/agent-review/credentials"
+
+[tui]
+screen_reader_detection_done = true
 
 [features]
 default_mode_request_user_input = true
 
-[projects."/workspaces/mrclean"]
-trust_level = "trusted"
-
-[projects."/workspaces/dotfiles"]
-trust_level = "trusted"
-
-[projects."/workspaces/matches"]
-trust_level = "trusted"
-
-[projects."/workspaces/upcloud-infra"]
+[projects."/workspaces/bn"]
 trust_level = "trusted"
