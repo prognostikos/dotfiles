@@ -96,7 +96,7 @@ The repository is organized into topic directories (git/, zsh/, docker/, etc.). 
 - **Tmux**: Custom keybindings, session management via `tat`, git statusline
 - **Devcontainers**: Full workflow support via `deve` and `devrebuild`
 - **Claude Code**: Config managed via `claude.symlink/`
-- **Shared skills**: `agents.symlink/skills/` installs to `~/.agents/skills/`. Setup creates `~/.claude/skills/` and adds relative links for shared skills, preserving existing Claude skills.
+- **Shared skills**: `agents.symlink/skills/` installs to `~/.agents/skills/`. `~/.claude` is one symlink to `claude.symlink/`, the same as `~/.codex`. Setup adds relative links for shared skills in `~/.claude/skills/`, preserving existing Claude skills. The `.agents` link in the repository root makes these links resolve on the host.
 
 ## Shell Script Conventions
 
@@ -130,7 +130,7 @@ The repo has full devcontainer support:
 - `devrebuild` rebuilds with dotfiles auto-installed and mounts worktrees, `~/.agents`, `~/.claude`, and `~/.codex`
 - `deve` runs commands inside a devcontainer, translating worktree paths
 - `fixwt` repairs worktree git references that break across host/container boundaries
-- `script/setup` skips the `.claude` symlink inside devcontainers (mounted directly)
+- `script/setup` skips `~/.agents`, `~/.claude`, and `~/.codex` inside devcontainers, because they are mount points
 - Git signing is disabled in devcontainers via conditional include (`gitdir:/workspaces/`)
 - `RUNNING_IN_DEVCONTAINER` env var gates container-specific behavior in zshrc
 

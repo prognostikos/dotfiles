@@ -1,20 +1,16 @@
 #!/bin/bash
 
-# Install all dotfiles into the home directory
+# Install all dotfiles into the home directory, or into the directory given
+# as the first argument. Run this script from the repository root.
 
-set -e
-set -o pipefail
+set -euo pipefail
 
 # match hidden files when globbing children; empty dirs expand to nothing
 shopt -s dotglob nullglob
 
 DOTFILES_ROOT="$(pwd)"
 
-if [ -z "$1" ]; then
-  DEST_ROOT=$HOME
-else
-  DEST_ROOT="$1"
-fi
+DEST_ROOT="${1:-$HOME}"
 
 # A mount point at dest can be a shared host directory (e.g. ~/.codex
 # mounted into a VM) that resolves to this repo's own working tree on the
@@ -35,11 +31,6 @@ is_mount_point() {
 # skipping, so a pre-existing ~/.config etc. still gets its contents.
 link_entry() {
   local source="$1" dest="$2" child
-
-  if [ "$dest" = "$DEST_ROOT/.claude/skills" ] && [ -d "$source" ]; then
-    install_claude_skills "$source" "$dest"
-    return
-  fi
 
   if [ -L "$dest" ]; then
     if [ "$dest" -ef "$source" ]; then
@@ -65,62 +56,17 @@ link_entry() {
   ln -svf "$source" "$dest"
 }
 
-# Keep this directory real: it is shared with containers whose home paths
-# differ from the host. Copy Claude-only skills without replacing local edits.
-install_claude_skills() {
-  local source="$1" dest="$2" child target staging
-
-  if [ -L "$dest" ]; then
-    if [ ! "$dest" -ef "$source" ]; then
-      echo "Cannot install Claude skills: $dest is an unmanaged symlink." >&2
-      return 1
-    fi
-    staging="$(mktemp -d "${dest}.XXXXXX")"
-    if ! cp -R "$dest/." "$staging/"; then
-      rm -r "$staging"
-      return 1
-    fi
-    rm "$dest"
-    mv "$staging" "$dest"
-  fi
-
-  mkdir -p "$dest"
-  for child in "$source"/*; do
-    target="$dest/$(basename "$child")"
-    if [ ! -e "$target" ] && [ ! -L "$target" ]; then
-      cp -R "$child" "$target"
-    fi
-  done
-}
-
 find "$DOTFILES_ROOT" -maxdepth 2 -path "$DOTFILES_ROOT/test" -prune -o \
   -name '*.symlink' -print0 | while IFS= read -r -d '' source
 do
-  dest="${DEST_ROOT}/.$(basename "${source%.*}")"
-
-  if [ "$(basename "${source%.*}")" = "claude" ] && [ -n "$RUNNING_IN_DEVCONTAINER" ]; then
-    echo "Skipping .claude symlink in devcontainer"
-    continue
-  fi
-
-  # Relative shared-skill links must resolve from the home directory on
-  # both the host and the container, even when their home paths differ.
-  if [ "$(basename "${source%.*}")" = "claude" ]; then
-    if [ -L "$dest" ] && [ "$dest" -ef "$source" ]; then
-      rm "$dest"
-    fi
-    if [ ! -e "$dest" ] && [ ! -L "$dest" ]; then
-      mkdir -p "$dest"
-    fi
-  fi
-
-  link_entry "$source" "$dest"
+  link_entry "$source" "$DEST_ROOT/.$(basename "${source%.symlink}")"
 done
 
-if [ -L "$DEST_ROOT/.claude/skills" ] && [ ! -d "$DEST_ROOT/.claude/skills" ]; then
-  echo "Cannot access $DEST_ROOT/.claude/skills. Run the updated script/setup on the host before rebuilding the container." >&2
-  exit 1
-fi
+# Claude reads skills only from ~/.claude/skills, so link each shared skill
+# there. The links are relative, because the home path in a container differs
+# from the home path on the host. On the host, ~/.claude is a symlink to
+# claude.symlink, and the .agents link in the repository root makes the same
+# relative path correct there.
 mkdir -p "$DEST_ROOT/.claude/skills"
 for skill in "$DEST_ROOT/.agents/skills"/*; do
   [ -f "$skill/SKILL.md" ] || continue
@@ -137,32 +83,39 @@ for skill in "$DEST_ROOT/.agents/skills"/*; do
   ln -sv "$skill_target" "$skill_link"
 done
 
-if command -v fzf > /dev/null 2>&1; then
-  if ! fzf --zsh > /dev/null 2>&1; then
-    fzf_package_dir="/usr/share/doc/fzf/examples"
+# An old fzf has no --zsh option. fzf/completion.sh then reads the zsh files
+# from the Debian package or from this cache.
+install_fzf_zsh_files() {
+  local package_dir="/usr/share/doc/fzf/examples" version cache_dir url_prefix file
 
-    if [ ! -r "$fzf_package_dir/key-bindings.zsh" ] || [ ! -r "$fzf_package_dir/completion.zsh" ]; then
-      fzf_version=$(fzf --version | cut -d " " -f 1)
-      fzf_cache_dir="${XDG_CACHE_HOME:-$DEST_ROOT/.cache}/dotfiles/fzf/$fzf_version"
-      url_prefix="https://raw.githubusercontent.com/junegunn/fzf/refs/tags/$fzf_version/shell"
-
-      mkdir -p "$fzf_cache_dir"
-      echo "Installing zsh files for fzf version $fzf_version into $fzf_cache_dir"
-
-      for fzf_shell_file in key-bindings.zsh completion.zsh; do
-        if [ ! -s "$fzf_cache_dir/$fzf_shell_file" ]; then
-          fzf_download_ok=false
-          curl -fsSL "$url_prefix/$fzf_shell_file" -o "$fzf_cache_dir/$fzf_shell_file.tmp" && fzf_download_ok=true || true
-
-          if [ "$fzf_download_ok" = true ] && [ -s "$fzf_cache_dir/$fzf_shell_file.tmp" ]; then
-            mv "$fzf_cache_dir/$fzf_shell_file.tmp" "$fzf_cache_dir/$fzf_shell_file"
-          else
-            rm -f "$fzf_cache_dir/$fzf_shell_file.tmp"
-          fi
-        fi
-      done
-    fi
+  if fzf --zsh > /dev/null 2>&1; then
+    return
   fi
+  if [ -r "$package_dir/key-bindings.zsh" ] && [ -r "$package_dir/completion.zsh" ]; then
+    return
+  fi
+
+  version=$(fzf --version | cut -d " " -f 1)
+  cache_dir="${XDG_CACHE_HOME:-$DEST_ROOT/.cache}/dotfiles/fzf/$version"
+  url_prefix="https://raw.githubusercontent.com/junegunn/fzf/refs/tags/$version/shell"
+  mkdir -p "$cache_dir"
+
+  for file in key-bindings.zsh completion.zsh; do
+    if [ -s "$cache_dir/$file" ]; then
+      continue
+    fi
+    echo "Installing $file for fzf version $version into $cache_dir"
+    # A failed download must not stop the setup.
+    if curl -fsSL "$url_prefix/$file" -o "$cache_dir/$file.tmp" && [ -s "$cache_dir/$file.tmp" ]; then
+      mv "$cache_dir/$file.tmp" "$cache_dir/$file"
+    else
+      rm -f "$cache_dir/$file.tmp"
+    fi
+  done
+}
+
+if command -v fzf > /dev/null 2>&1; then
+  install_fzf_zsh_files
 fi
 
 if command -v nvim > /dev/null 2>&1; then

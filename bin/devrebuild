@@ -11,43 +11,86 @@ source "$(dirname "${BASH_SOURCE[0]}")/.worktree-layout"
 source "$(dirname "${BASH_SOURCE[0]}")/.devcontainer-config"
 
 usage() {
-  echo "Usage: devrebuild [--nuke] [--no-cache]"
-  echo ""
-  echo "Rebuild the devcontainer for the current directory."
-  echo ""
-  echo "Options:"
-  echo "  --nuke       Completely remove the devcontainer including volumes before rebuilding"
-  echo "  --no-cache   Build without cached layers. For an image-based configuration,"
-  echo "               this does NOT pull a new image. Run docker pull <image> first."
-  echo "               Dockerfile builds can also pull base images, depending on the CLI build path."
-  exit 1
+  cat <<'EOF'
+Usage: devrebuild [--nuke] [--no-cache]
+
+Rebuild the devcontainer for the current directory.
+
+Options:
+  --nuke       Remove the devcontainer and its volumes before the rebuild
+  --no-cache   Build without cached layers. For an image-based configuration,
+               this does NOT pull a new image. Run docker pull <image> first.
+               Dockerfile builds can also pull base images, depending on the
+               CLI build path.
+EOF
 }
 
-# Get remoteUser from the selected dev container configuration.
-get_remote_user() {
-  jq -r '.remoteUser // empty' "$DEVCONTAINER_CONFIG_FILE"
+# Remove the containers of this workspace and the volumes they use. The
+# container labels identify a Compose project, so this does not read the
+# Compose file. A Compose file needs its env_file, which can be absent here.
+nuke() {
+  local container_ids compose_project volumes
+
+  echo "Nuking devcontainer for $MAIN_REPO..."
+
+  container_ids=$(docker ps -aq --filter "label=devcontainer.local_folder=$MAIN_REPO")
+  if [ -z "$container_ids" ]; then
+    echo "No containers found."
+    return
+  fi
+
+  # shellcheck disable=SC2086
+  compose_project=$(
+    docker inspect \
+      --format '{{index .Config.Labels "com.docker.compose.project"}}' \
+      $container_ids | head -n 1
+  )
+
+  if [ -n "$compose_project" ]; then
+    docker compose --project-name "$compose_project" \
+      down --volumes --remove-orphans
+  else
+    # shellcheck disable=SC2086
+    volumes=$(
+      docker inspect \
+        --format '{{range .Mounts}}{{if eq .Type "volume"}}{{println .Name}}{{end}}{{end}}' \
+        $container_ids
+    )
+    # shellcheck disable=SC2086
+    docker rm -f $container_ids
+    if [ -n "$volumes" ]; then
+      # shellcheck disable=SC2086
+      docker volume rm $volumes
+    fi
+  fi
+
+  echo "Nuke complete."
 }
+
+if [ -n "${RUNNING_IN_DEVCONTAINER:-}" ]; then
+  echo "Already inside a devcontainer" >&2
+  exit 1
+fi
 
 NUKE=false
-NO_CACHE=false
+UP_ARGS=()
 
-# Parse arguments
-while [[ $# -gt 0 ]]; do
-  case $1 in
+for arg in "$@"; do
+  case "$arg" in
     --nuke)
       NUKE=true
-      shift
       ;;
     --no-cache)
-      NO_CACHE=true
-      shift
+      UP_ARGS+=(--build-no-cache)
       ;;
     -h|--help)
       usage
+      exit 0
       ;;
     *)
-      echo "Unknown option: $1"
-      usage
+      echo "Unknown option: $arg" >&2
+      usage >&2
+      exit 1
       ;;
   esac
 done
@@ -55,74 +98,32 @@ done
 wt_resolve_current_worktree
 MAIN_REPO="$WT_MAIN_WORKTREE"
 
-PROJECT_DIR="$(basename "$MAIN_REPO")"
-WORKTREES_DIR="$(wt_worktrees_dir "$MAIN_REPO")"
-SIBLING_WORKTREES_DIR="$(dirname "$MAIN_REPO")/${PROJECT_DIR}-worktrees"
-
 devcontainer_resolve_workspace "$MAIN_REPO"
 
 # Priority: DEVCONTAINER_USER env var > devcontainer.json remoteUser > default
-DEVCONTAINER_USER=${DEVCONTAINER_USER:-$(get_remote_user)}
-DEVCONTAINER_USER=${DEVCONTAINER_USER:-vscode}
-
-# Nuke existing devcontainer if requested
-if [ "$NUKE" = true ]; then
-  echo "Nuking devcontainer for $PROJECT_DIR..."
-
-  # Check if using docker-compose
-  COMPOSE_FILE=""
-  if [ -f "$MAIN_REPO/.devcontainer/compose.yml" ]; then
-    COMPOSE_FILE="$MAIN_REPO/.devcontainer/compose.yml"
-  elif [ -f "$MAIN_REPO/.devcontainer/docker-compose.yml" ]; then
-    COMPOSE_FILE="$MAIN_REPO/.devcontainer/docker-compose.yml"
-  fi
-
-  if [ -n "$COMPOSE_FILE" ]; then
-    echo "Removing containers and volumes via docker compose..."
-    docker compose -f "$COMPOSE_FILE" down -v --remove-orphans
-  else
-    # Fallback for non-compose devcontainers
-    CONTAINER_FILTER="label=devcontainer.local_folder=$MAIN_REPO"
-    CONTAINER_IDS=$(docker ps -aq --filter "$CONTAINER_FILTER" 2>/dev/null || true)
-    if [ -n "$CONTAINER_IDS" ]; then
-      echo "Removing containers..."
-      # shellcheck disable=SC2086
-      docker rm -f $CONTAINER_IDS
-    else
-      echo "No containers found matching filter: $CONTAINER_FILTER"
-    fi
-
-    VOLUME_FILTER="name=vsc-${PROJECT_DIR}-"
-    VOLUMES=$(docker volume ls -q --filter "$VOLUME_FILTER" 2>/dev/null || true)
-    if [ -n "$VOLUMES" ]; then
-      echo "Removing volumes..."
-      # shellcheck disable=SC2086
-      docker volume rm $VOLUMES
-    else
-      echo "No volumes found matching filter: $VOLUME_FILTER"
-    fi
-  fi
-
-  echo "Nuke complete."
+if [ -z "${DEVCONTAINER_USER:-}" ]; then
+  # jq cannot read a configuration that contains comments.
+  DEVCONTAINER_USER=$(jq -r '.remoteUser // empty' "$DEVCONTAINER_CONFIG_FILE") || {
+    echo "Cannot read remoteUser from $DEVCONTAINER_CONFIG_FILE. Set DEVCONTAINER_USER." >&2
+    exit 1
+  }
+  DEVCONTAINER_USER=${DEVCONTAINER_USER:-vscode}
 fi
 
-# Build mount arguments
-mkdir -p "$HOME/.agents"
-MOUNT_ARGS=(
-  --mount "type=bind,source=${HOME}/.agents,target=/home/${DEVCONTAINER_USER}/.agents"
-  --mount "type=bind,source=${HOME}/.claude,target=/home/${DEVCONTAINER_USER}/.claude"
-  --mount "type=bind,source=${HOME}/.codex,target=/home/${DEVCONTAINER_USER}/.codex"
-)
+if [ "$NUKE" = true ]; then
+  nuke
+fi
+
+for dir in .agents .claude .codex; do
+  mkdir -p "$HOME/$dir"
+  UP_ARGS+=(--mount "type=bind,source=$HOME/$dir,target=/home/$DEVCONTAINER_USER/$dir")
+done
 
 # A nested .worktrees directory is already included in the main workspace bind.
 # Only the sibling layout needs an additional mount.
-if [ "$WORKTREES_DIR" = "$SIBLING_WORKTREES_DIR" ] && [ -d "$WORKTREES_DIR" ]; then
-  MOUNT_ARGS+=(--mount "type=bind,source=${WORKTREES_DIR},target=/workspaces/${PROJECT_DIR}-worktrees")
-fi
-
-DEVCONTAINER_ARGS=()
-if [ "$NO_CACHE" = true ]; then
-  DEVCONTAINER_ARGS+=(--build-no-cache)
+SIBLING_WORKTREES_DIR="${MAIN_REPO}-worktrees"
+if [ "$(wt_worktrees_dir "$MAIN_REPO")" = "$SIBLING_WORKTREES_DIR" ] && [ -d "$SIBLING_WORKTREES_DIR" ]; then
+  UP_ARGS+=(--mount "type=bind,source=$SIBLING_WORKTREES_DIR,target=/workspaces/$(basename "$SIBLING_WORKTREES_DIR")")
 fi
 
 # Compose files reference ../.env, which resolves to the repository root.
@@ -131,16 +132,24 @@ fi
 # from a 1Password environment for the duration of this script. The trap
 # removes it again, so the secrets never stay on disk.
 ENV_FILE="$MAIN_REPO/.env"
-if [ ! -f "$ENV_FILE" ] && { [ -n "${OP_SERVICE_ACCOUNT_TOKEN:-}" ] || { [ -d /etc/op ] && sudo test -f /etc/op/token; }; }; then
-  echo "Generating $ENV_FILE from 1Password (removed on exit)..."
-  if [ -z "${OP_SERVICE_ACCOUNT_TOKEN:-}" ]; then
-    OP_SERVICE_ACCOUNT_TOKEN=$(sudo cat /etc/op/token)
+if [ ! -f "$ENV_FILE" ]; then
+  OP_TOKEN=${OP_SERVICE_ACCOUNT_TOKEN:-}
+  if [ -z "$OP_TOKEN" ] && [ -d /etc/op ] && sudo test -f /etc/op/token; then
+    OP_TOKEN=$(sudo cat /etc/op/token)
   fi
-  export OP_SERVICE_ACCOUNT_TOKEN
-  trap 'rm -f "$ENV_FILE"' EXIT
-  (umask 077; op environment read "${OP_ENVIRONMENT_ID:-os2pfekn55ky2d6uptjrgvvgm4}" > "$ENV_FILE")
-  unset OP_SERVICE_ACCOUNT_TOKEN
+
+  if [ -n "$OP_TOKEN" ]; then
+    echo "Generating $ENV_FILE from 1Password (removed on exit)..."
+    trap 'rm -f "$ENV_FILE"' EXIT
+    (
+      umask 077
+      OP_SERVICE_ACCOUNT_TOKEN="$OP_TOKEN" \
+        op environment read "${OP_ENVIRONMENT_ID:-os2pfekn55ky2d6uptjrgvvgm4}" > "$ENV_FILE"
+    )
+  fi
+  unset OP_TOKEN
 fi
+unset OP_SERVICE_ACCOUNT_TOKEN
 
 devcontainer up \
   "${DEVCONTAINER_WORKSPACE_ARGS[@]}" \
@@ -148,5 +157,4 @@ devcontainer up \
   --dotfiles-repository https://github.com/prognostikos/dotfiles \
   --dotfiles-install-command script/setup \
   --dotfiles-target-path "/home/$DEVCONTAINER_USER/.dotfiles" \
-  "${MOUNT_ARGS[@]}" \
-  ${DEVCONTAINER_ARGS[@]+"${DEVCONTAINER_ARGS[@]}"}
+  "${UP_ARGS[@]}"
