@@ -103,6 +103,7 @@
 	path = ~/.gitconfig-darwin
 [includeIf "gitdir:/workspaces/"]
 	path = ~/.gitconfig-no-sign
+	path = ~/.gitconfig-https
 [includeIf "gitdir:/home/exedev/"]
 	path = ~/.gitconfig-exe-dot-dev
 	path = ~/.gitconfig-no-sign
