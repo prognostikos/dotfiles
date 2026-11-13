@@ -12,4 +12,5 @@ zeus.json
 tags.lock
 .aledisable
 .ignore
+**/.worktrees
 **/.claude/settings.local.json
