@@ -7,7 +7,7 @@ wt_main_worktree() {
   local git_common_dir
 
   git_common_dir="$(git rev-parse --git-common-dir 2>/dev/null)" || return 1
-  (cd "$git_common_dir/.." && pwd -P)
+  (CDPATH='' cd "$git_common_dir/.." && pwd -P)
 }
 
 # Resolve the main checkout and the current worktree. This also supports a
@@ -169,7 +169,7 @@ wt_find_broken_worktree() {
   local main_worktree
   local repo_name
 
-  directory="$(cd "${1:-$PWD}" && pwd -P)" || return 1
+  directory="$(CDPATH='' cd "${1:-$PWD}" && pwd -P)" || return 1
 
   while [ "$directory" != "/" ]; do
     if [ -f "$directory/.git" ]; then
@@ -198,7 +198,7 @@ wt_find_broken_worktree() {
       done
 
       [ -n "${main_worktree:-}" ] && [ -d "$main_worktree/.git" ] || return 1
-      WT_BROKEN_MAIN_WORKTREE="$(cd "$main_worktree" && pwd -P)"
+      WT_BROKEN_MAIN_WORKTREE="$(CDPATH='' cd "$main_worktree" && pwd -P)"
       WT_BROKEN_WORKTREE="$directory"
       return 0
     fi

@@ -8,7 +8,7 @@ devcontainer_resolve_workspace() {
   local installed_default="$HOME/.config/devcontainer/default.json"
   local source_default
 
-  source_default="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)/config.symlink/devcontainer/default.json"
+  source_default="$(CDPATH='' cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)/config.symlink/devcontainer/default.json"
 
   DEVCONTAINER_WORKSPACE_ARGS=(--workspace-folder "$workspace")
 
