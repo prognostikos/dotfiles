@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+# git-prune-merged: remove local branches and worktrees whose work is already
+# in the base branch, including squash and rebase merges.
+#
+# Usage: git prune-merged [--apply] [--base <ref>] [--no-gh] [--protect <path>]...
+#
+# Dry run by default; --apply deletes. A branch or detached worktree counts as
+# merged when one of these is true:
+#   1. its tip is an ancestor of the base (normal merge, fast-forward);
+#   2. its whole diff against the merge base is one patch already in the base
+#      (squash merge, also after the base moved on);
+#   3. gh reports a merged PR whose head commit is exactly this tip (squash
+#      merge that conflicts with later base changes). Skip with --no-gh.
+# A worktree is removed only when it is clean, not locked, and its protected
+# paths are empty. Protected paths come from --protect and from
+# `git config --get-all prune-merged.protect` (for example .artifacts or tmp),
+# because `git worktree remove` deletes ignored files.
+# Works with the bash 3.2 on macOS.
+set -euo pipefail
+
+apply=false use_gh=true base=""
+protect=()
+while (( $# )); do
+  case $1 in
+    --apply) apply=true ;;
+    --no-gh) use_gh=false ;;
+    --base) base=${2:?--base needs a ref}; shift ;;
+    --protect) protect+=("${2:?--protect needs a path}"); shift ;;
+    -h|--help) sed -n '2,19p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    *) echo "unknown argument: $1" >&2; exit 2 ;;
+  esac
+  shift
+done
+while IFS= read -r p; do [[ -n $p ]] && protect+=("$p"); done \
+  < <(git config --get-all prune-merged.protect || true)
+command -v gh >/dev/null 2>&1 || use_gh=false
+
+remote=$(git remote | head -n1)
+[[ -n $remote ]] && git fetch --quiet --prune "$remote"
+if [[ -z $base ]]; then
+  for candidate in "$remote/HEAD" "$remote/main" "$remote/master" main master; do
+    if git rev-parse --verify --quiet "$candidate^{commit}" >/dev/null; then
+      base=$candidate; break
+    fi
+  done
+fi
+[[ -n $base ]] || { echo "no base branch found; use --base" >&2; exit 1; }
+base_name=$(git rev-parse --abbrev-ref "$base" 2>/dev/null || echo "$base")
+base_name=${base_name#"$remote/"}
+echo "base: $base"
+
+# merged <commit> [branch] -> prints the reason and returns 0 when merged
+merged() {
+  local tip=$1 branch=${2-} mb tmp oid
+  if git merge-base --is-ancestor "$tip" "$base"; then echo ancestor; return 0; fi
+  mb=$(git merge-base "$base" "$tip") || return 1
+  tmp=$(git commit-tree "$tip^{tree}" -p "$mb" -m prune-merged)
+  if [[ $(git cherry "$base" "$tmp") == -* ]]; then echo squash; return 0; fi
+  if $use_gh; then
+    if [[ -n $branch ]]; then
+      oid=$(gh pr list --state merged --head "$branch" --json headRefOid \
+        --jq ".[] | select(.headRefOid == \"$(git rev-parse "$tip")\") | .headRefOid" 2>/dev/null || true)
+    else
+      oid=$(gh pr list --state merged --search "$(git rev-parse "$tip")" --json headRefOid \
+        --jq ".[] | select(.headRefOid == \"$(git rev-parse "$tip")\") | .headRefOid" 2>/dev/null || true)
+    fi
+    if [[ -n $oid ]]; then echo "merged PR"; return 0; fi
+  fi
+  return 1
+}
+
+run() { if $apply; then "$@"; else echo "  would run: $*"; fi; }
+
+main_wt=$(git worktree list --porcelain | sed -n '1s/^worktree //p')
+current=$(git -C "$main_wt" symbolic-ref --quiet --short HEAD || true)
+
+# Worktrees first, so their branches are free to delete afterwards.
+removed_branches=" "
+path="" head="" branch="" locked=false
+flush() {
+  [[ -z $path || $path == "$main_wt" ]] && return 0
+  local reason dirty p
+  if ! reason=$(merged "$head" "$branch"); then return 0; fi
+  if $locked; then echo "keep $path: locked"; return 0; fi
+  dirty=$(git -C "$path" status --porcelain 2>/dev/null | head -n1)
+  if [[ -n $dirty ]]; then echo "keep $path: uncommitted changes"; return 0; fi
+  for p in ${protect[@]+"${protect[@]}"}; do
+    if [[ -e "$path/$p" && -n $(ls -A "$path/$p" 2>/dev/null) ]]; then
+      echo "keep $path: protected path $p is not empty"; return 0
+    fi
+  done
+  echo "remove worktree $path (${branch:-detached}, $reason)"
+  run git worktree remove "$path"
+  [[ -n $branch ]] && removed_branches+="$branch "
+  return 0
+}
+while IFS= read -r line; do
+  case $line in
+    "worktree "*) flush; path=${line#worktree } head="" branch="" locked=false ;;
+    "HEAD "*) head=${line#HEAD } ;;
+    "branch "*) branch=${line#branch refs/heads/} ;;
+    locked*) locked=true ;;
+  esac
+done < <(git worktree list --porcelain)
+flush
+$apply && git worktree prune
+
+checked_out=" $(git worktree list --porcelain | sed -n 's#^branch refs/heads/##p' | tr '\n' ' ')"
+git for-each-ref --format='%(refname:short)' refs/heads | while IFS= read -r b; do
+  [[ $b == main || $b == master || $b == "$base_name" || $b == "$current" ]] && continue
+  if [[ $checked_out == *" $b "* && $removed_branches != *" $b "* ]] && ! $apply; then
+    continue
+  fi
+  if $apply && [[ " $(git worktree list --porcelain | sed -n 's#^branch refs/heads/##p' | tr '\n' ' ') " == *" $b "* ]]; then
+    continue
+  fi
+  if reason=$(merged "$b" "$b"); then
+    echo "delete branch $b ($reason)"
+    run git branch -D "$b"
+  fi
+done
