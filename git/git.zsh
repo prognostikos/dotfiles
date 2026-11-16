@@ -56,3 +56,23 @@ gs() {
     ls
   fi
 }
+
+# Select a worktree of the current repository with fzf and cd into it.
+cwt() {
+  local dir
+  dir="$(wt --print)" || return
+  cd "$dir"
+}
+
+# Select a worktree with cwt, run git sign-branch in it with the given
+# arguments, then return to the starting directory.
+swt() {
+  local start="$PWD"
+  local exit_status
+
+  cwt || return
+  git sign-branch "$@"
+  exit_status=$?
+  cd "$start"
+  return $exit_status
+}

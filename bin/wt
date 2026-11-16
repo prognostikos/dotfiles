@@ -13,11 +13,14 @@ WT_COPY_DIRS="${WT_COPY_DIRS:-vendor/bundle node_modules}"
 
 usage() {
   echo "Usage: wt [<branch-name> [base-branch]]" >&2
+  echo "       wt --print" >&2
   echo "" >&2
   echo "  Create a git worktree in .worktrees inside the main worktree." >&2
   echo "  If only a sibling <repo>-worktrees directory exists, use it." >&2
   echo "  If neither directory exists, create .worktrees and show a message." >&2
   echo "  With no arguments, select an existing worktree via fzf." >&2
+  echo "  With --print, select a worktree via fzf and print its path." >&2
+  echo "  --print exits with status 1 when nothing is selected." >&2
   echo "  Without base-branch, use a same-name origin branch when available;" >&2
   echo "  otherwise, use the default branch (auto-detected)." >&2
   echo "" >&2
@@ -25,10 +28,41 @@ usage() {
   echo "  WT_LINK_FILES      Files to symlink from main worktree (default: .env)" >&2
   echo "  WT_COPY_DIRS       Dirs to copy with hard links (default: vendor/bundle node_modules)" >&2
   echo "  NEW_WORKTREE_CMD   Command to run after creating a new worktree (default: bin/new-worktree)" >&2
+  echo "" >&2
+  echo "Inside a rex terminal (REX_SESSION is set and rex is on PATH), open the" >&2
+  echo "worktree in a rex window of the current session. Otherwise, use tmux (tat)." >&2
   exit 1
 }
 
+# Focus the rex window named after the worktree, or create one there. Outside
+# rex, attach to the worktree's tmux session with tat.
+open_worktree() {
+  local dir="$1"
+  local label
+  local status=0
+
+  cd "$dir"
+
+  if [ -z "${REX_SESSION:-}" ] || ! command -v rex >/dev/null 2>&1; then
+    tat
+    return
+  fi
+
+  label="$(basename "$dir" | tr . -)"
+  rex window focus -s "$REX_SESSION" "$label" >/dev/null 2>&1 || status=$?
+  case "$status" in
+    0) ;;
+    # 3: no window has the label (or the label is ambiguous).
+    3) rex window new -s "$REX_SESSION" -c "$dir" "$label" >/dev/null ;;
+    *)
+      echo "rex window focus failed with status $status" >&2
+      return "$status"
+      ;;
+  esac
+}
+
 select_existing_worktree() {
+  local print_only="${1:-false}"
   local selected
   local entries=()
 
@@ -61,16 +95,21 @@ select_existing_worktree() {
   selected="$(
     printf '%s\n' "${entries[@]}" |
       fzf --delimiter=$'\t' --with-nth=2.. --prompt='Select worktree: '
-  )" || exit 0
+  )" || selected=''
 
   selected="${selected%%$'\t'*}"
 
   if [ -z "$selected" ]; then
+    [ "$print_only" = true ] && exit 1
     exit 0
   fi
 
-  cd "$selected"
-  tat
+  if [ "$print_only" = true ]; then
+    printf '%s\n' "$selected"
+    exit 0
+  fi
+
+  open_worktree "$selected"
 }
 
 construct_worktree_path() {
@@ -101,8 +140,7 @@ attach_to_existing_worktree() {
 
     if [ "$is_registered" = true ]; then
       echo "Worktree already exists: $WORKTREE_PATH"
-      cd "$WORKTREE_PATH"
-      tat
+      open_worktree "$WORKTREE_PATH"
       exit 0
     else
       echo "Error: Directory exists but is not a valid worktree: $WORKTREE_PATH" >&2
@@ -184,6 +222,11 @@ if [ $# -eq 0 ]; then
   exit 0
 fi
 
+if [ "$1" = "--print" ]; then
+  [ $# -eq 1 ] || usage
+  select_existing_worktree true
+fi
+
 BRANCH_NAME="$1"
 DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo master)
 BASE_BRANCH_GIVEN=false
@@ -200,5 +243,4 @@ copy_dirs
 authorize_envrc
 run_new_worktree_cmd
 
-cd "$WORKTREE_PATH"
-tat
+open_worktree "$WORKTREE_PATH"

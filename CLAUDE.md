@@ -22,7 +22,10 @@ This is a dotfiles repository that manages shell configurations, utilities, and 
 - `tmux-git-status` - Git branch and status indicators for tmux statusline
 
 #### Git Worktrees
-- `wt [branch [base]]` - Create or select a git worktree (uses fzf when no args). Prefer `.worktrees` inside the main worktree, then an existing sibling `<repo>-worktrees` directory. When creating a worktree, create `.worktrees` and show a message if neither directory exists.
+- `wt [branch [base]]` - Create or select a git worktree (uses fzf when no args). Prefer `.worktrees` inside the main worktree, then an existing sibling `<repo>-worktrees` directory. When creating a worktree, create `.worktrees` and show a message if neither directory exists. Inside a rex terminal (`REX_SESSION` set and `rex` on `PATH`), focus or create a rex window labeled with the worktree directory name in the current session; otherwise attach with `tat` (tmux).
+- `wt --print` - Select a worktree via fzf and print its path (status 1 when nothing is selected)
+- `cwt` - zsh function: select a worktree via fzf and cd into it
+- `swt [sign-branch args]` - zsh function: select a worktree with `cwt`, run `git sign-branch` there, then return to the starting directory
 - `fixwt` - Fix broken git worktree references (works on host and in containers)
 
 #### Devcontainers
