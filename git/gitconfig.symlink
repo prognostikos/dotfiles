@@ -44,6 +44,7 @@
 [branch]
 	autosetuprebase = always
 	sort = -committerdate
+	autoSetupMerge = simple
 [mergetool]
 	keepBackup = false
 	prompt = false
@@ -68,6 +69,7 @@
 [push]
 	followTags = true
 	autoSetupRemote = true
+	default = current
 [status]
 	showUntrackedFiles = all
 [rerere]
