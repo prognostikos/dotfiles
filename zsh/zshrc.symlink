@@ -95,14 +95,15 @@ else
   export EDITOR=vim
 fi
 
-# pull in config files
-for config_file in "$ZSH"/**/*.zsh(N); do
+# pull in config files (one level deep only: a recursive **/ glob walks every
+# vim plugin / worktree under $ZSH, which is very slow on macOS)
+for config_file in "$ZSH"/*/*.zsh(N); do
   [[ "$config_file" == "$ZSH/test/"* ]] && continue
   source "$config_file"
 done
 
 # pull in all aliases
-for aliases_file in "$ZSH"/**/aliases(N); do
+for aliases_file in "$ZSH"/*/aliases(N); do
   [[ "$aliases_file" == "$ZSH/test/"* ]] && continue
   source "$aliases_file"
 done
@@ -138,7 +139,7 @@ zmodload -i zsh/complist
 fignore=(.o .class .ctxt .obj)
 
 # pull in all custom completion.sh files
-for completion_file in "$ZSH"/**/completion.sh(N); do
+for completion_file in "$ZSH"/*/completion.sh(N); do
   [[ "$completion_file" == "$ZSH/test/"* ]] && continue
   source "$completion_file"
 done
