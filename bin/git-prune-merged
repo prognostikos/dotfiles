@@ -3,6 +3,7 @@
 # in the base branch, including squash and rebase merges.
 #
 # Usage: git prune-merged [--apply] [--base <ref>] [--no-gh] [--protect <path>]...
+#                         [--log <file>]
 #
 # Dry run by default; --apply deletes. A branch or detached worktree counts as
 # merged when one of these is true:
@@ -11,14 +12,19 @@
 #      (squash merge, also after the base moved on);
 #   3. gh reports a merged PR whose head commit is exactly this tip (squash
 #      merge that conflicts with later base changes). Skip with --no-gh.
+#      The merged PR heads are fetched once, up front.
 # A worktree is removed only when it is clean, not locked, and its protected
 # paths are empty. Protected paths come from --protect and from
 # `git config --get-all prune-merged.protect` (for example .artifacts or tmp),
 # because `git worktree remove` deletes ignored files.
+# With --apply, every removal is appended to the log (default:
+# prune-merged.log in the common git dir) with the commit it pointed to, so
+# a branch can be restored with `git branch <name> <sha>`. A failed removal is
+# reported and skipped; the exit status is 1 if any removal failed.
 # Works with the bash 3.2 on macOS.
 set -euo pipefail
 
-apply=false use_gh=true base=""
+apply=false use_gh=true base="" log=""
 protect=()
 while (( $# )); do
   case $1 in
@@ -26,7 +32,8 @@ while (( $# )); do
     --no-gh) use_gh=false ;;
     --base) base=${2:?--base needs a ref}; shift ;;
     --protect) protect+=("${2:?--protect needs a path}"); shift ;;
-    -h|--help) sed -n '2,19p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --log) log=${2:?--log needs a file}; shift ;;
+    -h|--help) sed -n '2,25p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) echo "unknown argument: $1" >&2; exit 2 ;;
   esac
   shift
@@ -34,6 +41,7 @@ done
 while IFS= read -r p; do [[ -n $p ]] && protect+=("$p"); done \
   < <(git config --get-all prune-merged.protect || true)
 command -v gh >/dev/null 2>&1 || use_gh=false
+[[ -n $log ]] || log="$(cd "$(git rev-parse --git-common-dir)" && pwd)/prune-merged.log"
 
 remote=$(git remote | head -n1)
 [[ -n $remote ]] && git fetch --quiet --prune "$remote"
@@ -48,28 +56,48 @@ fi
 base_name=$(git rev-parse --abbrev-ref "$base" 2>/dev/null || echo "$base")
 base_name=${base_name#"$remote/"}
 echo "base: $base"
+$apply && echo "log: $log"
 
-# merged <commit> [branch] -> prints the reason and returns 0 when merged
+# Head commits of all merged PRs, one per line. Fetched once here, because
+# merged() runs in command substitution subshells.
+merged_heads=""
+if $use_gh; then
+  echo "fetching merged PR heads from GitHub..."
+  if ! merged_heads=$(gh pr list --state merged --limit 100000 \
+      --json headRefOid --jq '.[].headRefOid'); then
+    echo "gh pr list failed; skipping the merged PR check" >&2
+    use_gh=false merged_heads=""
+  fi
+fi
+
+# merged <commit> -> prints the reason and returns 0 when merged
 merged() {
-  local tip=$1 branch=${2-} mb tmp oid
+  local tip mb tmp
+  tip=$(git rev-parse "$1^{commit}")
   if git merge-base --is-ancestor "$tip" "$base"; then echo ancestor; return 0; fi
   mb=$(git merge-base "$base" "$tip") || return 1
   tmp=$(git commit-tree "$tip^{tree}" -p "$mb" -m prune-merged)
   if [[ $(git cherry "$base" "$tmp") == -* ]]; then echo squash; return 0; fi
-  if $use_gh; then
-    if [[ -n $branch ]]; then
-      oid=$(gh pr list --state merged --head "$branch" --json headRefOid \
-        --jq ".[] | select(.headRefOid == \"$(git rev-parse "$tip")\") | .headRefOid" 2>/dev/null || true)
-    else
-      oid=$(gh pr list --state merged --search "$(git rev-parse "$tip")" --json headRefOid \
-        --jq ".[] | select(.headRefOid == \"$(git rev-parse "$tip")\") | .headRefOid" 2>/dev/null || true)
-    fi
-    if [[ -n $oid ]]; then echo "merged PR"; return 0; fi
+  if $use_gh && grep -qxF "$tip" <<<"$merged_heads"; then
+    echo "merged PR"; return 0
   fi
   return 1
 }
 
-run() { if $apply; then "$@"; else echo "  would run: $*"; fi; }
+failures=0
+# run <log entry> <command...>: dry run prints; --apply runs, logs, and keeps
+# going when the command fails.
+run() {
+  local entry=$1; shift
+  if ! $apply; then echo "  would run: $*"; return 0; fi
+  if "$@"; then
+    printf '%s %s\n' "$(date '+%Y-%m-%dT%H:%M:%S%z')" "$entry" >>"$log"
+    return 0
+  fi
+  echo "  failed: $*" >&2
+  failures=$((failures + 1))
+  return 1
+}
 
 main_wt=$(git worktree list --porcelain | sed -n '1s/^worktree //p')
 current=$(git -C "$main_wt" symbolic-ref --quiet --short HEAD || true)
@@ -80,7 +108,7 @@ path="" head="" branch="" locked=false
 flush() {
   [[ -z $path || $path == "$main_wt" ]] && return 0
   local reason dirty p
-  if ! reason=$(merged "$head" "$branch"); then return 0; fi
+  if ! reason=$(merged "$head"); then return 0; fi
   if $locked; then echo "keep $path: locked"; return 0; fi
   dirty=$(git -C "$path" status --porcelain 2>/dev/null | head -n1)
   if [[ -n $dirty ]]; then echo "keep $path: uncommitted changes"; return 0; fi
@@ -90,10 +118,13 @@ flush() {
     fi
   done
   echo "remove worktree $path (${branch:-detached}, $reason)"
-  run git worktree remove "$path"
-  [[ -n $branch ]] && removed_branches+="$branch "
+  if run "worktree $path ${branch:-detached} $head ($reason)" \
+      git worktree remove "$path"; then
+    [[ -n $branch ]] && removed_branches+="$branch "
+  fi
   return 0
 }
+worktrees=$(git worktree list --porcelain)
 while IFS= read -r line; do
   case $line in
     "worktree "*) flush; path=${line#worktree } head="" branch="" locked=false ;;
@@ -101,21 +132,25 @@ while IFS= read -r line; do
     "branch "*) branch=${line#branch refs/heads/} ;;
     locked*) locked=true ;;
   esac
-done < <(git worktree list --porcelain)
+done <<<"$worktrees"
 flush
 $apply && git worktree prune
 
 checked_out=" $(git worktree list --porcelain | sed -n 's#^branch refs/heads/##p' | tr '\n' ' ')"
-git for-each-ref --format='%(refname:short)' refs/heads | while IFS= read -r b; do
-  [[ $b == main || $b == master || $b == "$base_name" || $b == "$current" ]] && continue
-  if [[ $checked_out == *" $b "* && $removed_branches != *" $b "* ]] && ! $apply; then
+# Not a pipeline, so the failure count stays in this shell.
+branches=$(git for-each-ref --format='%(refname:short)' refs/heads)
+while IFS= read -r b; do
+  [[ -z $b || $b == main || $b == master || $b == "$base_name" || $b == "$current" ]] && continue
+  if [[ $checked_out == *" $b "* ]] && { $apply || [[ $removed_branches != *" $b "* ]]; }; then
     continue
   fi
-  if $apply && [[ " $(git worktree list --porcelain | sed -n 's#^branch refs/heads/##p' | tr '\n' ' ') " == *" $b "* ]]; then
-    continue
-  fi
-  if reason=$(merged "$b" "$b"); then
+  if reason=$(merged "$b"); then
     echo "delete branch $b ($reason)"
-    run git branch -D "$b"
+    run "branch $b $(git rev-parse "$b") ($reason)" git branch -D "$b" || true
   fi
-done
+done <<<"$branches"
+
+if (( failures > 0 )); then
+  echo "$failures removal(s) failed" >&2
+  exit 1
+fi
