@@ -1,38 +1,6 @@
 {
   "includeCoAuthoredBy": false,
   "model": "opus",
-  "hooks": {
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "notify-idle"
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "matcher": "permission_prompt",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "notify-idle"
-          }
-        ]
-      },
-      {
-        "matcher": "elicitation_dialog",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "notify-idle"
-          }
-        ]
-      }
-    ]
-  },
   "enabledPlugins": {
     "superpowers@superpowers-dev": false
   },
