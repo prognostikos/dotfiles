@@ -1,4 +1,7 @@
 {
+  "env": {
+    "CLAUDE_CODE_SHELL": "bash"
+  },
   "includeCoAuthoredBy": false,
   "model": "opus",
   "enabledPlugins": {
@@ -25,6 +28,5 @@
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
   "inputNeededNotifEnabled": true,
-  "agentPushNotifEnabled": true,
-  "env": { "CLAUDE_CODE_SHELL": "bash" }
+  "agentPushNotifEnabled": true
 }
