@@ -134,9 +134,9 @@ if ! command -v aws > /dev/null 2>&1; then
   rm -rf /tmp/awscliv2.zip /tmp/aws
 fi
 
-# herdr
-if ! command -v herdr > /dev/null 2>&1; then
-  curl -fsSL https://herdr.dev/install.sh | sh
+# rex
+if ! command -v rex >/dev/null; then
+  curl -fsSL https://pkgs.superlogical.com/rex/install.sh | sh -s -- --channel preview
 fi
 
 # devcontainer cli (needs the nodejs installed above)
